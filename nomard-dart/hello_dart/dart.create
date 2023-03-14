@@ -1,0 +1,1 @@
+{"name":"console","label":"Console Application","description":"A command-line application.","categories":["dart","console"],"entrypoint":"bin/__projectName__.dart"}
