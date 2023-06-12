@@ -370,3 +370,4 @@ hs_err_pid*
 /lib/firebase_options.dart
 /android/app/google-services.json
 /ios/Runner/GoogleService-Info.plist
+/ios/Runner/Info.plist
