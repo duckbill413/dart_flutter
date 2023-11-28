@@ -41,5 +41,5 @@ void main() {
     age: 12,
   );
 
-  print(redPlayer.toString());
+  print(redPlayer);
 }
