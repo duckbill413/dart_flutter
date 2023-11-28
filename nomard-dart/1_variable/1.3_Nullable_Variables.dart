@@ -1,18 +1,13 @@
 void main() {
-  // 변수를 선언하면서 아무것도 할당하지 않는 경우 dynamic variable로 생성
-  var name1;
-  name1 = '홍길등';
-  print(name1);
-  name1 = 12;
-  print(name1);
-  name1 = true;
-  print(name1);
+  // dart의 변수는 기본적으로 nullable이 아니다.
+  // nullable 변수의 생성
+  String? name1 = "duckbill";
+  name1 = null;
 
-  dynamic name2;
-  name2 = 1.1;
-  print(name2);
-  // 타입 체크
-  if (name2 is double) {
-    print('${name2} is double');
+  // String의 isBlank 체크
+  if (name1 != null) {
+    name1.isNotEmpty;
   }
+  // 이렇게도 가능
+  print(name1?.isEmpty);
 }
