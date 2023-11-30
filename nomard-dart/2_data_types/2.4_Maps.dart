@@ -7,4 +7,8 @@ void main() {
   Map<int, String> map2 = {1: 'Jan', 2: 'Feb', 3: 'Mar'};
   print(map1);
   print(map1[2]);
+
+  // keys
+  print(map1.keys);
+  print(map1.values);
 }

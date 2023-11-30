@@ -23,4 +23,19 @@ void main() {
     40,
     if (giveMeFifteen) 50,
   ];
+
+  // where 함수
+  final scoreUnder30List = score.where((s) => s <= 30).toList();
+  print(scoreUnder30List);
+  // map 함수
+  final plus20ToScore = score.map((s) => s + 20).toList();
+  print(plus20ToScore);
+  // reduce 함수 (누적, 구성하는 값들의 타입과 반환되는 리스트를 구성할 값의 타입이 같아야한다.)
+  var blackPinkList = ['리사', '지수', '제니', '로제'];
+  final allMembers =
+      blackPinkList.reduce((value, element) => value + ', ' + element);
+  print(allMembers);
+  // fold 함수
+  final total = score.fold<int>(0, (value, element) => value + element);
+  print(total);
 }
