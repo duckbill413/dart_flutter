@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Player {
-  String name;
-
-  Player({
-    required this.name,
-  });
-}
-
 void main() {
-  var duckbill = Player(
-    name: 'duckbill',
-  );
   runApp(App());
 }
 
@@ -21,14 +10,15 @@ class App extends StatelessWidget {
     // widget에는 material: goolge과 cupertino: ios type이 있다.
     return MaterialApp(
         home: Scaffold(
-      backgroundColor: Color(0xFF181818),
+      backgroundColor: const Color(0xFF181818),
       body: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 40,
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 80,
               ),
               Row(
@@ -37,7 +27,7 @@ class App extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
+                      const Text(
                         'Hey, Selena',
                         style: TextStyle(
                           color: Colors.white,
@@ -54,6 +44,46 @@ class App extends StatelessWidget {
                       ),
                     ],
                   )
+                ],
+              ),
+              const SizedBox(
+                height: 100,
+              ),
+              Text('Total Balance',
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.white.withOpacity(0.8),
+                  )),
+              const SizedBox(
+                height: 5,
+              ),
+              Text('\$5 194 482',
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withOpacity(1.0),
+                  )),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 15,
+                    ),
+                    child: const Text(
+                      'Transfer',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
                 ],
               )
             ],
