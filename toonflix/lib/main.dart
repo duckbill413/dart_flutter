@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toonflix/widgets/button.dart';
 
 void main() {
   runApp(App());
@@ -7,13 +8,13 @@ void main() {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // widget에는 material: goolge과 cupertino: ios type이 있다.
+    // INFO: widget에는 material: goolge과 cupertino: ios type이 있다.
     return MaterialApp(
         home: Scaffold(
       backgroundColor: const Color(0xFF181818),
       body: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 40,
+            horizontal: 20,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,23 +67,18 @@ class App extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Row(
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 15,
-                    ),
-                    child: const Text(
-                      'Transfer',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
+                  Button(
+                    text: 'Transfer',
+                    backgroundColor: Color(0xFFF1B33B),
+                    textColor: Colors.black,
+                  ),
+                  Button(
+                    text: 'Request',
+                    backgroundColor: Color(0xFF1F2123),
+                    textColor: Colors.white,
                   ),
                 ],
               )
