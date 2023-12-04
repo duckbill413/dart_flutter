@@ -106,6 +106,7 @@ class App extends StatelessWidget {
                 height: 10,
               ),
               Container(
+                  clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                     color: const Color(0xFF1F2123),
                     borderRadius: BorderRadius.circular(20),
@@ -113,6 +114,7 @@ class App extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,13 +146,21 @@ class App extends StatelessWidget {
                                   'EUR',
                                   style: TextStyle(
                                     color: Colors.white.withOpacity(0.8),
-                                    fontSize: 20,
+                                    fontSize: 15,
                                   ),
                                 ),
                               ],
                             )
                           ],
                         ),
+                        Transform.scale(
+                          scale: 2.0,
+                          child: Transform.translate(
+                            offset: const Offset(-5, 10),
+                            child: const Icon(Icons.euro_rounded,
+                                color: Colors.white, size: 88),
+                          ),
+                        )
                       ],
                     ),
                   ))
