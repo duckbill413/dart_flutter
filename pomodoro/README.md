@@ -2,6 +2,9 @@
 
 nomard pomodoro app
 
+## Challenge
+- 시간을 재 시작할 수 있는 Reset 버튼 생성 (재생 버튼 옆에)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
