@@ -9,10 +9,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="836ad1b5-30c3-44a1-ba66-45eb0c90d154" name="Changes" comment="[feat] pomodoro&#10;# 5.3 Date Format">
+    <list default="true" id="836ad1b5-30c3-44a1-ba66-45eb0c90d154" name="Changes" comment="[feat] pomodoro&#10;# 5.4 Challenge&#10;- 시간을 재시작할 수 있는 타이머 버튼 생성 및 작동 구현">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screen/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screen/home_screen.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +105,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702625868464</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="[feat] pomodoro&#10;# 5.4 Challenge&#10;- 시간을 재시작할 수 있는 타이머 버튼 생성 및 작동 구현">
+      <created>1702629454753</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1702629454753</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -115,6 +120,7 @@
     <MESSAGE value="[feat] pomodoro&#10;# 5.0 User Interface" />
     <MESSAGE value="[feat] pomodoro&#10;# 5.1 Timer" />
     <MESSAGE value="[feat] pomodoro&#10;# 5.3 Date Format" />
-    <option name="LAST_COMMIT_MESSAGE" value="[feat] pomodoro&#10;# 5.3 Date Format" />
+    <MESSAGE value="[feat] pomodoro&#10;# 5.4 Challenge&#10;- 시간을 재시작할 수 있는 타이머 버튼 생성 및 작동 구현" />
+    <option name="LAST_COMMIT_MESSAGE" value="[feat] pomodoro&#10;# 5.4 Challenge&#10;- 시간을 재시작할 수 있는 타이머 버튼 생성 및 작동 구현" />
   </component>
 </project>
