@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webtoon/models/webtoon_detail_model.dart';
 import 'package:webtoon/models/webtoon_episode_model.dart';
 import 'package:webtoon/models/webtoon_model.dart';
@@ -17,13 +18,46 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   late Future<WebtoonDetailModel> webtoonDetail;
   late Future<List<WebtoonEpisodeModel>> episodes;
+  late SharedPreferences prefs;
+  bool isLiked = false;
+
+  Future initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    final likedToons = prefs.getStringList("likedToons");
+    if (likedToons != null) {
+      if (likedToons.contains(widget.webtoon.id)) {
+        setState(() {
+          isLiked = true;
+        });
+      }
+    } else {
+      await prefs.setStringList("likedToons", []);
+    }
+  }
+
+  onHeartTap() async {
+    final likedToons = prefs.getStringList("likedToons");
+    if (likedToons != null) {
+      if (isLiked) {
+        likedToons.remove(widget.webtoon.id);
+      } else {
+        likedToons.add(widget.webtoon.id);
+        await prefs.setStringList("likedToons", likedToons);
+      }
+      setState(() {
+        isLiked = !isLiked;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     webtoonDetail = ApiService.getToonById(widget.webtoon.id);
     episodes = ApiService.getLatestEpisodesById(widget.webtoon.id);
+    initPrefs();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +74,13 @@ class _DetailScreenState extends State<DetailScreen> {
         foregroundColor: Colors.green,
         backgroundColor: Colors.white,
         elevation: 2,
+        actions: [
+          IconButton(
+              onPressed: onHeartTap,
+              icon: Icon(isLiked
+                  ? Icons.favorite_outlined
+                  : Icons.favorite_outline_outlined))
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
