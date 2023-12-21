@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/screens/sign_up_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const TiktokApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class TiktokApp extends StatelessWidget {
+  const TiktokApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -16,12 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xFFE9435A),
       ),
-      home: Padding(
-        padding: const EdgeInsets.all(Sizes.size14),
-        child: Container(
-          child: Text("hihi!!!!!!!Good!"),
-        ),
-      ),
+      home: SignUpScreen(),
     );
   }
 }
