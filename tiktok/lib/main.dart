@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/authentication/sign_up_screen.dart';
 
@@ -17,6 +18,7 @@ class TiktokApp extends StatelessWidget {
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           centerTitle: true,
+          surfaceTintColor: Colors.white,
           titleTextStyle: TextStyle(
             fontSize: Sizes.size16 + Sizes.size2,
             fontWeight: FontWeight.w600,
@@ -29,6 +31,14 @@ class TiktokApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFFE9435A),
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('ko', ''), // Korean, no country code
+        // Locale('en', ''), // English, no country code
+      ],
       home: const SignUpScreen(),
     );
   }
