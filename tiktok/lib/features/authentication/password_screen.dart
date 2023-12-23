@@ -189,6 +189,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
               ),
               Gaps.v28,
               FormButton(
+                text: 'Next',
                 disabled: !_isPasswordValid(),
                 onTap: _onSubmit,
               ),

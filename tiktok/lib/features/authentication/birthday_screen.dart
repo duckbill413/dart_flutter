@@ -123,6 +123,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
               ),
               Gaps.v28,
               FormButton(
+                text: 'Next',
                 disabled: false,
                 onTap: _onSubmit,
               ),

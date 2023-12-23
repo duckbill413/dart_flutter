@@ -79,9 +79,10 @@ class _UsernameScreenState extends State<UsernameScreen> {
                 decoration: InputDecoration(
                   hintText: 'Username',
                   enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                    color: Colors.grey.shade400,
-                  )),
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.grey.shade400,
@@ -92,6 +93,7 @@ class _UsernameScreenState extends State<UsernameScreen> {
               ),
               Gaps.v16,
               FormButton(
+                text: 'Next',
                 disabled: _username.isEmpty,
                 onTap: _onNextTap,
               ),
