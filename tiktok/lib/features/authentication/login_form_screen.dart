@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/authentication/widgets/form_button.dart';
+import 'package:tiktok/features/onboarding/interests_screen.dart';
 
 class LoginFormScreen extends StatefulWidget {
   const LoginFormScreen({super.key});
@@ -18,7 +19,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
-        print(formData);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const InterestsScreen(),
+          ),
+        );
       }
     }
   }
@@ -30,7 +36,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         title: const Text('Log in'),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: Sizes.size36,
         ),
         child: Form(
@@ -54,6 +60,10 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   ),
                 ),
                 validator: (value) {
+                  // TODO: 이메일 유효성 검사
+                  if (value != null && value.isEmpty) {
+                    return "Please write your email";
+                  }
                   return null;
                 },
                 onSaved: (newValue) {
@@ -79,6 +89,10 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   ),
                 ),
                 validator: (value) {
+                  // TODO: Password 유효성 검사
+                  if (value != null && value.isEmpty) {
+                    return "Please write your password";
+                  }
                   return null;
                 },
                 onSaved: (newValue) {

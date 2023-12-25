@@ -112,6 +112,9 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                   ),
                 ),
                 cursorColor: Theme.of(context).primaryColor,
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
               ),
               Gaps.v10,
               const Text(
