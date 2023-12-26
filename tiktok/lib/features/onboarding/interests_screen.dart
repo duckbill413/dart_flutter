@@ -161,6 +161,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
           child: GestureDetector(
             onTap: _onNextTap,
             child: Container(
+              alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(
                 vertical: Sizes.size16,
               ),
