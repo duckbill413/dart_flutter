@@ -35,11 +35,12 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   }
 
   void _onSubmit() {
-    Navigator.push(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (context) => const InterestsScreen(),
       ),
+      (route) => false,
     );
   }
 

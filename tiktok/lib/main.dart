@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok/constants/sizes.dart';
-import 'package:tiktok/features/onboarding/interests_screen.dart';
+import 'package:tiktok/features/main_navigation/main_navigation_screen.dart';
 
 void main() {
   runApp(const TiktokApp());
@@ -39,7 +39,7 @@ class TiktokApp extends StatelessWidget {
         Locale('ko', ''), // Korean, no country code
         // Locale('en', ''), // English, no country code
       ],
-      home: const InterestsScreen(),
+      home: const MainNavigationScreen(),
       // home: const SignUpScreen(),
     );
   }
