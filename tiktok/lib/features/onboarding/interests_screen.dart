@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/onboarding/tutorial_screen.dart';
 import 'package:tiktok/features/onboarding/widgets/interest_button.dart';
 
 const interests = [
@@ -80,6 +81,15 @@ class _InterestsScreenState extends State<InterestsScreen> {
     super.dispose();
   }
 
+  void _onNextTap() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const TutorialScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,20 +158,23 @@ class _InterestsScreenState extends State<InterestsScreen> {
             right: Sizes.size24,
           ),
           // MEMO: Another option: CupertinoButton
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: Sizes.size16,
-            ),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-            ),
-            child: const Text(
-              'Next',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: Sizes.size16,
-                fontWeight: FontWeight.w500,
+          child: GestureDetector(
+            onTap: _onNextTap,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: Sizes.size16,
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              child: const Text(
+                'Next',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: Sizes.size16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
