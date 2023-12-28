@@ -38,45 +38,77 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        // type: BottomNavigationBarType.shifting,
-        // selectedItemColor: Theme.of(context).primaryColor,
-        currentIndex: _selectedIndex,
-        onTap: _onTap,
-        items: const [
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.house),
-            label: "Home",
-            tooltip: 'What are you',
-            backgroundColor: Colors.amber,
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: _onTap,
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        backgroundColor: Colors.grey.shade200,
+        destinations: const [
+          NavigationDestination(
+            icon: FaIcon(
+              FontAwesomeIcons.house,
+              color: Colors.teal,
+            ),
+            label: 'House',
           ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: "Search",
-            tooltip: 'What are you',
-            backgroundColor: Colors.blue,
+          NavigationDestination(
+            icon: FaIcon(
+              FontAwesomeIcons.magnifyingGlass,
+              color: Colors.amber,
+            ),
+            label: 'House',
           ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.house),
-            label: "Home",
-            tooltip: 'What are you',
-            backgroundColor: Colors.pink,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: "Search",
-            tooltip: 'What are you',
-            backgroundColor: Colors.lightGreen,
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.house),
-            label: "Home",
-            tooltip: 'What are you',
-            backgroundColor: Colors.deepPurpleAccent,
+          NavigationDestination(
+            icon: FaIcon(
+              FontAwesomeIcons.apple,
+              color: Colors.purple,
+            ),
+            label: 'House',
           ),
         ],
       ),
-      body: _screens[_selectedIndex],
+    );
+  }
+
+  BottomNavigationBar BottomNavigationBarVer() {
+    return BottomNavigationBar(
+      // type: BottomNavigationBarType.shifting,
+      // selectedItemColor: Theme.of(context).primaryColor,
+      currentIndex: _selectedIndex,
+      onTap: _onTap,
+      items: const [
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.house),
+          label: "Home",
+          tooltip: 'What are you',
+          backgroundColor: Colors.amber,
+        ),
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
+          label: "Search",
+          tooltip: 'What are you',
+          backgroundColor: Colors.blue,
+        ),
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.house),
+          label: "Home",
+          tooltip: 'What are you',
+          backgroundColor: Colors.pink,
+        ),
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
+          label: "Search",
+          tooltip: 'What are you',
+          backgroundColor: Colors.lightGreen,
+        ),
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.house),
+          label: "Home",
+          tooltip: 'What are you',
+          backgroundColor: Colors.deepPurpleAccent,
+        ),
+      ],
     );
   }
 }
