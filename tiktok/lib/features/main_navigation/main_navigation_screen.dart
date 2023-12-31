@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/main_navigation/stf_screen.dart';
 import 'package:tiktok/features/main_navigation/widgets/nav_tab.dart';
+import 'package:tiktok/features/main_navigation/widgets/post_video_button.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -19,6 +21,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  /// 다양한 BottomNavigationBar
+  void _onPostVideoButtonTap() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: const Text('Record Video'),
+          ),
+        ),
+        fullscreenDialog: true,
+      ),
+    );
   }
 
   @override
@@ -50,6 +66,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               NavigationTab(
                 text: 'Home',
@@ -65,6 +82,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 selectedIcon: FontAwesomeIcons.solidCompass,
                 onTap: () => _onTap(1),
               ),
+              Gaps.h24,
+              GestureDetector(
+                child: PostVideoButton(onTap: _onPostVideoButtonTap),
+              ),
+              Gaps.h24,
               NavigationTab(
                 text: 'Inbox',
                 isSelected: _selectedIndex == 3,
@@ -86,7 +108,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     );
   }
 
-  /// 다양한 BottomNavigationBar
   final _screens = [
     StfScreen(key: GlobalKey()),
     StfScreen(key: GlobalKey()),
