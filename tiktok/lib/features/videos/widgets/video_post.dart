@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/videos/widgets/video_button.dart';
+import 'package:tiktok/features/videos/widgets/video_tags.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -33,6 +36,14 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
   final Duration _animationDuration = const Duration(milliseconds: 200);
   bool _isPaused = false;
+  List<String> _tags = [
+    'sexy',
+    'cute',
+    'christmas',
+    'santa',
+    'merry merry',
+    'love',
+  ];
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -45,11 +56,10 @@ class _VideoPostState extends State<VideoPost>
 
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
-    // _videoPlayerController.setLooping(true); // for video loop
+    await _videoPlayerController.setLooping(true); // for video loop
     // _videoPlayerController.play(); // play start when initialized
-    setState(() {});
-
     _videoPlayerController.addListener(_onVideoChange);
+    setState(() {});
   }
 
   @override
@@ -133,7 +143,65 @@ class _VideoPostState extends State<VideoPost>
                 ),
               ),
             ),
-          )
+          ),
+          Positioned(
+            bottom: Sizes.size20,
+            left: Sizes.size10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '@duckbill',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Sizes.size20,
+                  ),
+                ),
+                Gaps.v10,
+                const Text(
+                  'This is my present for you!!',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: Sizes.size16,
+                  ),
+                ),
+                Gaps.v3,
+                VideoTags(tags: _tags),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 10,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.black87,
+                  foregroundColor: Colors.white,
+                  foregroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/86183856?v=4'),
+                  child: Text('오리너굴'),
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: '2.9M',
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidComment,
+                  text: '33K',
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.share,
+                  text: '2.9M',
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
