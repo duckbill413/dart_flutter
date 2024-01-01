@@ -20,6 +20,14 @@ class VideoPost extends StatefulWidget {
 
 class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
+  /// INFO: Mixin을 사용하면 해당 클래스의 모든 파라미터와 변수를 사용할 수 있게 된다.
+  /// SingleTickerProviderStateMixin의 Ticker(시계)은 current tree가 활성화된 동안만 tick 하는 단일 ticker을 제공
+  /// 즉, 위젯이 화면에 보일 때만 Ticker를 제공한다는 의미이다.
+  /// 에니메이션에 callback을 제공하는 것이 Ticker이다. 즉, 매 프레임마다.
+  /// AnimationController의 vsync는 애니메이션 재생을 돕고 위젯 tree에 위젯이 있을 때만 Ticker을 유지한다.
+  /// 1. 애니메이션 재생에는 Ticker가 필요하다. 매 프레임마다 재생되어야 하므로
+  /// 2. 하지만 Ticker이 계속 작동하면 리소스를 낭비하게 되므로 SingleTickerProviderStateMixin을 이용해서 위젯 tree에 있을때만 Ticker을 동작
+  /// 3. 만약 여러개의 AnimationController을 사용한다면 TickerProviderStateMixin을 이용할 수 있다.
   final VideoPlayerController _videoPlayerController =
       VideoPlayerController.asset("assets/videos/tiktok_video_001.mp4");
   late final AnimationController _animationController;
