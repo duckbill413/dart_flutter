@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/videos/widgets/video_post.dart';
 
 class VideoTimelineScreen extends StatefulWidget {
@@ -12,7 +13,6 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   final PageController _pageController = PageController();
   final Duration _scrollDuration = const Duration(milliseconds: 250);
   final Curve _scrollCurve = Curves.linear;
-  late int _currentPageIndex = _pageController.page?.round() ?? 0;
   late int _itemCount = 4;
 
   void _onPageChanged(int page) {
@@ -42,18 +42,29 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
     super.dispose();
   }
 
+  Future<void> _onRefresh() {
+    return Future.delayed(
+      const Duration(seconds: 5),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      controller: _pageController,
-      // MEMO: builder을 사용하면 필요할 때 화면을 렌더링하게 된다. (성능up)
-      pageSnapping: true,
-      scrollDirection: Axis.vertical,
-      itemCount: _itemCount,
-      onPageChanged: _onPageChanged,
-      itemBuilder: (context, index) => VideoPost(
-        index: index,
-        onVideoFinished: _onVideoFinished,
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      displacement: Sizes.size52,
+      edgeOffset: Sizes.size20,
+      child: PageView.builder(
+        controller: _pageController,
+        // MEMO: builder을 사용하면 필요할 때 화면을 렌더링하게 된다. (성능up)
+        pageSnapping: true,
+        scrollDirection: Axis.vertical,
+        itemCount: _itemCount,
+        onPageChanged: _onPageChanged,
+        itemBuilder: (context, index) => VideoPost(
+          index: index,
+          onVideoFinished: _onVideoFinished,
+        ),
       ),
     );
   }
