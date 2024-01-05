@@ -39,7 +39,7 @@ class TiktokApp extends StatelessWidget {
         Locale('ko', ''), // Korean, no country code
         // Locale('en', ''), // English, no country code
       ],
-      home: MainNavigationScreen(),
+      home: const MainNavigationScreen(),
       // home: const SignUpScreen(),
     );
   }

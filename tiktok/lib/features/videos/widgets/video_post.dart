@@ -33,17 +33,17 @@ class _VideoPostState extends State<VideoPost>
   /// 2. 하지만 Ticker이 계속 작동하면 리소스를 낭비하게 되므로 SingleTickerProviderStateMixin을 이용해서 위젯 tree에 있을때만 Ticker을 동작
   /// 3. 만약 여러개의 AnimationController을 사용한다면 TickerProviderStateMixin을 이용할 수 있다.
   final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset("assets/videos/tiktok_video_001.mp4");
+      VideoPlayerController.asset("assets/videos/video1.mp4");
   late final AnimationController _animationController;
   final Duration _animationDuration = const Duration(milliseconds: 200);
   bool _isPaused = false;
-  List<String> _tags = [
-    'sexy',
+  final List<String> _tags = [
     'cute',
     'christmas',
     'santa',
     'merry merry',
     'love',
+    'culture'
   ];
 
   void _onVideoChange() {
@@ -201,7 +201,10 @@ class _VideoPostState extends State<VideoPost>
                   foregroundColor: Colors.white,
                   foregroundImage: NetworkImage(
                       'https://avatars.githubusercontent.com/u/86183856?v=4'),
-                  child: Text('오리너굴'),
+                  child: Text(
+                    '오리너굴',
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 Gaps.v24,
                 const VideoButton(

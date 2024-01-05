@@ -15,6 +15,7 @@ class VideoTags extends StatefulWidget {
 
 class _VideoTagsState extends State<VideoTags> {
   bool _seeMoreCheck = false;
+  final maximumTagsLength = 20;
 
   void _onSeeMoreTap() {
     setState(() {
@@ -22,11 +23,26 @@ class _VideoTagsState extends State<VideoTags> {
     });
   }
 
+  int _defaultSeeCount() {
+    int count = 0;
+    int length = 0;
+    for (var tag in widget._tags) {
+      length += tag.length;
+      if (length > maximumTagsLength) break;
+      count += 1;
+    }
+    return count;
+  }
+
   _onVideoTagTap(String tag) {
     // TODO: tag를 누르면 해당 태그를 검색하는 화면으로 이동 및 검색
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const Scaffold(),
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: Text('$tag 태그검색페이지'),
+          ),
+        ),
       ),
     );
   }
@@ -40,7 +56,7 @@ class _VideoTagsState extends State<VideoTags> {
         spacing: Sizes.size3,
         runSpacing: Sizes.size1,
         children: [
-          for (int i = 0; i < (_seeMoreCheck ? widget._tags.length : 2); i++)
+          for (int i = 0; i < (_seeMoreCheck ? widget._tags.length : _defaultSeeCount()); i++)
             GestureDetector(
               onTap: () => _onVideoTagTap(widget._tags[i]),
               child: Text(
@@ -55,14 +71,14 @@ class _VideoTagsState extends State<VideoTags> {
           GestureDetector(
             onTap: _onSeeMoreTap,
             child: Text(
-              _seeMoreCheck ? 'Close' : '... See more',
+              _seeMoreCheck ? '... Close' : '... See more',
               style: const TextStyle(
                 fontSize: Sizes.size16,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          )
+          ),
         ],
       ),
     );
