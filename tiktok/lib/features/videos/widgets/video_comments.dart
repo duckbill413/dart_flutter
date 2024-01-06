@@ -19,7 +19,7 @@ class _VideoCommentState extends State<VideoComment> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Container(
-      height: deviceSize.height * 0.7,
+      height: deviceSize.height * 0.75,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Sizes.size14),
@@ -103,43 +103,36 @@ class _VideoCommentState extends State<VideoComment> {
               child: BottomAppBar(
                 color: Colors.white,
                 surfaceTintColor: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: Sizes.size10,
-                    top: Sizes.size5,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        radius: 18,
-                        backgroundColor: Colors.grey.shade500,
-                        foregroundColor: Colors.white,
-                        foregroundImage: const NetworkImage(
-                            'https://avatars.githubusercontent.com/u/86183856?v=4'),
-                        child: const Text('오리너굴'),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 18,
+                      backgroundColor: Colors.grey.shade500,
+                      foregroundColor: Colors.white,
+                      foregroundImage: const NetworkImage(
+                          'https://avatars.githubusercontent.com/u/86183856?v=4'),
+                      child: const Text('오리너굴'),
+                    ),
+                    Gaps.h10,
+                    Expanded(
+                      child: TextField(
+                        cursorColor: Theme.of(context).primaryColor,
+                        decoration: InputDecoration(
+                            hintText: 'Write a comment...',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(Sizes.size12),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: Sizes.size12,
+                              horizontal: Sizes.size10,
+                            )),
                       ),
-                      Gaps.h10,
-                      Expanded(
-                        child: TextField(
-                          cursorColor: Theme.of(context).primaryColor,
-                          decoration: InputDecoration(
-                              hintText: 'Write a comment...',
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(Sizes.size12),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
-                              contentPadding: const EdgeInsets.symmetric(
-                                vertical: Sizes.size12,
-                                horizontal: Sizes.size10,
-                              )),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ),
             )
