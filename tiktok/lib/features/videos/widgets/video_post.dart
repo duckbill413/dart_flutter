@@ -33,7 +33,7 @@ class _VideoPostState extends State<VideoPost>
   /// 2. 하지만 Ticker이 계속 작동하면 리소스를 낭비하게 되므로 SingleTickerProviderStateMixin을 이용해서 위젯 tree에 있을때만 Ticker을 동작
   /// 3. 만약 여러개의 AnimationController을 사용한다면 TickerProviderStateMixin을 이용할 수 있다.
   final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset("assets/videos/video1.mp4");
+      VideoPlayerController.asset("assets/videos/tiktok_video_001.mp4");
   late final AnimationController _animationController;
   final Duration _animationDuration = const Duration(milliseconds: 200);
   bool _isPaused = false;
@@ -114,6 +114,7 @@ class _VideoPostState extends State<VideoPost>
     await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (context) => VideoComment(),
     );
 
