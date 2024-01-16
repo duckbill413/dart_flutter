@@ -62,10 +62,11 @@ class _VideoCommentState extends State<VideoComment> {
                   controller: _scrollController,
                   padding: const EdgeInsets.only(
                     top: Sizes.size10,
+                    bottom: Sizes.size96 + Sizes.size20,
                     left: Sizes.size16,
                     right: Sizes.size16,
-                    bottom: Sizes.size96 + Sizes.size20,
                   ),
+                  separatorBuilder: (context, index) => Gaps.v20,
                   itemCount: 10,
                   itemBuilder: (context, index) => Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +118,6 @@ class _VideoCommentState extends State<VideoComment> {
                       ),
                     ],
                   ),
-                  separatorBuilder: (context, index) => Gaps.v12,
                 ),
               ),
               Positioned(
@@ -127,7 +127,7 @@ class _VideoCommentState extends State<VideoComment> {
                   color: Colors.white,
                   surfaceTintColor: Colors.white,
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CircleAvatar(
                         radius: 18,
