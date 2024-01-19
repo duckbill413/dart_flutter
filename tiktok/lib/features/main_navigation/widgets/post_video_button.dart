@@ -4,10 +4,12 @@ import 'package:tiktok/constants/sizes.dart';
 
 class PostVideoButton extends StatefulWidget {
   final Function onTap;
+  final bool inverted;
 
   const PostVideoButton({
     Key? key,
     required this.onTap,
+    required this.inverted,
   }) : super(key: key);
 
   @override
@@ -95,13 +97,13 @@ class _PostVideoButtonState extends State<PostVideoButton>
                 borderRadius: BorderRadius.circular(
                   Sizes.size6,
                 ),
-                color: Colors.white,
+                color: !widget.inverted ? Colors.white : Colors.black,
               ),
-              child: const Center(
+              child: Center(
                 child: FaIcon(
                   FontAwesomeIcons.plus,
                   size: 18,
-                  color: Colors.black,
+                  color: !widget.inverted ? Colors.black : Colors.white,
                 ),
               ),
             )
