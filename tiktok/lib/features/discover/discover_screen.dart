@@ -56,7 +56,7 @@ class DiscoverScreen extends StatelessWidget {
               Center(
                 child: Text(
                   tab,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: Sizes.size28,
                   ),
                 ),
