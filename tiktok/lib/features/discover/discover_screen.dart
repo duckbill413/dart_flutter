@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/constants/gaps.dart';
@@ -13,23 +12,57 @@ class DiscoverScreen extends StatefulWidget {
   State<DiscoverScreen> createState() => _DiscoverScreenState();
 }
 
-class _DiscoverScreenState extends State<DiscoverScreen> {
-  final TextEditingController _textEditingController =
-      TextEditingController(text: "Initial Text");
+class _DiscoverScreenState extends State<DiscoverScreen>
+    with SingleTickerProviderStateMixin {
+  final TextEditingController _textEditingController = TextEditingController();
+  late TabController _tabController;
 
-  void _onSearchChanged(String value) {
-    print(value);
+  String _searchWord = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController.addListener(() {
+      setState(() {
+        _searchWord = _textEditingController.text;
+      });
+    });
+
+    _tabController = TabController(
+      length: tabs.length,
+      vsync: this,
+    );
+
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        setState(() {
+          _onStopSearch();
+        });
+      }
+    });
   }
 
-  void _onSearchSubmitted(String value) {
-    print("Submitted $value");
+  void _onSearchSubmitted() {
+    if (_searchWord != "") {
+      print(_searchWord); // 검색어 전달자 사전작업
+    }
+  }
+
+  void _onClearTap() {
+    _textEditingController.clear();
+  }
+
+  void _onStopSearch() {
+    FocusScope.of(context).unfocus();
   }
 
   @override
   void dispose() {
+    _tabController.dispose();
     _textEditingController.dispose();
+
     super.dispose();
-  }
+  } // Controller 를 사용시는 반드시 dispose 를 하여야 한다 (resource 문제)
 
   @override
   Widget build(BuildContext context) {
@@ -38,53 +71,105 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: CupertinoSearchTextField(
+          elevation: 1,
+          title: TextField(
+            textInputAction: TextInputAction.search,
+            onEditingComplete: _onSearchSubmitted,
             controller: _textEditingController,
-            onChanged: _onSearchChanged,
-            onSubmitted: _onSearchSubmitted,
+            decoration: InputDecoration(
+              hintText: "Search for ...",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Sizes.size8),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade200,
+              contentPadding: EdgeInsets.zero,
+              icon: GestureDetector(
+                  onTap: _onStopSearch,
+                  child: const FaIcon(FontAwesomeIcons.arrowLeft)),
+              prefixIcon: const Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: Sizes.size16),
+                    child: FaIcon(
+                      FontAwesomeIcons.magnifyingGlass,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (_searchWord.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(right: Sizes.size10),
+                      child: GestureDetector(
+                        onTap: _onClearTap,
+                        child: FaIcon(
+                          FontAwesomeIcons.solidCircleXmark,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const FaIcon(FontAwesomeIcons.sliders),
+              tooltip: "Under Construction",
+            ),
+          ],
           bottom: TabBar(
+            controller: _tabController,
+            padding: const EdgeInsets.symmetric(horizontal: Sizes.size16),
             splashFactory: NoSplash.splashFactory,
-            padding: const EdgeInsets.symmetric(
-              horizontal: Sizes.size16,
-            ),
+            // 메터리얼 디자인 효과 ("스플래쉬 효과" 라고 함),
             isScrollable: true,
-            unselectedLabelColor: Colors.grey.shade500,
             labelColor: Colors.black,
-            indicatorColor: Colors.black,
+            unselectedLabelColor: Colors.grey.shade500,
             labelStyle: const TextStyle(
-              fontWeight: FontWeight.w600,
               fontSize: Sizes.size16,
+              fontWeight: FontWeight.bold,
             ),
+            indicatorColor: Colors.black,
+            indicatorWeight: 3,
             tabs: [
               for (var tab in tabs)
                 Tab(
                   text: tab,
-                )
+                ),
             ],
           ),
         ),
         body: TabBarView(
+          controller: _tabController,
           children: [
             GridView.builder(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              padding: const EdgeInsets.all(
-                Sizes.size6,
-              ),
               itemCount: 20,
+              padding: const EdgeInsets.all(Sizes.size6),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 9 / 20,
-                crossAxisCount: 2,
-                crossAxisSpacing: Sizes.size8,
-                mainAxisSpacing: Sizes.size10,
-              ),
-              itemBuilder: (context, index) =>
-                  // Image.asset("assets/images/map.gif"),
-                  Column(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: Sizes.size10,
+                  mainAxisSpacing: Sizes.size10,
+                  childAspectRatio: 9 / 20),
+              itemBuilder: (context, index) => Column(
                 children: [
                   Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Sizes.size4),
+                    ),
                     child: AspectRatio(
-                      aspectRatio: 9 / 16,
+                      aspectRatio: 9 / 15,
                       child: FadeInImage.assetNetwork(
                         fit: BoxFit.cover,
                         placeholder: "assets/images/map.gif",
@@ -92,34 +177,29 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                             "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&1480&q=80",
                       ),
                     ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Sizes.size4),
-                    ),
-                    clipBehavior: Clip.hardEdge,
                   ),
-                  Gaps.v8,
+                  Gaps.v10,
                   const Text(
                     "This is a very long caption for my tiktok that im upload just now currently.",
-                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     style: TextStyle(
                       fontSize: Sizes.size16,
                       fontWeight: FontWeight.bold,
-                      height: 1.0,
                     ),
                   ),
-                  Gaps.v5,
+                  Gaps.v8,
                   DefaultTextStyle(
                     style: TextStyle(
                       color: Colors.grey.shade600,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.bold,
                     ),
                     child: Row(
                       children: [
                         const CircleAvatar(
+                          radius: 12,
                           backgroundImage: NetworkImage(
                               "https://avatars.githubusercontent.com/u/86183856?v=4"),
-                          radius: 16,
                         ),
                         Gaps.h4,
                         const Expanded(
@@ -135,10 +215,10 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                           size: Sizes.size16,
                           color: Colors.grey.shade600,
                         ),
-                        Gaps.h2,
+                        Gaps.h5,
                         const Text(
                           "2.5M",
-                        )
+                        ),
                       ],
                     ),
                   )
@@ -149,9 +229,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               Center(
                 child: Text(
                   tab,
-                  style: const TextStyle(
-                    fontSize: Sizes.size28,
-                  ),
+                  style: const TextStyle(fontSize: Sizes.size36),
                 ),
               )
           ],
