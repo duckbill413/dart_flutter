@@ -16,23 +16,26 @@ class TiktokApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tiktok',
       theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            centerTitle: true,
-            surfaceTintColor: Colors.white,
-            titleTextStyle: TextStyle(
-              fontSize: Sizes.size16 + Sizes.size2,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.white,
-            elevation: 0,
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+          surfaceTintColor: Colors.white,
+          titleTextStyle: TextStyle(
+            fontSize: Sizes.size16 + Sizes.size2,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
           ),
-          scaffoldBackgroundColor: Colors.white,
-          primaryColor: const Color(0xFFE9435A),
-          textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: Color(0xFFE9435A),
-          )),
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
+        scaffoldBackgroundColor: Colors.white,
+        primaryColor: const Color(0xFFE9435A),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Color(0xFFE9435A),
+        ),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+      ),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
