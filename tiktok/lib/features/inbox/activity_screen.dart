@@ -13,6 +13,32 @@ class ActivityScreen extends StatefulWidget {
 class _ActivityScreenState extends State<ActivityScreen>
     with SingleTickerProviderStateMixin {
   final List<String> _notifications = List.generate(20, (index) => '${index}h');
+  final List<Map<String, dynamic>> _tabs = [
+    {
+      "title": "All activity",
+      "icon": FontAwesomeIcons.solidMessage,
+    },
+    {
+      "title": "Likes",
+      "icon": FontAwesomeIcons.solidHeart,
+    },
+    {
+      "title": "Comments",
+      "icon": FontAwesomeIcons.solidComments,
+    },
+    {
+      "title": "Mentions",
+      "icon": FontAwesomeIcons.at,
+    },
+    {
+      "title": "Followers",
+      "icon": FontAwesomeIcons.solidUser,
+    },
+    {
+      "title": "From TikTok",
+      "icon": FontAwesomeIcons.tiktok,
+    }
+  ];
 
   // late 인 경우 아래와 같은 방식으로도 this를 참조하여 초기화 가능
   late final AnimationController _animationController = AnimationController(
@@ -75,104 +101,145 @@ class _ActivityScreenState extends State<ActivityScreen>
           ),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Sizes.size20,
-        ),
+      body: Stack(
         children: [
-          Gaps.v14,
-          Text(
-            'New',
-            style: TextStyle(
-              fontSize: Sizes.size14,
-              color: Colors.grey.shade500,
+          ListView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Sizes.size20,
             ),
+            children: [
+              Gaps.v14,
+              Text(
+                'New',
+                style: TextStyle(
+                  fontSize: Sizes.size14,
+                  color: Colors.grey.shade500,
+                ),
+              ),
+              Gaps.v14,
+              for (var notification in _notifications)
+                Dismissible(
+                  key: Key(notification),
+                  onDismissed: (direction) => _onDismissed(notification),
+                  background: Container(
+                    alignment: Alignment.centerLeft,
+                    color: Colors.green,
+                    child: const Padding(
+                      padding: EdgeInsets.only(
+                        left: Sizes.size10,
+                      ),
+                      child: FaIcon(
+                        FontAwesomeIcons.checkDouble,
+                        color: Colors.white,
+                        size: Sizes.size32,
+                      ),
+                    ),
+                  ),
+                  secondaryBackground: Container(
+                    alignment: Alignment.centerRight,
+                    color: Colors.red,
+                    child: const Padding(
+                      padding: EdgeInsets.only(
+                        left: Sizes.size10,
+                      ),
+                      child: FaIcon(
+                        FontAwesomeIcons.trashCan,
+                        color: Colors.white,
+                        size: Sizes.size32,
+                      ),
+                    ),
+                  ),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    // 위젯의 기본 패딩을 삭제
+                    minVerticalPadding: Sizes.size16,
+                    leading: Container(
+                      width: Sizes.size52,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.grey.shade400,
+                            width: Sizes.size1,
+                          )),
+                      child: const Center(
+                        child: FaIcon(
+                          FontAwesomeIcons.bell,
+                          color: Colors.black,
+                          size: Sizes.size24,
+                        ),
+                      ),
+                    ),
+                    title: RichText(
+                      text: TextSpan(
+                        text: "Account updates:",
+                        style: const TextStyle(
+                          fontSize: Sizes.size16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                        children: [
+                          const TextSpan(
+                            text: ' Upload longer videos',
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' $notification',
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey.shade500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    trailing: const FaIcon(
+                      FontAwesomeIcons.chevronRight,
+                      size: Sizes.size16,
+                    ),
+                  ),
+                )
+            ],
           ),
-          Gaps.v14,
-          for (var notification in _notifications)
-            Dismissible(
-              key: Key(notification),
-              onDismissed: (direction) => _onDismissed(notification),
-              background: Container(
-                alignment: Alignment.centerLeft,
-                color: Colors.green,
-                child: const Padding(
-                  padding: EdgeInsets.only(
-                    left: Sizes.size10,
-                  ),
-                  child: FaIcon(
-                    FontAwesomeIcons.checkDouble,
-                    color: Colors.white,
-                    size: Sizes.size32,
-                  ),
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(
+                  Sizes.size5,
+                ),
+                bottomRight: Radius.circular(
+                  Sizes.size5,
                 ),
               ),
-              secondaryBackground: Container(
-                alignment: Alignment.centerRight,
-                color: Colors.red,
-                child: const Padding(
-                  padding: EdgeInsets.only(
-                    left: Sizes.size10,
-                  ),
-                  child: FaIcon(
-                    FontAwesomeIcons.trashCan,
-                    color: Colors.white,
-                    size: Sizes.size32,
-                  ),
-                ),
-              ),
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                // 위젯의 기본 패딩을 삭제
-                minVerticalPadding: Sizes.size16,
-                leading: Container(
-                  width: Sizes.size52,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.grey.shade400,
-                        width: Sizes.size1,
-                      )),
-                  child: const Center(
-                    child: FaIcon(
-                      FontAwesomeIcons.bell,
-                      color: Colors.black,
-                      size: Sizes.size24,
-                    ),
-                  ),
-                ),
-                title: RichText(
-                  text: TextSpan(
-                    text: "Account updates:",
-                    style: const TextStyle(
-                      fontSize: Sizes.size16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                    children: [
-                      const TextSpan(
-                        text: ' Upload longer videos',
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (var tab in _tabs)
+                  ListTile(
+                    title: Row(
+                      children: [
+                        FaIcon(
+                          tab['icon'],
+                          color: Colors.black,
+                          size: Sizes.size16,
                         ),
-                      ),
-                      TextSpan(
-                        text: ' $notification',
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          color: Colors.grey.shade500,
+                        Gaps.h20,
+                        Text(
+                          tab['title'],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                trailing: const FaIcon(
-                  FontAwesomeIcons.chevronRight,
-                  size: Sizes.size16,
-                ),
-              ),
-            )
+                      ],
+                    ),
+                  )
+              ],
+            ),
+          )
         ],
       ),
     );
