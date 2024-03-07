@@ -52,9 +52,14 @@ class _ActivityScreenState extends State<ActivityScreen>
   /// 2. Animation Builder 를 작성
   /// 새로운 방법
   /// Animation과 RotationTransition 위젯의 사용
-  late final Animation<double> _animation = Tween(
+  late final Animation<double> _arrowAnimation = Tween(
     begin: 0.0,
     end: 0.5,
+  ).animate(_animationController);
+
+  late final Animation<Offset> _panelAnimation = Tween(
+    begin: const Offset(0, -1), // 패널을 50% 위로 올린것 이라고 보면 된다.
+    end: Offset.zero,
   ).animate(_animationController);
 
   // Stateful Widget에서 key에 해당하는 값을 삭제하여 화면 렌더링
@@ -91,7 +96,7 @@ class _ActivityScreenState extends State<ActivityScreen>
               ),
               Gaps.h2,
               RotationTransition(
-                turns: _animation,
+                turns: _arrowAnimation,
                 child: const FaIcon(
                   FontAwesomeIcons.chevronDown,
                   size: Sizes.size14,
@@ -203,41 +208,44 @@ class _ActivityScreenState extends State<ActivityScreen>
                 )
             ],
           ),
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(
-                  Sizes.size5,
-                ),
-                bottomRight: Radius.circular(
-                  Sizes.size5,
+          SlideTransition(
+            position: _panelAnimation,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(
+                    Sizes.size5,
+                  ),
+                  bottomRight: Radius.circular(
+                    Sizes.size5,
+                  ),
                 ),
               ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (var tab in _tabs)
-                  ListTile(
-                    title: Row(
-                      children: [
-                        FaIcon(
-                          tab['icon'],
-                          color: Colors.black,
-                          size: Sizes.size16,
-                        ),
-                        Gaps.h20,
-                        Text(
-                          tab['title'],
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (var tab in _tabs)
+                    ListTile(
+                      title: Row(
+                        children: [
+                          FaIcon(
+                            tab['icon'],
+                            color: Colors.black,
+                            size: Sizes.size16,
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-              ],
+                          Gaps.h20,
+                          Text(
+                            tab['title'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                ],
+              ),
             ),
           )
         ],
