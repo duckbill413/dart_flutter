@@ -13,6 +13,7 @@ class ActivityScreen extends StatefulWidget {
 class _ActivityScreenState extends State<ActivityScreen>
     with SingleTickerProviderStateMixin {
   final List<String> _notifications = List.generate(20, (index) => '${index}h');
+  bool _showBarrier = false;
   final List<Map<String, dynamic>> _tabs = [
     {
       "title": "All activity",
@@ -62,15 +63,23 @@ class _ActivityScreenState extends State<ActivityScreen>
     end: Offset.zero,
   ).animate(_animationController);
 
+  late final Animation<Color?> _barrierAnimation = ColorTween(
+    begin: Colors.transparent,
+    end: Colors.black38,
+  ).animate(_animationController);
+
   // Stateful Widget에서 key에 해당하는 값을 삭제하여 화면 렌더링
 
-  void _onTitleTap() {
+  void _toggleAnimations() async {
     // 한번 클릭(forward)된 이후에는 다시 실행되지 않는다.
     if (_animationController.isCompleted) {
-      _animationController.reverse();
+      await _animationController.reverse(); // Future은 애니메이션이 완전이 종료되고 반환됨
     } else {
       _animationController.forward(); // 애니메이션 실행 -> All activity title의 화살표가 회전
     }
+    setState(() {
+      _showBarrier = !_showBarrier;
+    });
   }
 
   void _onDismissed(String notification) {
@@ -83,7 +92,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _onTitleTap,
+          onTap: _toggleAnimations,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -208,6 +217,13 @@ class _ActivityScreenState extends State<ActivityScreen>
                 )
             ],
           ),
+          if (_showBarrier)
+            AnimatedModalBarrier(
+              color: _barrierAnimation,
+              dismissible:
+                  true, // MEMO: dismissible을 활성화한 상태로 영역을 클릭하면 onDismiss 함수가 실행
+              onDismiss: _toggleAnimations,
+            ),
           SlideTransition(
             position: _panelAnimation,
             child: Container(
@@ -247,7 +263,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
