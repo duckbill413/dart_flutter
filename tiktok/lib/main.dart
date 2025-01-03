@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok/constants/sizes.dart';
-import 'package:tiktok/features/authentication/sign_up_screen.dart';
+import 'package:tiktok/onboarding/interests_screen.dart';
 
 void main() {
   runApp(const TiktokApp());
@@ -29,7 +29,7 @@ class TiktokApp extends StatelessWidget {
         ),
         primaryColor: const Color(0xFFE9435A),
       ),
-      home: SignUpScreen(),
+      home: InterestsScreen(),
     );
   }
 }
