@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/onboarding/tutorial_screen.dart';
 import 'package:tiktok/onboarding/widgets/interest_button.dart';
 
 const interests = [
@@ -68,6 +69,14 @@ class _InterestsScreenState extends State<InterestsScreen> {
         _showTitle = false;
       });
     }
+  }
+
+  void _onNextTap() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const TutorialScreen(),
+      ),
+    );
   }
 
   @override
@@ -168,7 +177,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
           // MEMO 종료
           // MEMO CupertinoButton 을 사용하여 TextButton 을 대체
           child: CupertinoButton(
-            onPressed: () {},
+            onPressed: _onNextTap,
             color: Theme.of(context).primaryColor,
             child: Text(
               "Next",
