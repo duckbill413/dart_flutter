@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:tiktok/constants/sizes.dart';
+
+class StfScreen extends StatefulWidget {
+  const StfScreen({super.key});
+
+  @override
+  State<StfScreen> createState() => _StfScreenState();
+}
+
+class _StfScreenState extends State<StfScreen> {
+  int _clicks = 0;
+
+  void _increase() {
+    setState(() {
+      _clicks += 1;
+    });
+  }
+
+  void _decrease() {
+    setState(() {
+      _clicks -= 1;
+    });
+  }
+
+  @override
+  void dispose() {
+    print(_clicks);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "$_clicks",
+          style: TextStyle(fontSize: Sizes.size36),
+        ),
+        TextButton(
+            onPressed: _increase,
+            child: Text(
+              '+',
+              style: TextStyle(fontSize: Sizes.size24),
+            )),
+        TextButton(
+          onPressed: _decrease,
+          child: Text(
+            '-',
+            style: TextStyle(
+              fontSize: Sizes.size24,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
