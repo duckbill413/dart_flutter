@@ -39,20 +39,26 @@ class _StfScreenState extends State<StfScreen> {
             "$_clicks",
             style: TextStyle(fontSize: Sizes.size36),
           ),
-          TextButton(
-              onPressed: _increase,
-              child: Text(
-                '+',
-                style: TextStyle(fontSize: Sizes.size24),
-              )),
-          TextButton(
-            onPressed: _decrease,
-            child: Text(
-              '-',
-              style: TextStyle(
-                fontSize: Sizes.size24,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: _increase,
+                child: Text(
+                  '+',
+                  style: TextStyle(fontSize: Sizes.size24),
+                ),
               ),
-            ),
+              TextButton(
+                onPressed: _decrease,
+                child: Text(
+                  '-',
+                  style: TextStyle(
+                    fontSize: Sizes.size24,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
