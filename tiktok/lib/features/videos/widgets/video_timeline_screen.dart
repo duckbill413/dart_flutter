@@ -8,6 +8,8 @@ class VideoTimelineScreen extends StatefulWidget {
 }
 
 class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
+  final PageController _pageController = PageController();
+
   List<Color> colors = [
     Colors.blue,
     Colors.red,
@@ -16,7 +18,13 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   ];
 
   void _onPageChanged(int page) {
-    print(page);
+    _pageController.animateToPage(
+      page,
+      duration: Duration(
+        milliseconds: 150,
+      ),
+      curve: Curves.linear,
+    );
     if (page == colors.length - 1) {
       colors.addAll([
         Colors.blue,
@@ -31,6 +39,7 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
+      controller: _pageController,
       scrollDirection: Axis.vertical,
       itemCount: colors.length,
       onPageChanged: _onPageChanged,
