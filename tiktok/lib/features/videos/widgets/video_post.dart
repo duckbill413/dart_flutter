@@ -18,11 +18,26 @@ class VideoPost extends StatefulWidget {
   State<VideoPost> createState() => _VieState();
 }
 
+/*
+SingleTickerProviderMixin 은 Flutter에서 애니메이션을 다룰 때 사용하는 mixin 으로, AnimationController 를
+생성할 때 필요한 TickerProvider 를 제공하기 위해 사용된다.
+
+주요 특징
+1. 싱글 Ticker
+- SingleTickerProviderStateMixin 은 단일 애니메이션을 위한 Ticker 를 제공하며, 하나의 AnimationController 와 함께 사용됨
+- 여러 애니메이션 컨트롤러가 필요한 경우 TickerProviderStateMixin 을 사용
+2. 효율적인 리소스 관리
+- Ticker 은 애니메이션을 매 프레임마다 갱신하도록 도와주는 객체로, 이를 제대로 관리하지 않은면 메모리 누수가 발생함
+- SingleTickerProviderStateMixin은 사용이 끝난 Ticker 를 자동으로 정리하여 리소스를 효율적으로 관리
+
+동작 방식
+1. vsync: this 를 통해 Ticker가 State 객체와 동기화됨
+  - vsync 는 애니메이션의 갱신을 화면의 프레임에 맞춰 효율적으로 처리하도록 함
+2. SingleTickerProviderStateMixin은 애니메이션의 생명 주기를 자동으로 관리
+ */
 class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset(
-    "assets/videos/video1.MP4",
-  );
+      VideoPlayerController.asset("assets/videos/video1.MP4");
   late final AnimationController _animationController;
 
   bool _isPaused = false;
