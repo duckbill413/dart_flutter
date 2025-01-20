@@ -54,11 +54,6 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
       value: 1.5,
       duration: _animationDuration,
     );
-    _animationController.addListener(
-      () {
-        setState(() {});
-      },
-    );
   }
 
   @override
@@ -108,16 +103,25 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
           ),
           Positioned.fill(
             child: IgnorePointer(
-              child: Transform.scale(
-                scale: _animationController.value,
-                child: AnimatedOpacity(
-                  opacity: _isPaused ? 0.8 : 0,
-                  duration: _animationDuration,
-                  child: Center(
-                    child: FaIcon(
-                      FontAwesomeIcons.play,
-                      color: Colors.white,
-                      size: Sizes.size52,
+              child: AnimatedBuilder(
+                animation: _animationController,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _animationController.value,
+                    child: child,
+                  );
+                },
+                child: Transform.scale(
+                  scale: _animationController.value,
+                  child: AnimatedOpacity(
+                    opacity: _isPaused ? 0.8 : 0,
+                    duration: _animationDuration,
+                    child: Center(
+                      child: FaIcon(
+                        FontAwesomeIcons.play,
+                        color: Colors.white,
+                        size: Sizes.size52,
+                      ),
                     ),
                   ),
                 ),
