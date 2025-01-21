@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/videos/widgets/video_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -42,6 +44,7 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
 
   bool _isPaused = false;
   final Duration _animationDuration = Duration(milliseconds: 200);
+  bool _isTagExpanded = false;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -55,6 +58,7 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     setState(() {});
+    await _videoPlayerController.setLooping(true);
     _videoPlayerController.addListener(_onVideoChange);
   }
 
@@ -95,6 +99,13 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     setState(() {
       _isPaused = !_isPaused;
     });
+  }
+
+  void _onToggleTag() {
+    setState(() {
+      _isTagExpanded = !_isTagExpanded;
+    });
+    print(_isTagExpanded);
   }
 
   @override
@@ -141,6 +152,100 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "@duckbill",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: Sizes.size20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Gaps.v10,
+                Text(
+                  "Sweet Girls!!!",
+                  style: TextStyle(
+                    fontSize: Sizes.size16,
+                    color: Colors.white,
+                  ),
+                ),
+                Gaps.v5,
+                GestureDetector(
+                  onTap: _onToggleTag,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: _isTagExpanded ? 300 : 200,
+                        child: Text(
+                          overflow: _isTagExpanded
+                              ? TextOverflow.visible
+                              : TextOverflow.ellipsis,
+                          "#apple #banana #candy #books #dance #beauty #apple #banana #candy #books #dance #beauty #apple #banana #candy #books #dance #beauty #apple #banana #candy #books #dance #beauty",
+                          style: const TextStyle(
+                            fontSize: Sizes.size14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: !_isTagExpanded,
+                        child: const Text(
+                          "See more",
+                          style: TextStyle(
+                            fontSize: Sizes.size14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 10,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  foregroundImage: NetworkImage(
+                      "https://avatars.githubusercontent.com/u/86183856?v=4"),
+                  child: Text(
+                    "duckbill",
+                    style: TextStyle(
+                      fontSize: Sizes.size10,
+                    ),
+                  ),
+                ),
+                Gaps.v28,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: "2.8M",
+                ),
+                Gaps.v28,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidComment,
+                  text: "33K",
+                ),
+                Gaps.v28,
+                VideoButton(
+                  icon: FontAwesomeIcons.share,
+                  text: "Share",
+                ),
+              ],
             ),
           ),
         ],
