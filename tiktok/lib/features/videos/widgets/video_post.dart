@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/videos/widgets/video_button.dart';
+import 'package:tiktok/features/videos/widgets/video_comments.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -82,7 +83,9 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
-    if (info.visibleFraction == 1 && !_videoPlayerController.value.isPlaying) {
+    if (info.visibleFraction == 1 &&
+        !_isPaused &&
+        !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
   }
@@ -106,6 +109,18 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
       _isTagExpanded = !_isTagExpanded;
     });
     print(_isTagExpanded);
+  }
+
+  void _onCommentTap(BuildContext context) async {
+    if (_videoPlayerController.value.isPlaying) {
+      _onTogglePause();
+    }
+    await showModalBottomSheet(
+      context: context,
+      builder: (context) => VideoComments(),
+      backgroundColor: Colors.transparent,
+    );
+    _onTogglePause();
   }
 
   @override
@@ -236,9 +251,12 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
                   text: "2.8M",
                 ),
                 Gaps.v28,
-                VideoButton(
-                  icon: FontAwesomeIcons.solidComment,
-                  text: "33K",
+                GestureDetector(
+                  onTap: () => _onCommentTap(context),
+                  child: VideoButton(
+                    icon: FontAwesomeIcons.solidComment,
+                    text: "33K",
+                  ),
                 ),
                 Gaps.v28,
                 VideoButton(
