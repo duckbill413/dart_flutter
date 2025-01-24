@@ -117,6 +117,7 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     }
     await showModalBottomSheet(
       context: context,
+      isScrollControlled: true, // 내부에서 ListView를 사용할 경우 true로 변경
       builder: (context) => VideoComments(),
       backgroundColor: Colors.transparent,
     );
