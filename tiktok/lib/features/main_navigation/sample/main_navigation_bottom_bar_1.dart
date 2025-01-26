@@ -37,13 +37,13 @@ class MainNavigationBottomBar1 extends StatelessWidget {
           backgroundColor: Colors.green,
         ),
         BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.cog),
+          icon: FaIcon(FontAwesomeIcons.gear),
           label: "Settings",
           tooltip: "Adjust Settings",
           backgroundColor: Colors.blue,
         ),
         BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.infoCircle),
+          icon: FaIcon(FontAwesomeIcons.circleInfo),
           label: "Info",
           tooltip: "More Information",
           backgroundColor: Colors.purple,

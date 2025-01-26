@@ -108,7 +108,6 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     setState(() {
       _isTagExpanded = !_isTagExpanded;
     });
-    print(_isTagExpanded);
   }
 
   void _onCommentTap(BuildContext context) async {
