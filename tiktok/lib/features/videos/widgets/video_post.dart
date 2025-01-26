@@ -83,10 +83,15 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
+    // visibleFaction 은 현재 위젯이 화면에 보이는 정도
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
+    }
+
+    if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
+      _onTogglePause();
     }
   }
 
