@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/constants/gaps.dart';
@@ -21,22 +20,57 @@ class DiscoverScreen extends StatefulWidget {
   State<DiscoverScreen> createState() => _DiscoverScreenState();
 }
 
-class _DiscoverScreenState extends State<DiscoverScreen> {
-  final TextEditingController _textEditingController = TextEditingController(
-    text: "init text",
-  );
+class _DiscoverScreenState extends State<DiscoverScreen>
+    with SingleTickerProviderStateMixin {
+  final TextEditingController _textEditingController = TextEditingController();
+  late TabController _tabController;
+  String _searchWord = "";
 
-  void _onSearchChanged(String value) {
-    print(value);
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController.addListener(
+      () {
+        setState(() {
+          _searchWord = _textEditingController.value.text;
+        });
+      },
+    );
+
+    _tabController = TabController(
+      length: tabs.length,
+      vsync: this,
+    );
+
+    _tabController.addListener(
+      () {
+        if (_tabController.indexIsChanging) {
+          setState(() {
+            _onStopSearch();
+          });
+        }
+      },
+    );
   }
 
-  void _onSearchSubmitted(String value) {
-    print(value);
+  void _onStopSearch() {
+    FocusScope.of(context).unfocus();
+  }
+
+  void _onSearchSubmitted() {
+    if (_searchWord != "") {
+      print(_searchWord); // 검색시 수행
+    }
+  }
+
+  void _onClearTap() {
+    _textEditingController.clear();
   }
 
   @override
   void dispose() {
     _textEditingController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -48,24 +82,99 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
-          title: CupertinoSearchTextField(
+          titleSpacing: Sizes.size4,
+          title: TextField(
             controller: _textEditingController,
-            onChanged: _onSearchChanged,
-            onSubmitted: _onSearchSubmitted,
+            textInputAction: TextInputAction.search,
+            onEditingComplete: _onSearchSubmitted,
+            decoration: InputDecoration(
+              hintText: "Search for ...",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Sizes.size8),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade200,
+              contentPadding: EdgeInsets.zero,
+              icon: GestureDetector(
+                onTap: _onStopSearch,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: Sizes.size10,
+                  ),
+                  child: FaIcon(
+                    FontAwesomeIcons.arrowLeft,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.only(
+                  left: Sizes.size16,
+                  right: Sizes.size10,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    FaIcon(
+                      FontAwesomeIcons.magnifyingGlass,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+              ),
+              suffixIcon: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.size10,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (_searchWord.isNotEmpty)
+                      GestureDetector(
+                        onTap: _onClearTap,
+                        child: FaIcon(
+                          FontAwesomeIcons.solidCircleXmark,
+                          color: Colors.grey.shade600,
+                        ),
+                      )
+                  ],
+                ),
+              ),
+            ),
           ),
+          // title: CupertinoSearchTextField(
+          //   controller: _textEditingController,
+          //   onChanged: _onSearchChanged,
+          //   onSubmitted: _onSearchSubmitted,
+          // ),
+          actions: [
+            IconButton(
+              splashRadius: Sizes.size24,
+              onPressed: () {},
+              icon: FaIcon(
+                FontAwesomeIcons.sliders,
+              ),
+              tooltip: "Under Construction",
+            )
+          ],
           bottom: TabBar(
+            controller: _tabController,
             padding: EdgeInsets.symmetric(
               horizontal: Sizes.size16,
             ),
+            splashFactory: NoSplash.splashFactory,
             isScrollable: true,
             unselectedLabelColor: Colors.grey.shade500,
             labelColor: Colors.black,
             indicatorColor: Colors.black,
+            indicatorWeight: 3,
             labelStyle: TextStyle(
               fontSize: Sizes.size16,
               fontWeight: FontWeight.w600,
             ),
-            splashFactory: NoSplash.splashFactory,
             tabs: [
               for (var tab in tabs)
                 Tab(
@@ -75,6 +184,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           ),
         ),
         body: TabBarView(
+          controller: _tabController,
           children: [
             GridView.builder(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
