@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok/constants/sizes.dart';
-import 'package:tiktok/features/inbox/activity_screen.dart';
+import 'package:tiktok/features/main_navigation/main_navigation_screen.dart';
 
 void main() {
   runApp(const TiktokApp());
@@ -34,7 +34,7 @@ class TiktokApp extends StatelessWidget {
           cursorColor: Theme.of(context).primaryColor,
         ),
       ),
-      home: ActivityScreen(),
+      home: MainNavigationScreen(),
     );
   }
 }
