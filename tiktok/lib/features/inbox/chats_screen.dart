@@ -10,6 +10,22 @@ class ChatsScreen extends StatefulWidget {
 }
 
 class _ChatsScreenState extends State<ChatsScreen> {
+  final GlobalKey<AnimatedListState> _key = GlobalKey<AnimatedListState>();
+  final List<int> _items = [];
+
+  void _addItem() {
+    if (_key.currentState != null) {
+      _key.currentState!.insertItem(
+        _items.length,
+        // duration is not default
+        duration: Duration(
+          milliseconds: 500,
+        ),
+      );
+      _items.add(_items.length);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,19 +36,24 @@ class _ChatsScreenState extends State<ChatsScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _addItem,
             icon: FaIcon(
               FontAwesomeIcons.plus,
             ),
           ),
         ],
       ),
-      body: ListView(
+      body: AnimatedList(
+        key: _key,
+        initialItemCount: 0, // 최초에 몇개의 아이템을 가질지 결정
         padding: EdgeInsets.symmetric(
           vertical: Sizes.size10,
         ),
-        children: [
-          ListTile(
+        // 유사 위젯 FadeTransition, ScaleTransition
+        itemBuilder: (context, index, animation) => SizeTransition(
+          sizeFactor: animation,
+          child: ListTile(
+            key: UniqueKey(),
             leading: CircleAvatar(
               radius: 30,
               foregroundImage: NetworkImage(
@@ -47,7 +68,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "Lynn",
+                  "Lynn ($index)",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                   ),
@@ -62,8 +83,8 @@ class _ChatsScreenState extends State<ChatsScreen> {
               ],
             ),
             subtitle: Text("Don't forget to make video!"),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
