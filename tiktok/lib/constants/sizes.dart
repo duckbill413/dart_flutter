@@ -1,4 +1,5 @@
 class Sizes {
+  static const size0 = 0.0;
   static const size1 = 1.0;
   static const size2 = 2.0;
   static const size3 = 3.0;

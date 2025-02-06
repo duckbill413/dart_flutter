@@ -6,7 +6,7 @@ import 'package:tiktok/features/discover/discover_screen.dart';
 import 'package:tiktok/features/inbox/inbox_screen.dart';
 import 'package:tiktok/features/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok/features/main_navigation/widgets/post_video_button.dart';
-import 'package:tiktok/features/videos/widgets/video_timeline_screen.dart';
+import 'package:tiktok/features/videos/video_timeline_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
