@@ -28,6 +28,10 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         });
       },
     );
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) => _scrollToBottom(),
+    );
   }
 
   @override
@@ -44,6 +48,12 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     setState(() {
       _isEmojiKeyboard = !_isEmojiKeyboard;
     });
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    }
   }
 
   void _onTextFieldTap() {
