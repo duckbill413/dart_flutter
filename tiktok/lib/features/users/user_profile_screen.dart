@@ -5,6 +5,30 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView();
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          floating: true,
+          stretch: true,
+          // pinned: true,
+          backgroundColor: Colors.teal,
+          elevation: 1,
+          collapsedHeight: 80,
+          expandedHeight: 200,
+          flexibleSpace: FlexibleSpaceBar(
+            stretchModes: [
+              StretchMode.blurBackground,
+              // StretchMode.fadeTitle,
+              StretchMode.zoomBackground,
+            ],
+            background: Image.asset(
+              "assets/images/picture2.jpg",
+              fit: BoxFit.cover,
+            ),
+            title: Text("Hello!"),
+          ),
+        ),
+      ],
+    );
   }
 }
