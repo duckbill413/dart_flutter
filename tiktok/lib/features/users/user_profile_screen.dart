@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok/constants/sizes.dart';
 
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({super.key});
@@ -35,7 +36,7 @@ class UserProfileScreen extends StatelessWidget {
         ),
         SliverFixedExtentList(
           delegate: SliverChildBuilderDelegate(
-            childCount: 50,
+            childCount: 30,
             (context, index) => Container(
               color: Colors.amber[100 * (index % 9)],
               child: Align(
@@ -45,6 +46,24 @@ class UserProfileScreen extends StatelessWidget {
             ),
           ),
           itemExtent: 100,
+        ),
+        SliverGrid(
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 100,
+            crossAxisSpacing: Sizes.size20,
+            mainAxisSpacing: Sizes.size20,
+            childAspectRatio: 1,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            childCount: 50,
+            (context, index) => Container(
+              color: Colors.blue[100 * (index % 9)],
+              child: Align(
+                alignment: Alignment.center,
+                child: Text("Item $index"),
+              ),
+            ),
+          ),
         ),
       ],
     );
