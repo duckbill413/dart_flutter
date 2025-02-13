@@ -34,6 +34,17 @@ class UserProfileScreen extends StatelessWidget {
             title: Text("Hello!"),
           ),
         ),
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.red,
+                radius: 20,
+              ),
+            ],
+          ),
+        ),
+        // Creates a sliver that contains a single box widget
         SliverFixedExtentList(
           delegate: SliverChildBuilderDelegate(
             childCount: 30,
@@ -46,6 +57,10 @@ class UserProfileScreen extends StatelessWidget {
             ),
           ),
           itemExtent: 100,
+        ),
+        SliverPersistentHeader(
+          pinned: true,
+          delegate: CustomDelegate(),
         ),
         SliverGrid(
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -67,5 +82,40 @@ class UserProfileScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class CustomDelegate extends SliverPersistentHeaderDelegate {
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Colors.indigo,
+      child: FractionallySizedBox(
+        heightFactor: 1,
+        child: Center(
+          child: Text(
+            "Title!!!",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// 밑으로 스크롤 했을때 이 헤더가 줄어들 도록 할수 있음
+  @override
+  double get maxExtent => 150;
+
+  @override
+  double get minExtent => 80;
+
+  /// maxExtent와 minExtent의 값을 변경하고 싶다면 true를 return
+  /// 다크 모드와 유사하게 이용됨
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }
