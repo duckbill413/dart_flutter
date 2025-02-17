@@ -29,6 +29,51 @@ import 'package:flutter/material.dart';
 
 // AboutListTile
 
+/// #13.2 showDateRangePicker
+/// 1. showDatePicker
+/// 2. showTimePicker
+/// 3. showDateRangePicker
+// ListView(
+//   children: [
+//     ListTile(
+//       onTap: () async {
+//         final date = await showDatePicker(
+//           context: context,
+//           initialDate: DateTime.now(),
+//           firstDate: DateTime(1980),
+//           lastDate: DateTime(2030),
+//         );
+//         print(date);
+//
+//         final time = await showTimePicker(
+//           context: context,
+//           initialTime: TimeOfDay.now(),
+//         );
+//         print(time);
+//
+//         final booking = await showDateRangePicker(
+//           context: context,
+//           builder: (context, child) {
+//             return Theme(
+//               data: ThemeData(
+//                 appBarTheme: AppBarTheme(
+//                   foregroundColor: Colors.white,
+//                   backgroundColor: Colors.black,
+//                 ),
+//               ),
+//               child: child!,
+//             );
+//           },
+//           firstDate: DateTime(1980),
+//           lastDate: DateTime(2030),
+//         );
+//         print(booking);
+//       },
+//       title: Text("What is your birthday?"),
+//     )
+//   ],
+// ),
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -38,20 +83,45 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: ListTile(
-        // 앱 배포시 필요한 오픈소스 라이선스 고지를 쉽게할 수 있음
-        onTap: () => showAboutDialog(
-          context: context,
-          applicationVersion: "1.0",
-          applicationLegalese: "All rights reserved. please don't copy me",
-        ),
-        title: Text(
-          "About",
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        subtitle: Text("About this app...."),
+      body: ListView(
+        children: [
+          ListTile(
+            onTap: () async {
+              final date = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1980),
+                lastDate: DateTime(2030),
+              );
+              print(date);
+
+              final time = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+              );
+              print(time);
+
+              final booking = await showDateRangePicker(
+                context: context,
+                builder: (context, child) {
+                  return Theme(
+                    data: ThemeData(
+                      appBarTheme: AppBarTheme(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.black,
+                      ),
+                    ),
+                    child: child!,
+                  );
+                },
+                firstDate: DateTime(1980),
+                lastDate: DateTime(2030),
+              );
+              print(booking);
+            },
+            title: Text("What is your birthday?"),
+          )
+        ],
       ),
     );
   }
