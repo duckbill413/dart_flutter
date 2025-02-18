@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // #13.0 ListWheelScrollView
@@ -30,9 +31,9 @@ import 'package:flutter/material.dart';
 // AboutListTile
 
 /// #13.2 showDateRangePicker
-/// 1. showDatePicker
-/// 2. showTimePicker
-/// 3. showDateRangePicker
+// /// 1. showDatePicker
+// /// 2. showTimePicker
+// /// 3. showDateRangePicker
 // ListView(
 //   children: [
 //     ListTile(
@@ -74,8 +75,31 @@ import 'package:flutter/material.dart';
 //   ],
 // ),
 
-class SettingsScreen extends StatelessWidget {
+// #13.3 SwitchListTile
+// 1. Checkbox
+// 2. CheckboxListTile
+// 3. Switch
+// 4. Switch.adaptive
+// 5. SwitchListTile
+// 6. CupertinoSwitch
+
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool _notifications = false;
+
+  void _onNotificationChanged(bool? newValue) {
+    if (newValue == null) return;
+
+    setState(() {
+      _notifications = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +109,33 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          Checkbox(
+            value: _notifications,
+            onChanged: _onNotificationChanged,
+          ),
+          CheckboxListTile(
+            value: _notifications,
+            onChanged: _onNotificationChanged,
+            title: Text("Enable notifications!"),
+            activeColor: Colors.black,
+            checkColor: Colors.white,
+          ),
+          Switch(
+            value: _notifications,
+            onChanged: _onNotificationChanged,
+          ),
+          Switch.adaptive(
+            value: _notifications,
+            onChanged: _onNotificationChanged,
+          ),
+          SwitchListTile(
+            value: _notifications,
+            onChanged: _onNotificationChanged,
+          ),
+          CupertinoSwitch(
+            value: _notifications,
+            onChanged: _onNotificationChanged,
+          ),
           ListTile(
             onTap: () async {
               final date = await showDatePicker(
