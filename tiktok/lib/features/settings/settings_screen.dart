@@ -118,6 +118,64 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //    - CupertinoDialogAction
 // 2. showDialog
 //    - AlertDialog
+//
+// ListView(
+//   children: [
+//     ListTile(
+//       title: Text(
+//         "Log out (iOS)",
+//       ),
+//       textColor: Colors.red,
+//       onTap: () {
+//         showCupertinoDialog(
+//           context: context,
+//           builder: (context) => CupertinoAlertDialog(
+//             title: Text("Are you sure?"),
+//             content: Text("Plx don't go"),
+//             actions: [
+//               CupertinoDialogAction(
+//                 onPressed: () => Navigator.of(context).pop(),
+//                 child: Text("No"),
+//               ),
+//               CupertinoDialogAction(
+//                 onPressed: () => Navigator.of(context).pop(),
+//                 isDestructiveAction: true,
+//                 child: Text("Yes"),
+//               )
+//             ],
+//           ),
+//         );
+//       },
+//     ),
+//     ListTile(
+//       title: Text(
+//         "Log out (Android)",
+//       ),
+//       textColor: Colors.red,
+//       onTap: () {
+//         showDialog(
+//           context: context,
+//           builder: (context) => AlertDialog(
+//             icon: FaIcon(FontAwesomeIcons.skull),
+//             title: Text("Are you sure?"),
+//             content: Text("Plx don't go"),
+//             actions: [
+//               IconButton(
+//                 onPressed: () => Navigator.of(context).pop(),
+//                 icon: FaIcon(FontAwesomeIcons.car),
+//               ),
+//               TextButton(
+//                 onPressed: () => Navigator.of(context).pop(),
+//                 child: Text("Yes"),
+//               )
+//             ],
+//           ),
+//         );
+//       },
+//     )
+//   ],
+// ),
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
