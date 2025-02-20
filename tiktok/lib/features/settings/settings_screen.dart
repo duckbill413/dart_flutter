@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // #13.0 ListWheelScrollView
 // 닫기 버튼을 쉽게 만들 수 있는 위젯
@@ -176,14 +175,41 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //   ],
 // ),
 
-class SettingsScreen extends StatefulWidget {
+// 13.5 CupertinoActionSheet
+// 1. showCupertinoModalPopup
+// 2. CupertinoActionSheet
+// 3. CupertinoDialogAction
+//
+// ListTile(
+//   title: Text(
+//     "Log out (iOS / Bottom)",
+//   ),
+//   textColor: Colors.red,
+//   onTap: () {
+//     showCupertinoModalPopup(
+//       context: context,
+//       builder: (context) => CupertinoActionSheet(
+//         title: Text("Are you sure?"),
+//         message: Text("Plz don't go..."),
+//         actions: [
+//           CupertinoDialogAction(
+//             onPressed: () => Navigator.of(context).pop(),
+//             child: Text("No"),
+//           ),
+//           CupertinoDialogAction(
+//             onPressed: () => Navigator.of(context).pop(),
+//             isDestructiveAction: true,
+//             child: Text("Yes"),
+//           ),
+//         ],
+//       ),
+//     );
+//   },
+// ),
+
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,15 +220,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           ListTile(
             title: Text(
-              "Log out (iOS)",
+              "Log out (iOS / Bottom)",
             ),
             textColor: Colors.red,
             onTap: () {
-              showCupertinoDialog(
+              showCupertinoModalPopup(
                 context: context,
-                builder: (context) => CupertinoAlertDialog(
+                builder: (context) => CupertinoActionSheet(
                   title: Text("Are you sure?"),
-                  content: Text("Plx don't go"),
+                  message: Text("Plz don't go..."),
                   actions: [
                     CupertinoDialogAction(
                       onPressed: () => Navigator.of(context).pop(),
@@ -212,38 +238,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       onPressed: () => Navigator.of(context).pop(),
                       isDestructiveAction: true,
                       child: Text("Yes"),
-                    )
+                    ),
                   ],
                 ),
               );
             },
           ),
-          ListTile(
-            title: Text(
-              "Log out (Android)",
-            ),
-            textColor: Colors.red,
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  icon: FaIcon(FontAwesomeIcons.skull),
-                  title: Text("Are you sure?"),
-                  content: Text("Plx don't go"),
-                  actions: [
-                    IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: FaIcon(FontAwesomeIcons.car),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text("Yes"),
-                    )
-                  ],
-                ),
-              );
-            },
-          )
         ],
       ),
     );
