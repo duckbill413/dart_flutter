@@ -83,6 +83,8 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
+    // visibility 에 변화가 있더라도 mount 된 상태가 아니면 아무것도 하지 않음
+    if (!mounted) return;
     // visibleFaction 은 현재 위젯이 화면에 보이는 정도
     if (info.visibleFraction == 1 &&
         !_isPaused &&
