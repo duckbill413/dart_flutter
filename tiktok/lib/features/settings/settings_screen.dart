@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // #13.0 ListWheelScrollView
 // 닫기 버튼을 쉽게 만들 수 있는 위젯
@@ -82,7 +83,41 @@ import 'package:flutter/material.dart';
 // 4. Switch.adaptive
 // 5. SwitchListTile
 // 6. CupertinoSwitch
+//
+// Checkbox(
+//   value: _notifications,
+//   onChanged: _onNotificationChanged,
+// ),
+// CheckboxListTile(
+//   value: _notifications,
+//   onChanged: _onNotificationChanged,
+//   title: Text("Enable notifications!"),
+//   activeColor: Colors.black,
+//   checkColor: Colors.white,
+// ),
+// Switch(
+//   value: _notifications,
+//   onChanged: _onNotificationChanged,
+// ),
+// Switch.adaptive(
+//   value: _notifications,
+//   onChanged: _onNotificationChanged,
+// ),
+// SwitchListTile(
+//   value: _notifications,
+//   onChanged: _onNotificationChanged,
+// ),
+// CupertinoSwitch(
+//   value: _notifications,
+//   onChanged: _onNotificationChanged,
+// ),
 
+// 13.4 CupertinoAlertDialog
+// 1. showCupertinoDialog
+//    - CupertinoAlertDialog
+//    - CupertinoDialogAction
+// 2. showDialog
+//    - AlertDialog
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -91,16 +126,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notifications = false;
-
-  void _onNotificationChanged(bool? newValue) {
-    if (newValue == null) return;
-
-    setState(() {
-      _notifications = newValue;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,68 +134,57 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          Checkbox(
-            value: _notifications,
-            onChanged: _onNotificationChanged,
-          ),
-          CheckboxListTile(
-            value: _notifications,
-            onChanged: _onNotificationChanged,
-            title: Text("Enable notifications!"),
-            activeColor: Colors.black,
-            checkColor: Colors.white,
-          ),
-          Switch(
-            value: _notifications,
-            onChanged: _onNotificationChanged,
-          ),
-          Switch.adaptive(
-            value: _notifications,
-            onChanged: _onNotificationChanged,
-          ),
-          SwitchListTile(
-            value: _notifications,
-            onChanged: _onNotificationChanged,
-          ),
-          CupertinoSwitch(
-            value: _notifications,
-            onChanged: _onNotificationChanged,
+          ListTile(
+            title: Text(
+              "Log out (iOS)",
+            ),
+            textColor: Colors.red,
+            onTap: () {
+              showCupertinoDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: Text("Are you sure?"),
+                  content: Text("Plx don't go"),
+                  actions: [
+                    CupertinoDialogAction(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text("No"),
+                    ),
+                    CupertinoDialogAction(
+                      onPressed: () => Navigator.of(context).pop(),
+                      isDestructiveAction: true,
+                      child: Text("Yes"),
+                    )
+                  ],
+                ),
+              );
+            },
           ),
           ListTile(
-            onTap: () async {
-              final date = await showDatePicker(
+            title: Text(
+              "Log out (Android)",
+            ),
+            textColor: Colors.red,
+            onTap: () {
+              showDialog(
                 context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(1980),
-                lastDate: DateTime(2030),
-              );
-              print(date);
-
-              final time = await showTimePicker(
-                context: context,
-                initialTime: TimeOfDay.now(),
-              );
-              print(time);
-
-              final booking = await showDateRangePicker(
-                context: context,
-                builder: (context, child) {
-                  return Theme(
-                    data: ThemeData(
-                      appBarTheme: AppBarTheme(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black,
-                      ),
+                builder: (context) => AlertDialog(
+                  icon: FaIcon(FontAwesomeIcons.skull),
+                  title: Text("Are you sure?"),
+                  content: Text("Plx don't go"),
+                  actions: [
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: FaIcon(FontAwesomeIcons.car),
                     ),
-                    child: child!,
-                  );
-                },
-                firstDate: DateTime(1980),
-                lastDate: DateTime(2030),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text("Yes"),
+                    )
+                  ],
+                ),
               );
-              print(booking);
             },
-            title: Text("What is your birthday?"),
           )
         ],
       ),
