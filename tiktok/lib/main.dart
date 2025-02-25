@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tiktok/constants/sizes.dart';
-import 'package:tiktok/features/authentication/sign_up_screen.dart';
+import 'package:tiktok/features/main_navigation/main_navigation_screen.dart';
 
 void main() async {
   // This is the glue that binds the framework to the Flutter engine.
@@ -49,7 +49,7 @@ class TiktokApp extends StatelessWidget {
           cursorColor: Theme.of(context).primaryColor,
         ),
       ),
-      home: SignUpScreen(),
+      home: MainNavigationScreen(),
     );
   }
 }

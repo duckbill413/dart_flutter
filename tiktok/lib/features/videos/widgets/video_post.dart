@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/constants/gaps.dart';
@@ -46,6 +47,7 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   bool _isPaused = false;
   final Duration _animationDuration = Duration(milliseconds: 200);
   bool _isTagExpanded = false;
+  bool _isMute = false;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -56,10 +58,16 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     }
   }
 
+  /// 대부분의 웹 환경에서 음성이 있는 영상을 바로 재생시키려한다면 에러를 발생시킨다.
+  /// 이유는, 음성이 갑작스럽게 나오는 것을 많은 광고 회사들이 남용했기 때문이다.
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     setState(() {});
     await _videoPlayerController.setLooping(true);
+    if (kIsWeb) {
+      await _videoPlayerController.setVolume(0); // 웹인 경우 볼륨을 기본적으로 0으로 설정
+      _isMute = true;
+    }
     _videoPlayerController.addListener(_onVideoChange);
   }
 
@@ -95,6 +103,16 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
       _onTogglePause();
     }
+  }
+
+  void _onMuteTap() async {
+    _isMute = !_isMute;
+    if (_isMute) {
+      await _videoPlayerController.setVolume(0);
+    } else {
+      _videoPlayerController.setVolume(1);
+    }
+    setState(() {});
   }
 
   void _onTogglePause() {
@@ -271,6 +289,22 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
                   text: "Share",
                 ),
               ],
+            ),
+          ),
+          Positioned(
+            right: 10,
+            top: 50,
+            child: IconButton(
+              onPressed: _onMuteTap,
+              icon: _isMute
+                  ? FaIcon(
+                      FontAwesomeIcons.volumeOff,
+                      color: Colors.white,
+                    )
+                  : FaIcon(
+                      FontAwesomeIcons.volumeHigh,
+                      color: Colors.white,
+                    ),
             ),
           ),
         ],
