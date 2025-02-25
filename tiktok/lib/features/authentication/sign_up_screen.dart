@@ -27,75 +27,110 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Sizes.size40,
+    return OrientationBuilder(builder: (context, orientation) {
+      print(orientation); // Orientation.portrait
+      if (orientation == Orientation.landscape) {
+        return Scaffold(
+          body: Center(
+            child: Text("Plz rotate ur phone!"),
           ),
-          child: Column(
-            children: [
-              Gaps.v80,
-              Text(
-                'Sign up for Tiktok',
-                style: TextStyle(
-                  fontSize: Sizes.size24,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              Gaps.v20,
-              Text(
-                'Create a profile, follow other accounts, make your own videos, and more.',
-                style: TextStyle(
-                  fontSize: Sizes.size14,
-                  color: Colors.black45,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Gaps.v40,
-              AuthButton(
-                icon: FaIcon(FontAwesomeIcons.user),
-                text: "Use email & password",
-                onTap: _onEmailSignUpTap,
-              ),
-              Gaps.v16,
-              AuthButton(
-                  icon: FaIcon(FontAwesomeIcons.apple),
-                  text: "Continue with Apple",
-                  onTap: () => {}),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.grey.shade50,
-        clipBehavior: Clip.none,
-        shadowColor: Colors.black,
-        surfaceTintColor: Colors.grey.shade50,
-        elevation: 2,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: Sizes.size10,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Already have an account?'),
-              Gaps.h5,
-              GestureDetector(
-                onTap: () => _onLoginTap(context),
-                child: Text(
-                  'Log in',
+        );
+      }
+      return Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Sizes.size40,
+            ),
+            child: Column(
+              children: [
+                Gaps.v80,
+                Text(
+                  'Sign up for Tiktok',
                   style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.w600,
+                    fontSize: Sizes.size24,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-              )
-            ],
+                Gaps.v20,
+                Text(
+                  'Create a profile, follow other accounts, make your own videos, and more.',
+                  style: TextStyle(
+                    fontSize: Sizes.size14,
+                    color: Colors.black45,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Gaps.v40,
+                if (orientation == Orientation.portrait) ...[
+                  AuthButton(
+                    icon: FaIcon(FontAwesomeIcons.user),
+                    text: "Use email & password",
+                    onTap: _onEmailSignUpTap,
+                  ),
+                  Gaps.v16,
+                  AuthButton(
+                    icon: FaIcon(FontAwesomeIcons.apple),
+                    text: "Continue with Apple",
+                    onTap: () => {},
+                  ),
+                ],
+                if (orientation == Orientation.landscape)
+                  Row(
+                    children: [
+                      /// AuthButton 안의 FractionallySizedBox 가 문제를 일으킴
+                      /// 해결법 Expanded 로 감싸기
+                      Expanded(
+                        child: AuthButton(
+                          icon: FaIcon(FontAwesomeIcons.user),
+                          text: "Use email & password",
+                          onTap: _onEmailSignUpTap,
+                        ),
+                      ),
+                      Gaps.h16,
+                      Expanded(
+                        child: AuthButton(
+                          icon: FaIcon(FontAwesomeIcons.apple),
+                          text: "Continue with Apple",
+                          onTap: () => {},
+                        ),
+                      ),
+                    ],
+                  )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.grey.shade50,
+          clipBehavior: Clip.none,
+          shadowColor: Colors.black,
+          surfaceTintColor: Colors.grey.shade50,
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: Sizes.size10,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Already have an account?'),
+                Gaps.h5,
+                GestureDetector(
+                  onTap: () => _onLoginTap(context),
+                  child: Text(
+                    'Log in',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
