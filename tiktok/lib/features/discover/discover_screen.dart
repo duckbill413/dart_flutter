@@ -86,64 +86,69 @@ class _DiscoverScreenState extends State<DiscoverScreen>
         appBar: AppBar(
           elevation: 1,
           titleSpacing: Sizes.size4,
-          title: TextField(
-            controller: _textEditingController,
-            textInputAction: TextInputAction.search,
-            onEditingComplete: _onSearchSubmitted,
-            decoration: InputDecoration(
-              hintText: "Search for ...",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Sizes.size8),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: Colors.grey.shade200,
-              contentPadding: EdgeInsets.zero,
-              icon: GestureDetector(
-                onTap: _onStopSearch,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: Sizes.size10,
-                  ),
-                  child: FaIcon(
-                    FontAwesomeIcons.arrowLeft,
-                    color: Colors.grey.shade600,
-                  ),
+          title: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: Breakpoints.sm,
+            ),
+            child: TextField(
+              controller: _textEditingController,
+              textInputAction: TextInputAction.search,
+              onEditingComplete: _onSearchSubmitted,
+              decoration: InputDecoration(
+                hintText: "Search for ...",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(Sizes.size8),
+                  borderSide: BorderSide.none,
                 ),
-              ),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(
-                  left: Sizes.size16,
-                  right: Sizes.size10,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    FaIcon(
-                      FontAwesomeIcons.magnifyingGlass,
-                      color: Colors.black,
+                filled: true,
+                fillColor: Colors.grey.shade200,
+                contentPadding: EdgeInsets.zero,
+                icon: GestureDetector(
+                  onTap: _onStopSearch,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: Sizes.size10,
                     ),
-                  ],
+                    child: FaIcon(
+                      FontAwesomeIcons.arrowLeft,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
                 ),
-              ),
-              suffixIcon: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Sizes.size10,
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(
+                    left: Sizes.size16,
+                    right: Sizes.size10,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FaIcon(
+                        FontAwesomeIcons.magnifyingGlass,
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    if (_searchWord.isNotEmpty)
-                      GestureDetector(
-                        onTap: _onClearTap,
-                        child: FaIcon(
-                          FontAwesomeIcons.solidCircleXmark,
-                          color: Colors.grey.shade600,
-                        ),
-                      )
-                  ],
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Sizes.size10,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      if (_searchWord.isNotEmpty)
+                        GestureDetector(
+                          onTap: _onClearTap,
+                          child: FaIcon(
+                            FontAwesomeIcons.solidCircleXmark,
+                            color: Colors.grey.shade600,
+                          ),
+                        )
+                    ],
+                  ),
                 ),
               ),
             ),
