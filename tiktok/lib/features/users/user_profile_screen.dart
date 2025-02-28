@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/constants/breakpoints.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/settings/settings_screen.dart';
@@ -105,77 +106,83 @@ class UserProfileScreen extends StatelessWidget {
                       ),
                     ),
                     Gaps.v14,
-                    FractionallySizedBox(
-                      widthFactor: 0.7,
-                      child: Row(
-                        children: [
-                          Flexible(
-                            flex: 4,
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius:
-                                    BorderRadius.circular(Sizes.size3),
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: Sizes.size12,
-                                ),
-                                child: Text(
-                                  'Follow',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Gaps.h5,
-                          Flexible(
-                            flex: 1,
-                            child: AspectRatio(
-                              aspectRatio: 1,
+                    LayoutBuilder(
+                      builder: (context, constraints) => FractionallySizedBox(
+                        widthFactor: constraints.maxWidth <= Breakpoints.sm
+                            ? 0.7
+                            : Breakpoints.sm / constraints.maxWidth,
+                        child: Row(
+                          children: [
+                            Flexible(
+                              flex: constraints.maxWidth <= Breakpoints.sm
+                                  ? 4
+                                  : 8,
                               child: Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey.shade300,
-                                    width: 1,
-                                  ),
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius:
+                                      BorderRadius.circular(Sizes.size3),
                                 ),
-                                child: FaIcon(
-                                  FontAwesomeIcons.youtube,
-                                  color: Colors.black,
-                                  size: Sizes.size20,
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: Sizes.size12,
+                                  ),
+                                  child: Text(
+                                    'Follow',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Gaps.h5,
-                          Flexible(
-                            flex: 1,
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey.shade300,
-                                    width: 1,
+                            Gaps.h5,
+                            Flexible(
+                              flex: 1,
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.grey.shade300,
+                                      width: 1,
+                                    ),
                                   ),
-                                ),
-                                child: FaIcon(
-                                  FontAwesomeIcons.caretDown,
-                                  color: Colors.black,
-                                  size: Sizes.size16,
+                                  child: FaIcon(
+                                    FontAwesomeIcons.youtube,
+                                    color: Colors.black,
+                                    size: Sizes.size20,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                            Gaps.h5,
+                            Flexible(
+                              flex: 1,
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.grey.shade300,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: FaIcon(
+                                    FontAwesomeIcons.caretDown,
+                                    color: Colors.black,
+                                    size: Sizes.size16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Gaps.v14,
