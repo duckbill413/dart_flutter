@@ -230,13 +230,13 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                     Text(
                       "${constraints.maxWidth} This is a very long caption for my tiktok that im upload just now currently.",
                       style: TextStyle(
-                        fontSize: Sizes.size16 + Sizes.size2,
+                        fontSize: Sizes.size16,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Gaps.v8,
+                    Gaps.v4,
                     if (constraints.maxWidth < 200 ||
                         constraints.maxWidth > 250)
                       DefaultTextStyle(
