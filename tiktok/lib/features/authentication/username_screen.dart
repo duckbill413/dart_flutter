@@ -43,7 +43,6 @@ class _UsernameScreenState extends State<UsernameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Sign up'),
       ),
@@ -60,7 +59,6 @@ class _UsernameScreenState extends State<UsernameScreen> {
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: Sizes.size24,
-                color: Colors.black,
               ),
             ),
             Gaps.v8,
@@ -68,7 +66,6 @@ class _UsernameScreenState extends State<UsernameScreen> {
               "You can always change this later.",
               style: TextStyle(
                 fontSize: Sizes.size16,
-                color: Colors.black54,
               ),
             ),
             Gaps.v16,

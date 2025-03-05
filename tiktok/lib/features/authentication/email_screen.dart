@@ -64,7 +64,6 @@ class _EmailScreenState extends State<EmailScreen> {
     return GestureDetector(
       onTap: _onScaffoldTap,
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text('Sign up'),
         ),
@@ -81,7 +80,6 @@ class _EmailScreenState extends State<EmailScreen> {
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Sizes.size24,
-                  color: Colors.black,
                 ),
               ),
               Gaps.v16,
