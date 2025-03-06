@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/constants/breakpoints.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/utils.dart';
 
 final tabs = [
   "Top",
@@ -94,6 +95,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
               controller: _textEditingController,
               textInputAction: TextInputAction.search,
               onEditingComplete: _onSearchSubmitted,
+              cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
               decoration: InputDecoration(
                 hintText: "Search for ...",
                 border: OutlineInputBorder(
@@ -101,7 +103,9 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Colors.grey.shade200,
+                fillColor: isDarkMode(context)
+                    ? Colors.grey.shade700
+                    : Colors.grey.shade200,
                 contentPadding: EdgeInsets.zero,
                 icon: GestureDetector(
                   onTap: _onStopSearch,
@@ -175,9 +179,6 @@ class _DiscoverScreenState extends State<DiscoverScreen>
             ),
             splashFactory: NoSplash.splashFactory,
             isScrollable: true,
-            unselectedLabelColor: Colors.grey.shade500,
-            labelColor: Colors.black,
-            indicatorColor: Colors.black,
             indicatorWeight: 3,
             labelStyle: TextStyle(
               fontSize: Sizes.size16,
@@ -241,7 +242,9 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                         constraints.maxWidth > 250)
                       DefaultTextStyle(
                         style: TextStyle(
-                          color: Colors.grey.shade600,
+                          color: isDarkMode(context)
+                              ? Colors.grey.shade300
+                              : Colors.grey.shade600,
                           fontWeight: FontWeight.bold,
                         ),
                         child: Row(

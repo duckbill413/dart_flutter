@@ -8,6 +8,7 @@ import 'package:tiktok/features/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok/features/main_navigation/widgets/post_video_button.dart';
 import 'package:tiktok/features/users/user_profile_screen.dart';
 import 'package:tiktok/features/videos/video_timeline_screen.dart';
+import 'package:tiktok/utils.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -17,7 +18,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   void _onTap(int index) {
     setState(() {
@@ -65,7 +66,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        color: _selectedIndex == 0 ? Colors.black : Colors.white,
+        color: _selectedIndex == 0 || isDarkMode(context)
+            ? Colors.black
+            : Colors.white,
         elevation: 0,
         child: Padding(
           padding: const EdgeInsets.all(

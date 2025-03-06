@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tiktok/constants/sizes.dart';
-import 'package:tiktok/features/authentication/sign_up_screen.dart';
+import 'package:tiktok/features/main_navigation/main_navigation_screen.dart';
 
 void main() async {
   // This is the glue that binds the framework to the Flutter engine.
@@ -54,7 +54,12 @@ class TiktokApp extends StatelessWidget {
         // highlightColor: Colors.transparent,
         primaryColor: const Color(0xFFE9435A),
         textSelectionTheme: TextSelectionThemeData(
-          cursorColor: Theme.of(context).primaryColor,
+          cursorColor: Color(0xFFE9435A),
+        ),
+        tabBarTheme: TabBarTheme(
+          unselectedLabelColor: Colors.grey.shade500,
+          labelColor: Colors.black,
+          indicatorColor: Colors.black,
         ),
       ),
       darkTheme: ThemeData(
@@ -69,6 +74,12 @@ class TiktokApp extends StatelessWidget {
           backgroundColor: Colors.grey.shade900,
         ),
         textTheme: Typography.whiteMountainView,
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Color(0xFFE9435A),
+        ),
+        tabBarTheme: TabBarTheme(
+          indicatorColor: Colors.white,
+        ),
         // textTheme: TextTheme(
         //   displayLarge: GoogleFonts.openSans(
         //       fontSize: 96, fontWeight: FontWeight.w300, letterSpacing: -1.5),
@@ -98,7 +109,7 @@ class TiktokApp extends StatelessWidget {
         //       fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
         // ),
       ),
-      home: SignUpScreen(),
+      home: MainNavigationScreen(),
     );
   }
 }
