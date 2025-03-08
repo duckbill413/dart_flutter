@@ -57,8 +57,8 @@ class TiktokApp extends StatelessWidget {
           cursorColor: Color(0xFFE9435A),
         ),
         tabBarTheme: TabBarTheme(
-          unselectedLabelColor: Colors.grey.shade500,
           labelColor: Colors.black,
+          unselectedLabelColor: Colors.grey.shade500,
           indicatorColor: Colors.black,
         ),
         listTileTheme: ListTileThemeData(
@@ -81,7 +81,9 @@ class TiktokApp extends StatelessWidget {
           cursorColor: Color(0xFFE9435A),
         ),
         tabBarTheme: TabBarTheme(
+          labelColor: Colors.white,
           indicatorColor: Colors.white,
+          unselectedLabelColor: Colors.grey.shade500,
         ),
         // textTheme: TextTheme(
         //   displayLarge: GoogleFonts.openSans(

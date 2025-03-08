@@ -21,233 +21,235 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: DefaultTabController(
-        length: 2,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                title: Text(
-                  "duckbill",
+    return Scaffold(
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+      body: SafeArea(
+        child: DefaultTabController(
+          length: 2,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  title: Text(
+                    "duckbill",
+                  ),
+                  actions: [
+                    IconButton(
+                      onPressed: () => _onGearPressed(context),
+                      icon: FaIcon(
+                        FontAwesomeIcons.gear,
+                        size: Sizes.size20,
+                      ),
+                    )
+                  ],
                 ),
-                actions: [
-                  IconButton(
-                    onPressed: () => _onGearPressed(context),
-                    icon: FaIcon(
-                      FontAwesomeIcons.gear,
-                      size: Sizes.size20,
-                    ),
-                  )
-                ],
-              ),
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      foregroundColor: Colors.blue,
-                      foregroundImage: NetworkImage(
-                          "https://avatars.githubusercontent.com/u/86183856?v=4"),
-                      child: Text("duckbill"),
-                    ),
-                    Gaps.v20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "@duckbill",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: Sizes.size18,
-                          ),
-                        ),
-                        Gaps.h5,
-                        FaIcon(
-                          FontAwesomeIcons.solidCircleCheck,
-                          size: Sizes.size16,
-                          color: Colors.blue.shade400,
-                        ),
-                      ],
-                    ),
-                    Gaps.v24,
-                    SizedBox(
-                      height: Sizes.size48,
-                      child: Row(
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      Gaps.v16,
+                      CircleAvatar(
+                        radius: 30,
+                        foregroundColor: Colors.blue,
+                        foregroundImage: NetworkImage(
+                            "https://avatars.githubusercontent.com/u/86183856?v=4"),
+                        child: Text("duckbill"),
+                      ),
+                      Gaps.v20,
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          UserStatsCardWidget(
-                            text: "Following",
-                            number: 37,
+                          Text(
+                            "@duckbill",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: Sizes.size18,
+                            ),
                           ),
-                          VerticalDivider(
-                            width: Sizes.size32,
-                            thickness: Sizes.size1,
-                            color: Colors.grey.shade300,
-                            indent: Sizes.size14,
-                            endIndent: Sizes.size14,
-                          ),
-                          UserStatsCardWidget(
-                            number: 1053183,
-                            text: "Followers",
-                          ),
-                          VerticalDivider(
-                            width: Sizes.size32,
-                            thickness: Sizes.size1,
-                            color: Colors.grey.shade300,
-                            indent: Sizes.size14,
-                            endIndent: Sizes.size14,
-                          ),
-                          UserStatsCardWidget(
-                            number: 7914,
-                            text: "Likes",
+                          Gaps.h5,
+                          FaIcon(
+                            FontAwesomeIcons.solidCircleCheck,
+                            size: Sizes.size16,
+                            color: Colors.blue.shade400,
                           ),
                         ],
                       ),
-                    ),
-                    Gaps.v14,
-                    LayoutBuilder(
-                      builder: (context, constraints) => FractionallySizedBox(
-                        widthFactor: constraints.maxWidth <= Breakpoints.sm
-                            ? 0.7
-                            : Breakpoints.sm / constraints.maxWidth,
+                      Gaps.v24,
+                      SizedBox(
+                        height: Sizes.size48,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Flexible(
-                              flex: constraints.maxWidth <= Breakpoints.sm
-                                  ? 4
-                                  : 8,
-                              child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius:
-                                      BorderRadius.circular(Sizes.size3),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: Sizes.size12,
-                                  ),
-                                  child: Text(
-                                    'Follow',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
+                            UserStatsCardWidget(
+                              text: "Following",
+                              number: 37,
                             ),
-                            Gaps.h5,
-                            Flexible(
-                              flex: 1,
-                              child: AspectRatio(
-                                aspectRatio: 1,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey.shade300,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: FaIcon(
-                                    FontAwesomeIcons.youtube,
-                                    color: Colors.black,
-                                    size: Sizes.size20,
-                                  ),
-                                ),
-                              ),
+                            VerticalDivider(
+                              width: Sizes.size32,
+                              thickness: Sizes.size1,
+                              color: Colors.grey.shade300,
+                              indent: Sizes.size14,
+                              endIndent: Sizes.size14,
                             ),
-                            Gaps.h5,
-                            Flexible(
-                              flex: 1,
-                              child: AspectRatio(
-                                aspectRatio: 1,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey.shade300,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: FaIcon(
-                                    FontAwesomeIcons.caretDown,
-                                    color: Colors.black,
-                                    size: Sizes.size16,
-                                  ),
-                                ),
-                              ),
+                            UserStatsCardWidget(
+                              number: 1053183,
+                              text: "Followers",
+                            ),
+                            VerticalDivider(
+                              width: Sizes.size32,
+                              thickness: Sizes.size1,
+                              color: Colors.grey.shade300,
+                              indent: Sizes.size14,
+                              endIndent: Sizes.size14,
+                            ),
+                            UserStatsCardWidget(
+                              number: 7914,
+                              text: "Likes",
                             ),
                           ],
                         ),
                       ),
-                    ),
-                    Gaps.v14,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Sizes.size32,
-                      ),
-                      child: Text(
-                        "All highlights and where to watch live matched on duckbill... All highlights and where to watch live matched on duckbill...",
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Gaps.v14,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FaIcon(
-                          FontAwesomeIcons.link,
-                          size: Sizes.size12,
-                        ),
-                        Gaps.h4,
-                        Text(
-                          "https://github.com/duckbill413",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
+                      Gaps.v14,
+                      LayoutBuilder(
+                        builder: (context, constraints) => FractionallySizedBox(
+                          widthFactor: constraints.maxWidth <= Breakpoints.sm
+                              ? 0.7
+                              : Breakpoints.sm / constraints.maxWidth,
+                          child: Row(
+                            children: [
+                              Flexible(
+                                flex: constraints.maxWidth <= Breakpoints.sm
+                                    ? 4
+                                    : 8,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius:
+                                        BorderRadius.circular(Sizes.size3),
+                                  ),
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: Sizes.size12,
+                                    ),
+                                    child: Text(
+                                      'Follow',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Gaps.h5,
+                              Flexible(
+                                flex: 1,
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.grey.shade300,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: FaIcon(
+                                      FontAwesomeIcons.youtube,
+                                      size: Sizes.size20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Gaps.h5,
+                              Flexible(
+                                flex: 1,
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.grey.shade300,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: FaIcon(
+                                      FontAwesomeIcons.caretDown,
+                                      size: Sizes.size16,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        )
-                      ],
-                    ),
-                    Gaps.v20,
-                  ],
+                        ),
+                      ),
+                      Gaps.v14,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Sizes.size32,
+                        ),
+                        child: Text(
+                          "All highlights and where to watch live matched on duckbill... All highlights and where to watch live matched on duckbill...",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Gaps.v14,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.link,
+                            size: Sizes.size12,
+                          ),
+                          Gaps.h4,
+                          Text(
+                            "https://github.com/duckbill413",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ],
+                      ),
+                      Gaps.v20,
+                    ],
+                  ),
                 ),
-              ),
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: PersistentTabBar(),
-              ),
-            ];
-          },
-          body: TabBarView(
-            children: [
-              GridView.builder(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                itemCount: 20,
-                padding: EdgeInsets.zero,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: Sizes.size1,
-                  mainAxisSpacing: Sizes.size1,
-                  childAspectRatio: 9 / 12,
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: PersistentTabBar(),
                 ),
-                itemBuilder: (context, index) {
-                  return UserPostVideo(
-                    isPinned: index == 0,
-                    playedCnt: Random().nextInt(3_000_000),
-                  );
-                },
-              ),
-              Center(
-                child: Text(
-                  "Page two",
+              ];
+            },
+            body: TabBarView(
+              children: [
+                GridView.builder(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  itemCount: 20,
+                  padding: EdgeInsets.zero,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: Sizes.size1,
+                    mainAxisSpacing: Sizes.size1,
+                    childAspectRatio: 9 / 12,
+                  ),
+                  itemBuilder: (context, index) {
+                    return UserPostVideo(
+                      isPinned: index == 0,
+                      playedCnt: Random().nextInt(3_000_000),
+                    );
+                  },
                 ),
-              )
-            ],
+                Center(
+                  child: Text(
+                    "Page two",
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
