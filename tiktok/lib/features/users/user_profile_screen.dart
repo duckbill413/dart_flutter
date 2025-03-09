@@ -52,7 +52,12 @@ class UserProfileScreen extends StatelessWidget {
                         foregroundColor: Colors.blue,
                         foregroundImage: NetworkImage(
                             "https://avatars.githubusercontent.com/u/86183856?v=4"),
-                        child: Text("duckbill"),
+                        child: Text(
+                          "duckbill",
+                          style: TextStyle(
+                            fontSize: Sizes.size14,
+                          ),
+                        ),
                       ),
                       Gaps.v20,
                       Row(
