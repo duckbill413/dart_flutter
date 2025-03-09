@@ -75,7 +75,7 @@ class UserProfileScreen extends StatelessWidget {
                       ),
                       Gaps.v24,
                       SizedBox(
-                        height: Sizes.size48,
+                        height: Sizes.size52,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

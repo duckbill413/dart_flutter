@@ -31,7 +31,7 @@ class TiktokApp extends StatelessWidget {
       title: 'Tiktok Clone',
       themeMode: ThemeMode.system,
       theme: ThemeData(
-        useMaterial3: false,
+        useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
         brightness: Brightness.light,
         textTheme: Typography.blackMountainView,
@@ -39,6 +39,7 @@ class TiktokApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
           elevation: 0,
           centerTitle: true,
           titleTextStyle: TextStyle(
@@ -66,7 +67,7 @@ class TiktokApp extends StatelessWidget {
         ),
       ),
       darkTheme: ThemeData(
-        useMaterial3: false,
+        useMaterial3: true,
         scaffoldBackgroundColor: Colors.black,
         brightness: Brightness.dark,
         primaryColor: const Color(0xFFE9435A),
@@ -75,6 +76,18 @@ class TiktokApp extends StatelessWidget {
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.grey.shade900,
+          surfaceTintColor: Colors.grey.shade900,
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: Sizes.size16 + Sizes.size2,
+            color: Colors.white,
+          ),
+          actionsIconTheme: IconThemeData(
+            color: Colors.grey.shade100,
+          ),
+          iconTheme: IconThemeData(
+            color: Colors.grey.shade100,
+          ),
         ),
         textTheme: Typography.whiteMountainView,
         textSelectionTheme: TextSelectionThemeData(
@@ -83,7 +96,7 @@ class TiktokApp extends StatelessWidget {
         tabBarTheme: TabBarTheme(
           labelColor: Colors.white,
           indicatorColor: Colors.white,
-          unselectedLabelColor: Colors.grey.shade500,
+          unselectedLabelColor: Colors.grey.shade700,
         ),
         // textTheme: TextTheme(
         //   displayLarge: GoogleFonts.openSans(
