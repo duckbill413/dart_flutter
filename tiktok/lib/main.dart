@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/intl_generated.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/settings/settings_screen.dart';
@@ -31,6 +32,7 @@ class TiktokApp extends StatelessWidget {
       // 우측 상단의 디버그 태그 삭제
       title: 'Tiktok Clone',
       localizationsDelegates: [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

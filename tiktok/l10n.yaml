@@ -1,0 +1,9 @@
+# 번역 파일의 위치 명시 및 생성된 코드가 저장될 위치 정의
+# 번역 파일의 형식 (.arb)
+arb-dir: lib/intl
+# 앱의 기본 언어가 들어있는 파일 정의
+template-arb-file: intl_en.arb
+# 번역본 파일이 생성될 위치
+output-localization-file: intl_generated.dart
+# generate 파일 생성
+# flutter gen-l10n 명령어를 사용해서 언어 파일을 생성
