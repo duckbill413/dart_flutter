@@ -27,6 +27,8 @@ class TiktokApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    S.load(Locale("en")); // 휴대폰 재설정 없이 Locale 변경
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // 우측 상단의 디버그 태그 삭제
