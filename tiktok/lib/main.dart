@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok/constants/sizes.dart';
-import 'package:tiktok/features/authentication/sign_up_screen.dart';
+import 'package:tiktok/features/main_navigation/main_navigation_screen.dart';
 import 'package:tiktok/generated/l10n.dart';
 
 void main() async {
@@ -27,7 +27,7 @@ class TiktokApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    S.load(Locale("en")); // 휴대폰 재설정 없이 Locale 변경
+    S.load(Locale("ko")); // 휴대폰 재설정 없이 Locale 변경
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -142,7 +142,7 @@ class TiktokApp extends StatelessWidget {
         //       fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
         // ),
       ),
-      home: SignUpScreen(),
+      home: MainNavigationScreen(),
     );
   }
 }

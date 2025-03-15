@@ -5,6 +5,7 @@ import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/videos/widgets/video_button.dart';
 import 'package:tiktok/features/videos/widgets/video_comments.dart';
+import 'package:tiktok/generated/l10n.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -273,14 +274,14 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
                 Gaps.v28,
                 VideoButton(
                   icon: FontAwesomeIcons.solidHeart,
-                  text: "2.8M",
+                  text: S.of(context).likeCount(89283989),
                 ),
                 Gaps.v28,
                 GestureDetector(
                   onTap: () => _onCommentTap(context),
                   child: VideoButton(
                     icon: FontAwesomeIcons.solidComment,
-                    text: "33K",
+                    text: S.of(context).commentCount(33023038194),
                   ),
                 ),
                 Gaps.v28,
