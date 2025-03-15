@@ -22,6 +22,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(value) => "${value}";
 
+  static String m1(value, value2) =>
+      "${value} ${Intl.plural(value2, one: 'comment', other: 'comments')}";
+
   static String m2(value) => "${value}";
 
   static String m6(nameOfTheApp) => "${nameOfTheApp}에 가입하세요";
@@ -29,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "commentCount": m0,
+    "commentTitle": m1,
     "likeCount": m2,
     "signUpTitle": m6,
   };

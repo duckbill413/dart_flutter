@@ -1,5 +1,6 @@
 {
   "signUpTitle": "{nameOfTheApp}에 가입하세요",
   "likeCount": "{value}",
-  "commentCount": "{value}"
+  "commentCount": "{value}",
+  "commentTitle": "{value} {value2, plural, =1{comment} other{comments}}"
 }
