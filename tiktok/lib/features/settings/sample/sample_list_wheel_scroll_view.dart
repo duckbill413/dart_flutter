@@ -29,6 +29,5 @@ class SampleListWheelScrollView extends StatelessWidget {
           )
       ],
     );
-    ;
   }
 }
