@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/authentication/login_screen.dart';
 import 'package:tiktok/features/authentication/sign_up_screen.dart';
+import 'package:tiktok/features/authentication/username_screen.dart';
 import 'package:tiktok/generated/l10n.dart';
 
 void main() async {
@@ -142,7 +144,12 @@ class TiktokApp extends StatelessWidget {
         //       fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
         // ),
       ),
-      home: SignUpScreen(),
+      initialRoute: SignUpScreen.routeName,
+      routes: {
+        SignUpScreen.routeName: (context) => const SignUpScreen(),
+        UsernameScreen.routeName: (context) => const UsernameScreen(),
+        LoginScreen.routeName: (context) => const LoginScreen(),
+      },
     );
   }
 }
