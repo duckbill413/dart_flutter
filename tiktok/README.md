@@ -47,3 +47,7 @@ flutter 에서 `named route` 는 지양되고 있음
 
 - https://docs.flutter.dev/cookbook/navigation/named-routes
 - browser 환경에서 `forward`가 동작하지 않음
+
+### GoRouter
+
+https://pub.dev/packages/go_router/install

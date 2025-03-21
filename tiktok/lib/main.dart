@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok/constants/sizes.dart';
-import 'package:tiktok/features/authentication/email_screen.dart';
-import 'package:tiktok/features/authentication/login_screen.dart';
-import 'package:tiktok/features/authentication/sign_up_screen.dart';
-import 'package:tiktok/features/authentication/username_screen.dart';
 import 'package:tiktok/generated/l10n.dart';
+import 'package:tiktok/router.dart';
 
 void main() async {
   // This is the glue that binds the framework to the Flutter engine.
@@ -32,7 +29,8 @@ class TiktokApp extends StatelessWidget {
   Widget build(BuildContext context) {
     S.load(Locale("ko")); // 휴대폰 재설정 없이 Locale 변경
 
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
       // 우측 상단의 디버그 태그 삭제
       title: 'Tiktok Clone',
@@ -145,13 +143,13 @@ class TiktokApp extends StatelessWidget {
         //       fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
         // ),
       ),
-      initialRoute: SignUpScreen.routeName,
-      routes: {
-        SignUpScreen.routeName: (context) => const SignUpScreen(),
-        UsernameScreen.routeName: (context) => const UsernameScreen(),
-        LoginScreen.routeName: (context) => const LoginScreen(),
-        EmailScreen.routeName: (context) => const EmailScreen(),
-      },
+      // initialRoute: SignUpScreen.routeName,
+      // routes: {
+      //   SignUpScreen.routeName: (context) => const SignUpScreen(),
+      //   UsernameScreen.routeName: (context) => const UsernameScreen(),
+      //   LoginScreen.routeName: (context) => const LoginScreen(),
+      //   EmailScreen.routeName: (context) => const EmailScreen(),
+      // },
     );
   }
 }
