@@ -2,7 +2,7 @@
 
 nomadcoders tiktok clone coding project
 
-## Intl
+## 16 Intl
 
 ### 16.4 Flutter Intl
 
@@ -40,3 +40,10 @@ https://docs.flutter.dev/ui/accessibility-and-internationalization/international
 
 intl 파일에서 사용 가능한 다양한 `DateTime` format
 https://api.flutter.dev/flutter/intl/DateFormat-class.html
+
+## 18 NAVIGATOR 2
+
+flutter 에서 `named route` 는 지양되고 있음
+
+- https://docs.flutter.dev/cookbook/navigation/named-routes
+- browser 환경에서 `forward`가 동작하지 않음
