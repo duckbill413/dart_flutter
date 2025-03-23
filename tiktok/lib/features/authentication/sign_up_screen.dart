@@ -27,7 +27,7 @@ class SignUpScreen extends StatelessWidget {
     context.go(LoginScreen.routeName);
   }
 
-  void _onEmailSignUpTap(BuildContext context) {
+  void _onEmailTap(BuildContext context) {
     // Navigator.of(context).push(
     //   MaterialPageRoute(
     //     builder: (context) => const UsernameScreen(),
@@ -109,16 +109,20 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 Gaps.v40,
                 if (orientation == Orientation.portrait) ...[
-                  AuthButton(
-                    icon: FaIcon(FontAwesomeIcons.user),
-                    text: S.of(context).emailPasswordBtn,
-                    onTap: _onEmailSignUpTap,
+                  GestureDetector(
+                    onTap: () => _onEmailTap(context),
+                    child: AuthButton(
+                      icon: FaIcon(FontAwesomeIcons.user),
+                      text: S.of(context).emailPasswordBtn,
+                    ),
                   ),
                   Gaps.v16,
-                  AuthButton(
-                    icon: FaIcon(FontAwesomeIcons.apple),
-                    text: S.of(context).appleBtn,
-                    onTap: () => {},
+                  GestureDetector(
+                    onTap: () {},
+                    child: AuthButton(
+                      icon: FaIcon(FontAwesomeIcons.apple),
+                      text: S.of(context).appleBtn,
+                    ),
                   ),
                 ],
                 if (orientation == Orientation.landscape)
@@ -127,18 +131,22 @@ class SignUpScreen extends StatelessWidget {
                       /// AuthButton 안의 FractionallySizedBox 가 문제를 일으킴
                       /// 해결법 Expanded 로 감싸기
                       Expanded(
-                        child: AuthButton(
-                          icon: FaIcon(FontAwesomeIcons.user),
-                          text: S.of(context).emailPasswordBtn,
-                          onTap: _onEmailSignUpTap,
+                        child: GestureDetector(
+                          onTap: () => _onEmailTap(context),
+                          child: AuthButton(
+                            icon: FaIcon(FontAwesomeIcons.user),
+                            text: S.of(context).emailPasswordBtn,
+                          ),
                         ),
                       ),
                       Gaps.h16,
                       Expanded(
-                        child: AuthButton(
-                          icon: FaIcon(FontAwesomeIcons.apple),
-                          text: S.of(context).appleBtn,
-                          onTap: () => {},
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: AuthButton(
+                            icon: FaIcon(FontAwesomeIcons.apple),
+                            text: S.of(context).appleBtn,
+                          ),
                         ),
                       ),
                     ],

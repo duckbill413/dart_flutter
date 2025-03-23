@@ -54,16 +54,20 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Gaps.v40,
-              AuthButton(
-                icon: FaIcon(FontAwesomeIcons.user),
-                text: "Use email & password",
-                onTap: _onEmailLoginTap,
+              GestureDetector(
+                onTap: () => _onEmailLoginTap(context),
+                child: AuthButton(
+                  icon: FaIcon(FontAwesomeIcons.user),
+                  text: "Use email & password",
+                ),
               ),
               Gaps.v16,
-              AuthButton(
-                icon: FaIcon(FontAwesomeIcons.apple),
-                text: "Continue with Apple",
-                onTap: () => {},
+              GestureDetector(
+                onTap: () {},
+                child: AuthButton(
+                  icon: FaIcon(FontAwesomeIcons.apple),
+                  text: "Continue with Apple",
+                ),
               ),
             ],
           ),
