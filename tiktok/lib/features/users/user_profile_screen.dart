@@ -10,9 +10,19 @@ import 'package:tiktok/features/users/widgets/persistent_tab_bar.dart';
 import 'package:tiktok/features/users/widgets/user_post_video.dart';
 import 'package:tiktok/features/users/widgets/user_stats_card_widget.dart';
 
-class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({super.key});
+class UserProfileScreen extends StatefulWidget {
+  final String username;
 
+  const UserProfileScreen({
+    super.key,
+    required this.username,
+  });
+
+  @override
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen> {
   void _onGearPressed(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => SettingsScreen(),
@@ -31,7 +41,7 @@ class UserProfileScreen extends StatelessWidget {
               return [
                 SliverAppBar(
                   title: Text(
-                    "duckbill",
+                    widget.username,
                   ),
                   actions: [
                     IconButton(
@@ -64,7 +74,7 @@ class UserProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "@duckbill",
+                            "@${widget.username}",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: Sizes.size18,
