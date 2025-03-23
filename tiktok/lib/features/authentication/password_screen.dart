@@ -76,7 +76,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
     return GestureDetector(
       onTap: _onScaffoldTap,
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text('Sign up'),
         ),
@@ -93,7 +92,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Sizes.size24,
-                  color: Colors.black,
                 ),
               ),
               Gaps.v16,

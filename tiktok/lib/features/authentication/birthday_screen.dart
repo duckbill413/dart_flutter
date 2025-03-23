@@ -47,7 +47,6 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Sign up'),
       ),
@@ -64,7 +63,6 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: Sizes.size24,
-                color: Colors.black,
               ),
             ),
             Gaps.v8,
