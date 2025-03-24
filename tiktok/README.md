@@ -51,3 +51,37 @@ flutter 에서 `named route` 는 지양되고 있음
 ### GoRouter
 
 https://pub.dev/packages/go_router/install
+
+## 19 VIDEO RECORDING
+
+> ## Iphone Build App Error
+> ![아이폰 에러](./iphone_error1.png)
+> `rm -rf ./ios/Pods`  
+> `rm -rf ./ios/Podfile.lock`  
+> `pod install`  
+> `xcode` => `shift + command + K`
+
+### 앱 빌드를 위한 아이폰 세팅
+
+1. `ios/Runner/Info.plist`
+2. `ios/Podfile`
+
+위의 파일 수정을 통해 카메라 및 마이크 권한 부여 설정
+
+### 앱 빌드를 위한 안드로이드 세팅
+
+1. `android/gradle.properties`
+
+    ```
+    android.useAndroidX=true
+    android.enableJetifier=true
+    ```
+
+2. `android/app/build.gradle`
+
+    ```
+    android {
+      compileSdkVersion 33
+      ...
+    }
+    ```
