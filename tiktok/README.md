@@ -85,3 +85,8 @@ https://pub.dev/packages/go_router/install
       ...
     }
     ```
+
+> `exportSyncFdForQSRILocked` 로그가 지속적으로 발생하는 경우
+> `flutter run --no-enable-impeller`  또는
+> Edit Configuration 에서 `Additional run args` 에
+> `--no-enable-impeller` 옵션 추가
