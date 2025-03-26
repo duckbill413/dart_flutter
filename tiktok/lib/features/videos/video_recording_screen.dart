@@ -12,12 +12,30 @@ class VideoRecordingScreen extends StatefulWidget {
   State<VideoRecordingScreen> createState() => _VideoRecordingScreenState();
 }
 
-class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
+class _VideoRecordingScreenState extends State<VideoRecordingScreen>
+    with TickerProviderStateMixin {
   bool _hasPermission = false;
   bool _isSelfieMode = false;
   late FlashMode _flashMode;
 
   late CameraController _cameraController;
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: Duration(
+      milliseconds: 300,
+    ),
+  );
+  late final Animation<double> _recordBtnAnimation = Tween(
+    begin: 1.0,
+    end: 1.3,
+  ).animate(_animationController);
+  late final AnimationController _progressAnimationController =
+      AnimationController(
+    vsync: this,
+    duration: Duration(seconds: 10),
+    lowerBound: 0.0,
+    upperBound: 1.0,
+  );
 
   Future<void> initCamera() async {
     final cameras = await availableCameras();
@@ -67,10 +85,25 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     }
   }
 
+  void _startRecording(TapDownDetails _) {
+    _progressAnimationController.forward();
+    _animationController.forward();
+  }
+
+  void _stopRecording() {
+    _animationController.reverse();
+    _progressAnimationController.reset();
+  }
+
   @override
   void initState() {
     super.initState();
     initPermissions();
+    _progressAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _stopRecording();
+      }
+    });
   }
 
   @override
@@ -95,6 +128,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                   ],
                 )
               : Stack(
+                  alignment: Alignment.center,
                   children: [
                     CameraPreview(_cameraController),
                     Positioned(
@@ -138,6 +172,45 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                             icon: Icons.flashlight_on_rounded,
                           ),
                         ],
+                      ),
+                    ),
+                    Positioned(
+                      bottom: Sizes.size40,
+                      child: GestureDetector(
+                        onTapDown: _startRecording,
+                        onTapUp: (details) => _stopRecording(),
+                        child: ScaleTransition(
+                          scale: _recordBtnAnimation,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: Sizes.size64,
+                                height: Sizes.size64,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              FadeTransition(
+                                opacity: _recordBtnAnimation,
+                                child: SizedBox(
+                                  width: Sizes.size56,
+                                  height: Sizes.size56,
+                                  child: AnimatedBuilder(
+                                    animation: _progressAnimationController,
+                                    builder: (context, child) =>
+                                        CircularProgressIndicator(
+                                      value: _progressAnimationController.value,
+                                      strokeWidth: Sizes.size5,
+                                      color: Colors.grey.shade200,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],
