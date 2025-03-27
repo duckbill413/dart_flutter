@@ -56,8 +56,9 @@ https://pub.dev/packages/go_router/install
 
 > ## Iphone Build App Error
 > ![아이폰 에러](./iphone_error1.png)
-> `rm -rf ./ios/Pods`  
-> `rm -rf ./ios/Podfile.lock`  
+> `cd ./ios`
+> `rm -rf Pods`  
+> `rm -rf Podfile.lock`  
 > `pod install`  
 > `xcode` => `shift + command + K`
 
