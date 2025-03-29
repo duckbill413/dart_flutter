@@ -1,5 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
@@ -110,11 +112,32 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
     final file = await _cameraController.stopVideoRecording();
 
+    if (!mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => VideoPreviewScreen(
           video: file,
+          isPicked: false,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onPickVideoPressed() async {
+    final video = await ImagePicker().pickVideo(
+      // source: ImageSource.camera,
+      source: ImageSource.gallery,
+    );
+    if (video == null) return;
+    if (!mounted) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoPreviewScreen(
+          video: video,
+          isPicked: true,
         ),
       ),
     );
@@ -209,41 +232,60 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                     ),
                     Positioned(
                       bottom: Sizes.size40,
-                      child: GestureDetector(
-                        onTapDown: _startRecording,
-                        onTapUp: (details) => _stopRecording(),
-                        child: ScaleTransition(
-                          scale: _recordBtnAnimation,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                width: Sizes.size64,
-                                height: Sizes.size64,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.red,
-                                ),
-                              ),
-                              FadeTransition(
-                                opacity: _recordBtnAnimation,
-                                child: SizedBox(
-                                  width: Sizes.size56,
-                                  height: Sizes.size56,
-                                  child: AnimatedBuilder(
-                                    animation: _progressAnimationController,
-                                    builder: (context, child) =>
-                                        CircularProgressIndicator(
-                                      value: _progressAnimationController.value,
-                                      strokeWidth: Sizes.size5,
-                                      color: Colors.grey.shade200,
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Spacer(),
+                          GestureDetector(
+                            onTapDown: _startRecording,
+                            onTapUp: (details) => _stopRecording(),
+                            child: ScaleTransition(
+                              scale: _recordBtnAnimation,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: Sizes.size64,
+                                    height: Sizes.size64,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.red,
                                     ),
                                   ),
+                                  FadeTransition(
+                                    opacity: _recordBtnAnimation,
+                                    child: SizedBox(
+                                      width: Sizes.size56,
+                                      height: Sizes.size56,
+                                      child: AnimatedBuilder(
+                                        animation: _progressAnimationController,
+                                        builder: (context, child) =>
+                                            CircularProgressIndicator(
+                                          value: _progressAnimationController
+                                              .value,
+                                          strokeWidth: Sizes.size5,
+                                          color: Colors.grey.shade200,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: IconButton(
+                                onPressed: _onPickVideoPressed,
+                                icon: FaIcon(
+                                  FontAwesomeIcons.image,
+                                  color: Colors.white,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ],

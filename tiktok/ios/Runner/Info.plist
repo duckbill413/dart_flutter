@@ -36,6 +36,8 @@
     <string>your usage description here</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>your usage description here</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires access to your photo library to get images.</string>
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>This app requires access to your photo library to save images.</string>
 	<key>UISupportedInterfaceOrientations</key>
