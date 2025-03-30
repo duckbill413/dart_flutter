@@ -19,6 +19,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   bool _hasPermission = false;
   bool _isSelfieMode = false;
+  bool _appActivated = false;
+  double _zoomLevel = 0.0;
+  late double _minZoomLevel;
+  late double _maxZoomLevel;
   late FlashMode _flashMode;
 
   late CameraController _cameraController;
@@ -47,7 +51,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       return;
     }
     _cameraController = CameraController(
-      cameras[_isSelfieMode ? 0 : 1],
+      cameras[_isSelfieMode ? 1 : 0],
       ResolutionPreset.ultraHigh,
     );
 
@@ -55,9 +59,12 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
     await _cameraController.prepareForVideoRecording(); // ios
 
+    _appActivated = true;
     _flashMode = _cameraController.value.flashMode;
     await _setFlashMode(FlashMode.off);
 
+    _minZoomLevel = await _cameraController.getMinZoomLevel();
+    _maxZoomLevel = await _cameraController.getMaxZoomLevel();
     setState(() {});
   }
 
@@ -114,6 +121,11 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
     final file = await _cameraController.stopVideoRecording();
 
+    // 줌 초기화
+    _zoomLevel = _minZoomLevel;
+    await _cameraController.setZoomLevel(_zoomLevel);
+    setState(() {});
+
     if (!mounted) return;
     Navigator.push(
       context,
@@ -145,14 +157,55 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     );
   }
 
+  Future<void> _onZoomInOut(DragUpdateDetails details) async {
+    var deltaDy = details.delta.dy;
+    if (deltaDy > 0) {
+      _zoomLevel =
+          _zoomLevel <= _minZoomLevel ? _minZoomLevel : _zoomLevel - 0.05;
+    } else if (deltaDy < 0) {
+      _zoomLevel =
+          _zoomLevel >= _maxZoomLevel ? _maxZoomLevel : _zoomLevel + 0.05;
+    } else {
+      return;
+    }
+
+    await _cameraController.setZoomLevel(_zoomLevel);
+    setState(() {});
+  }
+
+  // From: nico
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (!_hasPermission) return;
+  //   if (!_cameraController.value.isInitialized) return;
+  //   if (state == AppLifecycleState.inactive) {
+  //     _cameraController.dispose();
+  //   } else if (state == AppLifecycleState.resumed) {
+  //     initCamera();
+  //   }
+  // }
+
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (!_hasPermission) return;
-    if (!_cameraController.value.isInitialized) return;
-    if (state == AppLifecycleState.inactive) {
-      _cameraController.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      initCamera();
+  Future didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (!_cameraController.value.isInitialized) {
+      return;
+    }
+
+    switch (state) {
+      case AppLifecycleState.resumed:
+        _appActivated = true;
+        await initPermissions();
+        break;
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+        _appActivated = false;
+        setState(() {});
+        // 위젯 트리에서 CameraPreview를 제거 후, dispose 해야한다.
+        // setState와의 순서 중요
+        _cameraController.dispose();
+        break;
     }
   }
 
@@ -172,7 +225,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   void dispose() {
     _progressAnimationController.dispose();
     _animationController.dispose();
-    _cameraController.dispose();
+
+    if (_cameraController.value.isInitialized) {
+      _cameraController.dispose();
+    }
     super.dispose();
   }
 
@@ -200,7 +256,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
               : Stack(
                   alignment: Alignment.center,
                   children: [
-                    CameraPreview(_cameraController),
+                    if (_appActivated) CameraPreview(_cameraController),
                     Positioned(
                       top: Sizes.size20,
                       right: Sizes.size20,
@@ -253,6 +309,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                           GestureDetector(
                             onTapDown: _startRecording,
                             onTapUp: (details) => _stopRecording(),
+                            onPanUpdate: (details) => _onZoomInOut(details),
                             child: ScaleTransition(
                               scale: _recordBtnAnimation,
                               child: Stack(
