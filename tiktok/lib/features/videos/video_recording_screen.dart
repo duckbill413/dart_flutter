@@ -256,7 +256,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
               : Stack(
                   alignment: Alignment.center,
                   children: [
-                    if (_appActivated) CameraPreview(_cameraController),
+                    if (_appActivated)
+                      Center(
+                        child: CameraPreview(_cameraController),
+                      ),
                     Positioned(
                       top: Sizes.size20,
                       right: Sizes.size20,
