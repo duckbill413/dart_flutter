@@ -8,6 +8,7 @@ import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/discover/discover_screen.dart';
 import 'package:tiktok/features/inbox/inbox_screen.dart';
 import 'package:tiktok/features/users/user_profile_screen.dart';
+import 'package:tiktok/features/videos/video_recording_screen.dart';
 import 'package:tiktok/features/videos/video_timeline_screen.dart';
 import 'package:tiktok/utils.dart';
 
@@ -43,16 +44,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 
   void _onPostVideoButtonTap() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: Text("Record Video"),
-          ),
-        ), // TODO: 카메라 화면 표시
-        fullscreenDialog: true,
-      ),
-    );
+    context.pushNamed(VideoRecordingScreen.routeName);
   }
 
   @override
