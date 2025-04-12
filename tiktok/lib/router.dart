@@ -64,6 +64,7 @@ final router = GoRouter(
         transitionDuration: Duration(
           milliseconds: 200,
         ),
+        // TransitionBuilder 를 사용하여 카메라 화면 팝업
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final position = Tween(
             begin: Offset(0, 1),
