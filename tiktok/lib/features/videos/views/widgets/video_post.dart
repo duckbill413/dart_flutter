@@ -88,12 +88,18 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     );
 
     _playbackConfigViewModel = context.read<PlaybackConfigViewModel>();
+    setState(() {
+      _isMute = _playbackConfigViewModel.muted;
+    });
     _playbackConfigViewModel.addListener(_onPlaybackConfigChanged);
   }
 
   void _onPlaybackConfigChanged() {
     if (!mounted) return;
     final muted = context.read<PlaybackConfigViewModel>().muted;
+    setState(() {
+      _isMute = muted;
+    });
     if (muted) {
       _videoPlayerController.setVolume(0);
     } else {
@@ -133,7 +139,7 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     if (_isMute) {
       await _videoPlayerController.setVolume(0);
     } else {
-      _videoPlayerController.setVolume(1);
+      await _videoPlayerController.setVolume(1);
     }
     setState(() {});
   }
@@ -276,19 +282,6 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
             ),
           ),
           Positioned(
-            left: 20,
-            top: 40,
-            child: IconButton(
-              onPressed: () => _playbackConfigViewModel.toggleMute(),
-              icon: FaIcon(
-                context.watch<PlaybackConfigViewModel>().muted
-                    ? FontAwesomeIcons.volumeOff
-                    : FontAwesomeIcons.volumeHigh,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Positioned(
             bottom: 20,
             right: 10,
             child: Column(
@@ -330,19 +323,22 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
           Positioned(
             right: 10,
             top: 50,
-            child: IconButton(
-              onPressed: _onMuteTap,
-              icon: _isMute
-                  ? FaIcon(
-                      FontAwesomeIcons.volumeOff,
-                      color: Colors.white,
-                    )
-                  : FaIcon(
-                      FontAwesomeIcons.volumeHigh,
-                      color: Colors.white,
-                    ),
+            child: AnimatedOpacity(
+              opacity: _isMute ? 1.0 : 0.0,
+              duration: Duration(milliseconds: 300),
+              child: IgnorePointer(
+                // 안 보일 때 클릭 방지
+                ignoring: !_isMute,
+                child: IconButton(
+                  onPressed: _onMuteTap,
+                  icon: FaIcon(
+                    FontAwesomeIcons.volumeHigh,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
-          ),
+          )
         ],
       ),
     );
