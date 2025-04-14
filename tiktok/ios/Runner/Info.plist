@@ -40,6 +40,8 @@
     <string>This app requires access to your photo library to get images.</string>
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>This app requires access to your photo library to save images.</string>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>앱이 로컬 네트워크에 접근하기 위해 필요합니다.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
