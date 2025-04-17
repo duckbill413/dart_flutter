@@ -258,9 +258,9 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
             left: 20,
             top: 40,
             child: IconButton(
-              onPressed: () {},
+              onPressed: VideoConfigData.of(context).toggleMuted,
               icon: FaIcon(
-                VideoConfig.of(context).autoMute
+                VideoConfigData.of(context).autoMute
                     ? FontAwesomeIcons.volumeOff
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,

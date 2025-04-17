@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/common/widgets/video_config/video_config.dart';
 
 // #13.0 ListWheelScrollView
 // 닫기 버튼을 쉽게 만들 수 있는 위젯
@@ -237,6 +238,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         body: ListView(
           children: [
+            SwitchListTile.adaptive(
+              value: VideoConfigData.of(context).autoMute,
+              onChanged: (value) => VideoConfigData.of(context).toggleMuted(),
+              title: const Text("Auto Mute Videos"),
+              subtitle: const Text("Videos will be muted by default"),
+            ),
             SwitchListTile.adaptive(
               value: _notifications,
               onChanged: _onNotificationsChanged,
