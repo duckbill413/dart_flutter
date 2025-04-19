@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tiktok/common/widgets/main_navigation/widgets/nav_tab.dart';
-import 'package:tiktok/common/widgets/main_navigation/widgets/post_video_button.dart';
+import 'package:tiktok/common/main_navigation/widgets/nav_tab.dart';
+import 'package:tiktok/common/main_navigation/widgets/post_video_button.dart';
+import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/discover/discover_screen.dart';
@@ -10,7 +11,6 @@ import 'package:tiktok/features/inbox/inbox_screen.dart';
 import 'package:tiktok/features/users/user_profile_screen.dart';
 import 'package:tiktok/features/videos/video_recording_screen.dart';
 import 'package:tiktok/features/videos/video_timeline_screen.dart';
-import 'package:tiktok/utils.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const String routeName = "mainNavigation";
@@ -49,7 +49,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+    final isDark = !themeConfig.value;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -80,9 +80,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         ],
       ),
       bottomNavigationBar: Container(
-        color: _selectedIndex == 0 || isDarkMode(context)
-            ? Colors.black
-            : Colors.white,
+        color: _selectedIndex == 0 || isDark ? Colors.black : Colors.white,
         child: Padding(
           padding: EdgeInsets.only(
             top: Sizes.size10,

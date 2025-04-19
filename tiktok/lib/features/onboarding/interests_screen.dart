@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/onboarding/tutorial_screen.dart';
 import 'package:tiktok/features/onboarding/widgets/interest_button.dart';
-import 'package:tiktok/utils.dart';
 
 const interests = [
   "Daily Life",
@@ -152,7 +152,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        color: isDarkMode(context) ? Colors.black : Colors.white,
+        color: !themeConfig.value ? Colors.black : Colors.white,
         child: Padding(
           padding: EdgeInsets.only(
             bottom: Sizes.size40,

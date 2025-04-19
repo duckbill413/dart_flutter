@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tiktok/common/widgets/video_config/video_config.dart';
+import 'package:tiktok/common/theme_config/theme_config.dart';
+import 'package:tiktok/common/video_config/video_config.dart';
 
 // #13.0 ListWheelScrollView
 // 닫기 버튼을 쉽게 만들 수 있는 위젯
@@ -242,11 +243,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               valueListenable: videoValueConfig,
               builder: (context, value, child) => SwitchListTile.adaptive(
                 value: videoValueConfig.value,
-                onChanged: (value) {
-                  videoValueConfig.value = !videoValueConfig.value;
-                },
+                onChanged: (value) =>
+                    videoValueConfig.value = !videoValueConfig.value,
                 title: const Text("Auto Mute Videos"),
                 subtitle: const Text("Videos will be muted by default"),
+              ),
+            ),
+            ValueListenableBuilder(
+              valueListenable: themeConfig,
+              builder: (context, value, child) => SwitchListTile.adaptive(
+                value: themeConfig.value,
+                onChanged: (value) => themeConfig.value = !themeConfig.value,
+                title: Text("Light/Dart Theme"),
+                subtitle: Text("Setting default Theme Style"),
               ),
             ),
             SwitchListTile.adaptive(

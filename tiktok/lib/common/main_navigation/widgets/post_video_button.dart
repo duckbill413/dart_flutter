@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/constants/sizes.dart';
-import 'package:tiktok/utils.dart';
 
 class PostVideoButton extends StatelessWidget {
   const PostVideoButton({
@@ -13,7 +13,7 @@ class PostVideoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = isDarkMode(context);
+    final isDark = !themeConfig.value;
 
     return Stack(
       clipBehavior: Clip.none,

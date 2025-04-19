@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/constants/breakpoints.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
-import 'package:tiktok/utils.dart';
 
 final tabs = [
   "Top",
@@ -103,7 +103,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: isDarkMode(context)
+                fillColor: !themeConfig.value
                     ? Colors.grey.shade700
                     : Colors.grey.shade200,
                 contentPadding: EdgeInsets.zero,
@@ -242,7 +242,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                         constraints.maxWidth > 250)
                       DefaultTextStyle(
                         style: TextStyle(
-                          color: isDarkMode(context)
+                          color: !themeConfig.value
                               ? Colors.grey.shade300
                               : Colors.grey.shade600,
                           fontWeight: FontWeight.bold,

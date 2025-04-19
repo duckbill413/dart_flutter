@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tiktok/common/widgets/main_navigation/main_navigation_screen.dart';
+import 'package:tiktok/common/main_navigation/main_navigation_screen.dart';
 import 'package:tiktok/features/authentication/login_screen.dart';
 import 'package:tiktok/features/authentication/sign_up_screen.dart';
 import 'package:tiktok/features/inbox/activity_screen.dart';
