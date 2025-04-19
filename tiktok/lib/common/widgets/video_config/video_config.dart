@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-class VideoConfig extends ChangeNotifier {
+final videoValueConfig = ValueNotifier(false);
+
+class VideoClassConfig extends ChangeNotifier {
   bool autoMute = true;
 
   void toggleAutoMute() {
@@ -9,4 +11,4 @@ class VideoConfig extends ChangeNotifier {
   }
 }
 
-final videoConfig = VideoConfig();
+final videoClassConfig = VideoClassConfig();

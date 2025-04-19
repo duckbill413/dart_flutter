@@ -50,7 +50,7 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   final Duration _animationDuration = Duration(milliseconds: 200);
   bool _isTagExpanded = false;
   bool _isMute = false;
-  bool _autoMute = videoConfig.autoMute;
+  bool _autoMute = videoValueConfig.value;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -86,10 +86,10 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
       duration: _animationDuration,
     );
 
-    videoConfig.addListener(
+    videoValueConfig.addListener(
       () {
         setState(() {
-          _autoMute = videoConfig.autoMute;
+          _autoMute = videoValueConfig.value;
         });
       },
     );
@@ -267,7 +267,9 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
             left: 20,
             top: 40,
             child: IconButton(
-              onPressed: () => videoConfig.toggleAutoMute(),
+              onPressed: () {
+                videoValueConfig.value = !videoValueConfig.value;
+              },
               icon: FaIcon(
                 _autoMute
                     ? FontAwesomeIcons.volumeOff
