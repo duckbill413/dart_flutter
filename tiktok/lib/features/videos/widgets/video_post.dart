@@ -253,20 +253,19 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
               ],
             ),
           ),
-          // practice Inherited Widget
-          // Positioned(
-          //   left: 20,
-          //   top: 40,
-          //   child: IconButton(
-          //     onPressed: VideoConfigData.of(context).toggleMuted,
-          //     icon: FaIcon(
-          //       VideoConfigData.of(context).autoMute
-          //           ? FontAwesomeIcons.volumeOff
-          //           : FontAwesomeIcons.volumeHigh,
-          //       color: Colors.white,
-          //     ),
-          //   ),
-          // ),
+          Positioned(
+            left: 20,
+            top: 40,
+            child: IconButton(
+              onPressed: () {},
+              icon: FaIcon(
+                false
+                    ? FontAwesomeIcons.volumeOff
+                    : FontAwesomeIcons.volumeHigh,
+                color: Colors.white,
+              ),
+            ),
+          ),
           Positioned(
             bottom: 20,
             right: 10,
