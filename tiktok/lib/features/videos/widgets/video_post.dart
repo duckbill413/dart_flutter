@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok/common/video_config/video_config.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
@@ -50,7 +51,6 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   final Duration _animationDuration = Duration(milliseconds: 200);
   bool _isTagExpanded = false;
   bool _isMute = false;
-  bool _autoMute = videoValueConfig.value;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -84,14 +84,6 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
       upperBound: 1.5,
       value: 1.5,
       duration: _animationDuration,
-    );
-
-    videoValueConfig.addListener(
-      () {
-        setState(() {
-          _autoMute = videoValueConfig.value;
-        });
-      },
     );
   }
 
@@ -267,11 +259,9 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
             left: 20,
             top: 40,
             child: IconButton(
-              onPressed: () {
-                videoValueConfig.value = !videoValueConfig.value;
-              },
+              onPressed: () => context.read<VideoConfig>().toggleIsMuted(),
               icon: FaIcon(
-                _autoMute
+                context.watch<VideoConfig>().isMuted
                     ? FontAwesomeIcons.volumeOff
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,

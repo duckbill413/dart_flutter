@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
@@ -75,7 +76,9 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        color: !themeConfig.value ? null : Colors.grey.shade50,
+        color: context.watch<ThemeConfig>().isDarkMode
+            ? null
+            : Colors.grey.shade50,
         clipBehavior: Clip.none,
         child: Padding(
           padding: const EdgeInsets.only(

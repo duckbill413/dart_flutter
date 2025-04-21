@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/constants/sizes.dart';
 
@@ -35,7 +36,7 @@ class _InterestButtonState extends State<InterestButton> {
         decoration: BoxDecoration(
           color: _isSelected
               ? Theme.of(context).primaryColor
-              : !themeConfig.value
+              : context.watch<ThemeConfig>().isDarkMode
                   ? Colors.grey.shade700
                   : Colors.white,
           borderRadius: BorderRadius.circular(

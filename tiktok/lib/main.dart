@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok/common/theme_config/theme_config.dart';
+import 'package:tiktok/common/video_config/video_config.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/generated/l10n.dart';
 import 'package:tiktok/router.dart';
@@ -30,8 +32,12 @@ class TiktokApp extends StatelessWidget {
   Widget build(BuildContext context) {
     S.load(Locale("ko")); // 휴대폰 재설정 없이 Locale 변경
 
-    return ValueListenableBuilder(
-      builder: (context, value, child) => MaterialApp.router(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => VideoConfig()),
+        ChangeNotifierProvider(create: (_) => ThemeConfig()),
+      ],
+      child: MaterialApp.router(
         routerConfig: router,
         debugShowCheckedModeBanner: false,
         // 우측 상단의 디버그 태그 삭제
@@ -47,7 +53,7 @@ class TiktokApp extends StatelessWidget {
           Locale("kr"),
           Locale("es"),
         ],
-        themeMode: value ? ThemeMode.light : ThemeMode.dark,
+        themeMode: true ? ThemeMode.light : ThemeMode.dark,
         theme: ThemeData(
           useMaterial3: true,
           scaffoldBackgroundColor: Colors.white,
@@ -153,7 +159,6 @@ class TiktokApp extends StatelessWidget {
         //   EmailScreen.routeName: (context) => const EmailScreen(),
         // },
       ),
-      valueListenable: themeConfig,
     );
   }
 }

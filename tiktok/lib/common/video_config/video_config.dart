@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 
-final videoValueConfig = ValueNotifier(false);
+class VideoConfig extends ChangeNotifier {
+  bool isMuted = false;
+  bool isAutoplay = false;
 
-class VideoClassConfig extends ChangeNotifier {
-  bool autoMute = true;
+  void toggleIsMuted() {
+    isMuted = !isMuted;
+    notifyListeners();
+  }
 
-  void toggleAutoMute() {
-    autoMute = !autoMute;
-    notifyListeners(); // 데이터 변경 알림
+  void toggleAutoplay() {
+    isAutoplay = !isAutoplay;
+    notifyListeners();
   }
 }
-
-final videoClassConfig = VideoClassConfig();

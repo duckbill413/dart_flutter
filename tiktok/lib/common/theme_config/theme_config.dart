@@ -1,3 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
-final themeConfig = ValueNotifier(true);
+class ThemeConfig extends ChangeNotifier {
+  bool isDarkMode = false;
+
+  void toggleThemeMode() {
+    isDarkMode = !isDarkMode;
+    notifyListeners();
+  }
+}

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/common/video_config/video_config.dart';
 
@@ -239,24 +240,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         body: ListView(
           children: [
-            ValueListenableBuilder(
-              valueListenable: videoValueConfig,
-              builder: (context, value, child) => SwitchListTile.adaptive(
-                value: videoValueConfig.value,
-                onChanged: (value) =>
-                    videoValueConfig.value = !videoValueConfig.value,
-                title: const Text("Auto Mute Videos"),
-                subtitle: const Text("Videos will be muted by default"),
-              ),
+            SwitchListTile.adaptive(
+              value: context.watch<VideoConfig>().isMuted,
+              onChanged: (_) => context.read<VideoConfig>().toggleIsMuted(),
+              title: const Text("Auto Mute Videos"),
+              subtitle: const Text("Videos will be muted by default"),
             ),
-            ValueListenableBuilder(
-              valueListenable: themeConfig,
-              builder: (context, value, child) => SwitchListTile.adaptive(
-                value: themeConfig.value,
-                onChanged: (value) => themeConfig.value = !themeConfig.value,
-                title: Text("Light/Dart Theme"),
-                subtitle: Text("Setting default Theme Style"),
-              ),
+            SwitchListTile.adaptive(
+              value: context.watch<ThemeConfig>().isDarkMode,
+              onChanged: (_) {
+                context.read<ThemeConfig>().toggleThemeMode();
+              },
+              title: context.watch<ThemeConfig>().isDarkMode
+                  ? Text("Dark Theme")
+                  : Text("Light Theme"),
+              subtitle: Text("Setting default Theme Style"),
             ),
             SwitchListTile.adaptive(
               value: _notifications,

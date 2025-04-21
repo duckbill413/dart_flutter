@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
@@ -152,7 +153,9 @@ class _InterestsScreenState extends State<InterestsScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        color: !themeConfig.value ? Colors.black : Colors.white,
+        color: context.watch<ThemeConfig>().isDarkMode
+            ? Colors.black
+            : Colors.white,
         child: Padding(
           padding: EdgeInsets.only(
             bottom: Sizes.size40,
