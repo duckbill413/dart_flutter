@@ -10,8 +10,8 @@ import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/discover/discover_screen.dart';
 import 'package:tiktok/features/inbox/inbox_screen.dart';
 import 'package:tiktok/features/users/user_profile_screen.dart';
-import 'package:tiktok/features/videos/video_recording_screen.dart';
-import 'package:tiktok/features/videos/video_timeline_screen.dart';
+import 'package:tiktok/features/videos/views/video_recording_screen.dart';
+import 'package:tiktok/features/videos/views/video_timeline_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const String routeName = "mainNavigation";
