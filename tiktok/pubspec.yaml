@@ -50,6 +50,7 @@ dependencies:
   flutter_image_gallery_saver: ^0.0.2
   image_picker: ^1.1.2
   provider: 6.0.5
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
