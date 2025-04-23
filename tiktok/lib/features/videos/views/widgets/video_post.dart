@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:tiktok/common/video_config/video_config.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/videos/views/widgets/video_button.dart';
@@ -259,9 +257,9 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
             left: 20,
             top: 40,
             child: IconButton(
-              onPressed: () => context.read<VideoConfig>().toggleIsMuted(),
+              onPressed: () {},
               icon: FaIcon(
-                context.watch<VideoConfig>().isMuted
+                false
                     ? FontAwesomeIcons.volumeOff
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/common/video_config/video_config.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/videos/repos/playback_config_repo.dart';
+import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok/generated/l10n.dart';
 import 'package:tiktok/router.dart';
 
@@ -18,6 +21,9 @@ void main() async {
     ],
   );
 
+  final preferences = await SharedPreferences.getInstance();
+  final repository = PlaybackConfigRepository(preferences);
+
   // 상단 UI 의 다크/라이트 모드를 설정 (앱 화면별로 설정 가능)
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle.dark,
@@ -25,6 +31,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+            create: (_) => PlaybackConfigViewModel(repository)),
         ChangeNotifierProvider(create: (_) => VideoConfig()),
         ChangeNotifierProvider(create: (_) => ThemeConfig()),
       ],

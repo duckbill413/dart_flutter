@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktok/common/theme_config/theme_config.dart';
-import 'package:tiktok/common/video_config/video_config.dart';
+import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
 
 // #13.0 ListWheelScrollView
 // 닫기 버튼을 쉽게 만들 수 있는 위젯
@@ -241,10 +241,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
         body: ListView(
           children: [
             SwitchListTile.adaptive(
-              value: context.watch<VideoConfig>().isMuted,
-              onChanged: (_) => context.read<VideoConfig>().toggleIsMuted(),
-              title: const Text("Auto Mute Videos"),
-              subtitle: const Text("Videos will be muted by default"),
+              value: context.watch<PlaybackConfigViewModel>().muted,
+              onChanged: (value) =>
+                  context.read<PlaybackConfigViewModel>().setMuted(value),
+              title: Text("Mute video"),
+              subtitle: Text("Video will be muted by default."),
+            ),
+            SwitchListTile.adaptive(
+              value: context.watch<PlaybackConfigViewModel>().autoplay,
+              onChanged: (value) =>
+                  context.read<PlaybackConfigViewModel>().setAutoplay(value),
+              title: Text("Autoplay"),
+              subtitle: Text("Video will start playing automatically."),
             ),
             SwitchListTile.adaptive(
               value: context.watch<ThemeConfig>().isDarkMode,
