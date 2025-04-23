@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok/features/videos/views/widgets/video_comments.dart';
 import 'package:tiktok/generated/l10n.dart';
@@ -44,6 +46,7 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   final VideoPlayerController _videoPlayerController =
       VideoPlayerController.asset("assets/videos/video1.MP4");
   late final AnimationController _animationController;
+  late final PlaybackConfigViewModel _playbackConfigViewModel;
 
   bool _isPaused = false;
   final Duration _animationDuration = Duration(milliseconds: 200);
@@ -83,11 +86,25 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
       value: 1.5,
       duration: _animationDuration,
     );
+
+    _playbackConfigViewModel = context.read<PlaybackConfigViewModel>();
+    _playbackConfigViewModel.addListener(_onPlaybackConfigChanged);
+  }
+
+  void _onPlaybackConfigChanged() {
+    if (!mounted) return;
+    final muted = context.read<PlaybackConfigViewModel>().muted;
+    if (muted) {
+      _videoPlayerController.setVolume(0);
+    } else {
+      _videoPlayerController.setVolume(1);
+    }
   }
 
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _playbackConfigViewModel.removeListener(_onPlaybackConfigChanged);
     super.dispose();
   }
 
@@ -98,7 +115,12 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.play();
+      if (_playbackConfigViewModel.autoplay) {
+        _videoPlayerController.play();
+      }
+      if (_playbackConfigViewModel.muted) {
+        _videoPlayerController.setVolume(0);
+      }
     }
 
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
@@ -257,9 +279,9 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
             left: 20,
             top: 40,
             child: IconButton(
-              onPressed: () {},
+              onPressed: () => _playbackConfigViewModel.toggleMute(),
               icon: FaIcon(
-                false
+                context.watch<PlaybackConfigViewModel>().muted
                     ? FontAwesomeIcons.volumeOff
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,

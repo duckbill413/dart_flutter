@@ -27,4 +27,14 @@ class PlaybackConfigViewModel extends ChangeNotifier {
     _model.autoplay = value;
     notifyListeners();
   }
+
+  void toggleMute() {
+    _model.muted = !_model.muted;
+    notifyListeners();
+  }
+
+  void toggleAutoplay() {
+    _model.autoplay = !_model.autoplay;
+    notifyListeners();
+  }
 }
