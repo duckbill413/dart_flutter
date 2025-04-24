@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok/common/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok/common/main_navigation/widgets/post_video_button.dart';
-import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/discover/discover_screen.dart';
@@ -50,7 +48,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.watch<ThemeConfig>().isDarkMode;
+    final isDark = false;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

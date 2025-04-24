@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tiktok/common/theme_config/theme_config.dart';
-import 'package:tiktok/common/video_config/video_config.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/videos/repos/playback_config_repo.dart';
-import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok/generated/l10n.dart';
 import 'package:tiktok/router.dart';
 
@@ -28,17 +25,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle.dark,
   );
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-            create: (_) => PlaybackConfigViewModel(repository)),
-        ChangeNotifierProvider(create: (_) => VideoConfig()),
-        ChangeNotifierProvider(create: (_) => ThemeConfig()),
-      ],
-      child: TiktokApp(),
-    ),
-  );
+  runApp(ProviderScope(child: TiktokApp()));
 }
 
 class TiktokApp extends StatelessWidget {
@@ -64,9 +51,7 @@ class TiktokApp extends StatelessWidget {
         Locale("kr"),
         Locale("es"),
       ],
-      themeMode: !context.watch<ThemeConfig>().isDarkMode
-          ? ThemeMode.light
-          : ThemeMode.dark,
+      themeMode: false ? ThemeMode.light : ThemeMode.dark,
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,

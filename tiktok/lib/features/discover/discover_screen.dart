@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:tiktok/common/theme_config/theme_config.dart';
 import 'package:tiktok/constants/breakpoints.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
@@ -104,9 +102,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: context.watch<ThemeConfig>().isDarkMode
-                    ? Colors.grey.shade700
-                    : Colors.grey.shade200,
+                fillColor: false ? Colors.grey.shade700 : Colors.grey.shade200,
                 contentPadding: EdgeInsets.zero,
                 icon: GestureDetector(
                   onTap: _onStopSearch,
@@ -243,7 +239,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                         constraints.maxWidth > 250)
                       DefaultTextStyle(
                         style: TextStyle(
-                          color: context.watch<ThemeConfig>().isDarkMode
+                          color: false
                               ? Colors.grey.shade300
                               : Colors.grey.shade600,
                           fontWeight: FontWeight.bold,

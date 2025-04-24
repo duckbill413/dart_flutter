@@ -1,10 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
-import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok/features/videos/views/widgets/video_comments.dart';
 import 'package:tiktok/generated/l10n.dart';
@@ -46,7 +44,6 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   final VideoPlayerController _videoPlayerController =
       VideoPlayerController.asset("assets/videos/video1.MP4");
   late final AnimationController _animationController;
-  late final PlaybackConfigViewModel _playbackConfigViewModel;
 
   bool _isPaused = false;
   final Duration _animationDuration = Duration(milliseconds: 200);
@@ -87,16 +84,14 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
       duration: _animationDuration,
     );
 
-    _playbackConfigViewModel = context.read<PlaybackConfigViewModel>();
     setState(() {
-      _isMute = _playbackConfigViewModel.muted;
+      _isMute = false;
     });
-    _playbackConfigViewModel.addListener(_onPlaybackConfigChanged);
   }
 
   void _onPlaybackConfigChanged() {
     if (!mounted) return;
-    final muted = context.read<PlaybackConfigViewModel>().muted;
+    final muted = false;
     setState(() {
       _isMute = muted;
     });
@@ -110,7 +105,6 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     _videoPlayerController.dispose();
-    _playbackConfigViewModel.removeListener(_onPlaybackConfigChanged);
     super.dispose();
   }
 
@@ -121,10 +115,10 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      if (_playbackConfigViewModel.autoplay) {
+      if (true) {
         _videoPlayerController.play();
       }
-      if (_playbackConfigViewModel.muted) {
+      if (false) {
         _videoPlayerController.setVolume(0);
       }
     }
