@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/videos/repos/playback_config_repo.dart';
+import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok/generated/l10n.dart';
 import 'package:tiktok/router.dart';
 
@@ -25,7 +26,16 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle.dark,
   );
-  runApp(ProviderScope(child: TiktokApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        playbackConfigProvider.overrideWith(
+          () => PlaybackConfigViewModel(repository),
+        ),
+      ],
+      child: TiktokApp(),
+    ),
+  );
 }
 
 class TiktokApp extends StatelessWidget {
