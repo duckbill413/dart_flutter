@@ -39,9 +39,7 @@ class PlaybackConfigViewModel extends Notifier<PlaybackConfigModel> {
     );
   }
 
-  /**
-   * build 메서드는 화면이 보기를 원하는 데이터의 초기 상태를 반환
-   */
+  /// build 메서드는 화면이 보기를 원하는 데이터의 초기 상태를 반환
   @override
   PlaybackConfigModel build() {
     return PlaybackConfigModel(
