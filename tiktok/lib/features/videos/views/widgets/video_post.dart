@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/videos/models/video_model.dart';
 import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok/features/videos/views/widgets/video_comments.dart';
@@ -13,12 +14,12 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 class VideoPost extends ConsumerStatefulWidget {
   final Function onVideoFinished;
-  final int index;
+  final VideoModel video;
 
   const VideoPost({
     super.key,
     required this.onVideoFinished,
-    required this.index,
+    required this.video,
   });
 
   @override
@@ -44,8 +45,7 @@ SingleTickerProviderMixin 은 Flutter에서 애니메이션을 다룰 때 사용
  */
 class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
-  final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset("assets/videos/video1.MP4");
+  late final VideoPlayerController _videoPlayerController;
   late final AnimationController _animationController;
 
   bool _isPaused = false;
@@ -66,7 +66,10 @@ class VideoPostState extends ConsumerState<VideoPost>
   /// 대부분의 웹 환경에서 음성이 있는 영상을 바로 재생시키려한다면 에러를 발생시킨다.
   /// 이유는, 음성이 갑작스럽게 나오는 것을 많은 광고 회사들이 남용했기 때문이다.
   void _initVideoPlayer() async {
+    _videoPlayerController =
+        VideoPlayerController.asset(widget.video.contentPath);
     await _videoPlayerController.initialize();
+
     setState(() {});
     await _videoPlayerController.setLooping(true);
     if (kIsWeb) {
@@ -96,6 +99,7 @@ class VideoPostState extends ConsumerState<VideoPost>
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -185,7 +189,7 @@ class VideoPostState extends ConsumerState<VideoPost>
       });
     }
     return VisibilityDetector(
-      key: Key("${widget.index}"),
+      key: Key(widget.video.id),
       onVisibilityChanged: _onVisibilityChanged,
       child: Stack(
         children: [
@@ -255,7 +259,7 @@ class VideoPostState extends ConsumerState<VideoPost>
                 ),
                 Gaps.v10,
                 Text(
-                  "Sweet Girls!!!",
+                  widget.video.title,
                   style: TextStyle(
                     fontSize: Sizes.size16,
                     color: Colors.white,
