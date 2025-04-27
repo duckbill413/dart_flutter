@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/common/theme_config/view_models/theme_config_vm.dart';
 import 'package:tiktok/constants/gaps.dart';
 
-class NavTab extends StatelessWidget {
+class NavTab extends ConsumerWidget {
   const NavTab({
     super.key,
     required this.text,
@@ -21,8 +23,8 @@ class NavTab extends StatelessWidget {
   final int selectedIndex;
 
   @override
-  Widget build(BuildContext context) {
-    final isDark = false;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = ref.watch(themeConfigProvider).isDark;
     return Expanded(
       child: GestureDetector(
         onTap: () => onTap(),

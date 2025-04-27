@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/common/theme_config/view_models/theme_config_vm.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 
@@ -30,17 +32,17 @@ final List<Map<String, dynamic>> _tabs = [
   }
 ];
 
-class ActivityScreen extends StatefulWidget {
+class ActivityScreen extends ConsumerStatefulWidget {
   static const String routeName = "activity";
   static const String routeURL = "/activity";
 
   const ActivityScreen({super.key});
 
   @override
-  State<ActivityScreen> createState() => _ActivityScreenState();
+  ActivityScreenState createState() => ActivityScreenState();
 }
 
-class _ActivityScreenState extends State<ActivityScreen>
+class ActivityScreenState extends ConsumerState<ActivityScreen>
     with SingleTickerProviderStateMixin {
   // this 나 다른 instance member 를 참조하기 위해선 late 를 이용해서 초기화해 주어야 함
   late final AnimationController _animationController = AnimationController(
@@ -96,7 +98,7 @@ class _ActivityScreenState extends State<ActivityScreen>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = false;
+    final isDark = ref.watch(themeConfigProvider).isDark;
 
     return Scaffold(
       appBar: AppBar(

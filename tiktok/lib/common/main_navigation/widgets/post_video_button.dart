@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/constants/sizes.dart';
 
-class PostVideoButton extends StatelessWidget {
+import '../../theme_config/view_models/theme_config_vm.dart';
+
+class PostVideoButton extends ConsumerWidget {
   const PostVideoButton({
     super.key,
     required this.inverted,
@@ -11,8 +14,8 @@ class PostVideoButton extends StatelessWidget {
   final bool inverted;
 
   @override
-  Widget build(BuildContext context) {
-    final isDark = false;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = ref.watch(themeConfigProvider).isDark;
 
     return Stack(
       clipBehavior: Clip.none,

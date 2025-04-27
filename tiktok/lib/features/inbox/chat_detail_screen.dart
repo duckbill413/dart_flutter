@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/common/theme_config/view_models/theme_config_vm.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 
-class ChatDetailScreen extends StatefulWidget {
+class ChatDetailScreen extends ConsumerStatefulWidget {
   static const String routeName = "chatDetail";
   static const String routeURL = ":chatId";
 
@@ -15,10 +17,10 @@ class ChatDetailScreen extends StatefulWidget {
   });
 
   @override
-  State<ChatDetailScreen> createState() => _ChatDetailScreenState();
+  ChatDetailScreenState createState() => ChatDetailScreenState();
 }
 
-class _ChatDetailScreenState extends State<ChatDetailScreen> {
+class ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   String _message = "";
@@ -79,7 +81,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = false;
+    final isDark = ref.watch(themeConfigProvider).isDark;
     return Scaffold(
       appBar: AppBar(
         title: ListTile(
@@ -195,7 +197,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 left: Sizes.size10,
                 right: Sizes.size10,
               ),
-              color: Colors.grey.shade100,
               child: Row(
                 children: [
                   Expanded(
@@ -208,7 +209,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                           horizontal: Sizes.size16,
                         ),
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: isDark ? Colors.grey.shade500 : Colors.white,
                         hintText: "Send a message...",
                         hintStyle: TextStyle(
                           color: Colors.grey.shade500,

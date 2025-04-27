@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/common/theme_config/view_models/theme_config_vm.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/generated/l10n.dart';
 
-class VideoComments extends StatefulWidget {
+class VideoComments extends ConsumerStatefulWidget {
   const VideoComments({super.key});
 
   @override
-  State<VideoComments> createState() => _VideoCommentsState();
+  VideoCommentsState createState() => VideoCommentsState();
 }
 
-class _VideoCommentsState extends State<VideoComments> {
+class VideoCommentsState extends ConsumerState<VideoComments> {
   final ScrollController _scrollController = ScrollController();
 
   bool _isWriting = false;
@@ -36,7 +38,7 @@ class _VideoCommentsState extends State<VideoComments> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final isDark = false;
+    final isDark = ref.watch(themeConfigProvider).isDark;
 
     return Container(
       height: size.height * 0.75,

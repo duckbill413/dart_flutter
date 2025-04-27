@@ -9,6 +9,9 @@ import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok/generated/l10n.dart';
 import 'package:tiktok/router.dart';
 
+import 'common/theme_config/repos/theme_config_repo.dart';
+import 'common/theme_config/view_models/theme_config_vm.dart';
+
 void main() async {
   // This is the glue that binds the framework to the Flutter engine.
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +23,8 @@ void main() async {
   );
 
   final preferences = await SharedPreferences.getInstance();
-  final repository = PlaybackConfigRepository(preferences);
+  final playbackConfigRepository = PlaybackConfigRepository(preferences);
+  final themeConfigRepository = ThemeConfigRepository(preferences);
 
   // 상단 UI 의 다크/라이트 모드를 설정 (앱 화면별로 설정 가능)
   SystemChrome.setSystemUIOverlayStyle(
@@ -30,7 +34,10 @@ void main() async {
     ProviderScope(
       overrides: [
         playbackConfigProvider.overrideWith(
-          () => PlaybackConfigViewModel(repository),
+          () => PlaybackConfigViewModel(playbackConfigRepository),
+        ),
+        themeConfigProvider.overrideWith(
+          () => ThemeConfigViewModel(themeConfigRepository),
         ),
       ],
       child: TiktokApp(),
@@ -38,11 +45,11 @@ void main() async {
   );
 }
 
-class TiktokApp extends StatelessWidget {
+class TiktokApp extends ConsumerWidget {
   const TiktokApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // S.load(Locale("ko")); // 휴대폰 재설정 없이 Locale 변경
 
     return MaterialApp.router(
@@ -61,7 +68,9 @@ class TiktokApp extends StatelessWidget {
         Locale("kr"),
         Locale("es"),
       ],
-      themeMode: false ? ThemeMode.light : ThemeMode.dark,
+      themeMode: ref.watch(themeConfigProvider).isDark
+          ? ThemeMode.dark
+          : ThemeMode.light,
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
