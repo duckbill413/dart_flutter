@@ -1,15 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok/features/videos/views/widgets/video_comments.dart';
 import 'package:tiktok/generated/l10n.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class VideoPost extends StatefulWidget {
+class VideoPost extends ConsumerStatefulWidget {
   final Function onVideoFinished;
   final int index;
 
@@ -20,7 +22,7 @@ class VideoPost extends StatefulWidget {
   });
 
   @override
-  State<VideoPost> createState() => _VieState();
+  VideoPostState createState() => VideoPostState();
 }
 
 /*
@@ -40,7 +42,8 @@ SingleTickerProviderMixin 은 Flutter에서 애니메이션을 다룰 때 사용
   - vsync 는 애니메이션의 갱신을 화면의 프레임에 맞춰 효율적으로 처리하도록 함
 2. SingleTickerProviderStateMixin은 애니메이션의 생명 주기를 자동으로 관리
  */
-class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
+class VideoPostState extends ConsumerState<VideoPost>
+    with SingleTickerProviderStateMixin {
   final VideoPlayerController _videoPlayerController =
       VideoPlayerController.asset("assets/videos/video1.MP4");
   late final AnimationController _animationController;
@@ -49,6 +52,7 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
   final Duration _animationDuration = Duration(milliseconds: 200);
   bool _isTagExpanded = false;
   bool _isMute = false;
+  bool _isListening = false;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -85,13 +89,20 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     );
 
     setState(() {
-      _isMute = false;
+      _isMute = ref.read(playbackConfigProvider).muted;
     });
+  }
+
+  @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    super.dispose();
   }
 
   void _onPlaybackConfigChanged() {
     if (!mounted) return;
-    final muted = false;
+
+    final muted = ref.read(playbackConfigProvider).muted;
     setState(() {
       _isMute = muted;
     });
@@ -102,12 +113,6 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     }
   }
 
-  @override
-  void dispose() {
-    _videoPlayerController.dispose();
-    super.dispose();
-  }
-
   void _onVisibilityChanged(VisibilityInfo info) {
     // visibility 에 변화가 있더라도 mount 된 상태가 아니면 아무것도 하지 않음
     if (!mounted) return;
@@ -115,10 +120,10 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      if (true) {
+      if (ref.read(playbackConfigProvider).autoplay) {
         _videoPlayerController.play();
       }
-      if (false) {
+      if (ref.read(playbackConfigProvider).muted) {
         _videoPlayerController.setVolume(0);
       }
     }
@@ -173,6 +178,12 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    if (!_isListening) {
+      _isListening = true;
+      ref.listen(playbackConfigProvider, (previous, next) {
+        _onPlaybackConfigChanged();
+      });
+    }
     return VisibilityDetector(
       key: Key("${widget.index}"),
       onVisibilityChanged: _onVisibilityChanged,
@@ -215,6 +226,17 @@ class _VieState extends State<VideoPost> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            left: 20,
+            top: 40,
+            child: IconButton(
+              onPressed: () =>
+                  ref.read(playbackConfigProvider.notifier).toggleMute(),
+              icon: FaIcon(ref.watch(playbackConfigProvider).muted
+                  ? FontAwesomeIcons.volumeOff
+                  : FontAwesomeIcons.volumeHigh),
             ),
           ),
           Positioned(
