@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,6 +12,7 @@ import 'package:tiktok/router.dart';
 
 import 'common/theme_config/repos/theme_config_repo.dart';
 import 'common/theme_config/view_models/theme_config_vm.dart';
+import 'firebase_options.dart';
 
 void main() async {
   // This is the glue that binds the framework to the Flutter engine.
@@ -29,6 +31,10 @@ void main() async {
   // 상단 UI 의 다크/라이트 모드를 설정 (앱 화면별로 설정 가능)
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle.dark,
+  );
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
     ProviderScope(
@@ -53,7 +59,7 @@ class TiktokApp extends ConsumerWidget {
     // S.load(Locale("ko")); // 휴대폰 재설정 없이 Locale 변경
 
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,
       // 우측 상단의 디버그 태그 삭제
       title: 'Tiktok Clone',
