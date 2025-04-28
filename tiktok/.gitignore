@@ -366,3 +366,7 @@ hs_err_pid*
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,androidstudio,macos,windows,flutter,dart
 /assets/videos/
 /android/app/.cxx/Debug/**
+/firebase.json
+/lib/firebase_options.dart
+/android/app/google-services.json
+/ios/Runner/GoogleService-Info.plist
