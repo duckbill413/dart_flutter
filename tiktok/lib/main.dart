@@ -59,7 +59,7 @@ class TiktokApp extends ConsumerWidget {
     // S.load(Locale("ko")); // 휴대폰 재설정 없이 Locale 변경
 
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,
       // 우측 상단의 디버그 태그 삭제
       title: 'Tiktok Clone',

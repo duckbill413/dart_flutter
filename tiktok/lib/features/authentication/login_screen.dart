@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tiktok/common/theme_config/view_models/theme_config_vm.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/authentication/login_form_screen.dart';
+import 'package:tiktok/features/authentication/sign_up_screen.dart';
 import 'package:tiktok/features/authentication/widgets/auth_button.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   static String routeName = "login";
   static String routeURL = "/login";
 
   const LoginScreen({super.key});
 
   void _onSignUpTap(BuildContext context) {
-    context.goNamed("signUp");
+    context.goNamed(SignUpScreen.routeName);
   }
 
   void _onEmailLoginTap(BuildContext context) {
@@ -25,7 +28,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -74,7 +77,8 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        color: false ? null : Colors.grey.shade50,
+        color:
+            ref.watch(themeConfigProvider).isDark ? null : Colors.grey.shade50,
         clipBehavior: Clip.none,
         child: Padding(
           padding: const EdgeInsets.only(
