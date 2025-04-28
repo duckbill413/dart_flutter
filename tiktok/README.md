@@ -2,6 +2,12 @@
 
 nomadcoders tiktok clone coding project
 
+Flutter Android license 적용
+
+```shell
+flutter doctor --android-licenses
+```
+
 ## 16 Intl
 
 ### 16.4 Flutter Intl
@@ -91,3 +97,34 @@ https://pub.dev/packages/go_router/install
 > `flutter run --no-enable-impeller`  또는
 > Edit Configuration 에서 `Additional run args` 에
 > `--no-enable-impeller` 옵션 추가
+
+## 22. Firebase Setup
+
+https://firebase.google.com/docs/flutter/setup
+
+### 23.1 Installation
+
+1. Install Firebase-Cli
+   ```shell
+   curl -sL https://firebase.tools | bash
+   ```
+2. Firebase login
+   ```shell
+   firebase login
+   ```
+3. Install the `FlutterFire CLI`
+   ```shell
+   dart pub global activate flutterfire_cli
+   ```
+4. Configure your apps to use Firebase
+
+   > zsh: command not found: flutterfire  
+   > 위와 같은 오류 발생시  
+   > `vi ~/.zshrc`  
+   > 맨 아래에 `export PATH="$PATH:$HOME/.pub-cache/bin"` 추가  
+   > `source ~/.zshrc`
+
+   ```shell
+   flutter-proj$ flutterfire configure
+   ```
+    - firebase 플러그인을 추가/제거할 때마다 위의 명령을 실행해 주어야 함.
