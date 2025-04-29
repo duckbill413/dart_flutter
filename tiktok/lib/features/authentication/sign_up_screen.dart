@@ -7,6 +7,7 @@ import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/authentication/login_screen.dart';
 import 'package:tiktok/features/authentication/username_screen.dart';
+import 'package:tiktok/features/authentication/view_models/social_auth_vm.dart';
 import 'package:tiktok/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok/generated/l10n.dart';
 
@@ -99,10 +100,12 @@ class SignUpScreen extends ConsumerWidget {
                   ),
                   Gaps.v16,
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => ref
+                        .read(socialAuthProvider.notifier)
+                        .githubSignIn(context),
                     child: AuthButton(
-                      icon: FaIcon(FontAwesomeIcons.apple),
-                      text: S.of(context).appleBtn,
+                      icon: FaIcon(FontAwesomeIcons.github),
+                      text: S.of(context).githubSignUpBtn,
                     ),
                   ),
                 ],
@@ -123,10 +126,12 @@ class SignUpScreen extends ConsumerWidget {
                       Gaps.h16,
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () => ref
+                              .read(socialAuthProvider.notifier)
+                              .githubSignIn(context),
                           child: AuthButton(
-                            icon: FaIcon(FontAwesomeIcons.apple),
-                            text: S.of(context).appleBtn,
+                            icon: FaIcon(FontAwesomeIcons.github),
+                            text: S.of(context).githubSignUpBtn,
                           ),
                         ),
                       ),

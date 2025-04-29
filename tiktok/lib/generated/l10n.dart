@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -28,10 +29,9 @@ class S {
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name =
-        (locale.countryCode?.isEmpty ?? false)
-            ? locale.languageCode
-            : locale.toString();
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -102,10 +102,20 @@ class S {
   }
 
   /// `Continue with Apple`
-  String get appleBtn {
+  String get appleSignUpBtn {
     return Intl.message(
       'Continue with Apple',
-      name: 'appleBtn',
+      name: 'appleSignUpBtn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue with Github`
+  String get githubSignUpBtn {
+    return Intl.message(
+      'Continue with Github',
+      name: 'githubSignUpBtn',
       desc: '',
       args: [],
     );
@@ -189,8 +199,10 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
+
   @override
   Future<S> load(Locale locale) => S.load(locale);
+
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 

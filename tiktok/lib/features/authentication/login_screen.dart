@@ -7,6 +7,7 @@ import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/authentication/login_form_screen.dart';
 import 'package:tiktok/features/authentication/sign_up_screen.dart';
+import 'package:tiktok/features/authentication/view_models/social_auth_vm.dart';
 import 'package:tiktok/features/authentication/widgets/auth_button.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -66,10 +67,11 @@ class LoginScreen extends ConsumerWidget {
               ),
               Gaps.v16,
               GestureDetector(
-                onTap: () {},
+                onTap: () =>
+                    ref.read(socialAuthProvider.notifier).githubSignIn(context),
                 child: AuthButton(
-                  icon: FaIcon(FontAwesomeIcons.apple),
-                  text: "Continue with Apple",
+                  icon: FaIcon(FontAwesomeIcons.github),
+                  text: "Continue with Github",
                 ),
               ),
             ],

@@ -52,7 +52,6 @@ class VideoPostState extends ConsumerState<VideoPost>
   final Duration _animationDuration = Duration(milliseconds: 200);
   bool _isTagExpanded = false;
   bool _isMute = false;
-  bool _isListening = false;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -93,7 +92,11 @@ class VideoPostState extends ConsumerState<VideoPost>
 
     setState(() {
       _isMute = ref.read(playbackConfigProvider).muted;
+      _isPaused = !ref.read(playbackConfigProvider).autoplay;
     });
+    if (_isMute) {
+      _videoPlayerController.setVolume(0);
+    }
   }
 
   @override
@@ -105,8 +108,8 @@ class VideoPostState extends ConsumerState<VideoPost>
 
   void _onPlaybackConfigChanged() {
     if (!mounted) return;
-
     final muted = ref.read(playbackConfigProvider).muted;
+    print(muted);
     setState(() {
       _isMute = muted;
     });
@@ -182,12 +185,9 @@ class VideoPostState extends ConsumerState<VideoPost>
 
   @override
   Widget build(BuildContext context) {
-    if (!_isListening) {
-      _isListening = true;
-      ref.listen(playbackConfigProvider, (previous, next) {
-        _onPlaybackConfigChanged();
-      });
-    }
+    ref.listen(playbackConfigProvider, (previous, next) {
+      _onPlaybackConfigChanged();
+    });
     return VisibilityDetector(
       key: Key(widget.video.id),
       onVisibilityChanged: _onVisibilityChanged,
