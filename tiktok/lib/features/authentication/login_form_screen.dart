@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/authentication/view_models/login_vm.dart';
 import 'package:tiktok/features/authentication/widgets/form_button.dart';
-import 'package:tiktok/features/onboarding/interests_screen.dart';
 
-class LoginFormScreen extends StatefulWidget {
+class LoginFormScreen extends ConsumerStatefulWidget {
   const LoginFormScreen({super.key});
 
   @override
-  State<LoginFormScreen> createState() => _LoginFormScreenState();
+  LoginFormScreenState createState() => LoginFormScreenState();
 }
 
-class _LoginFormScreenState extends State<LoginFormScreen> {
+class LoginFormScreenState extends ConsumerState<LoginFormScreen> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   final Map<String, String> formData = {};
@@ -21,7 +21,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     if (_formkey.currentState != null) {
       if (_formkey.currentState!.validate()) {
         _formkey.currentState!.save();
-        context.goNamed(InterestsScreen.routeName);
+        // context.goNamed(InterestsScreen.routeName);
+        ref.read(loginProvider.notifier).login(
+              context,
+              formData['email']!,
+              formData['password']!,
+            );
       }
     }
   }
@@ -90,7 +95,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
               ),
               Gaps.v28,
               FormButton(
-                disabled: false,
+                disabled: ref.watch(loginProvider).isLoading,
                 onTap: _onSubmitTap,
                 text: "Login",
               ),

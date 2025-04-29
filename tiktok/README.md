@@ -128,3 +128,11 @@ https://firebase.google.com/docs/flutter/setup
    flutter-proj$ flutterfire configure
    ```
     - firebase 플러그인을 추가/제거할 때마다 위의 명령을 실행해 주어야 함.
+
+## 24 FIREBASE AUTHENTICATION
+
+### 24.3 Social Auth Config
+
+- Android 의 경우 세팅
+
+1. `./gradlew signinReport` 콘솔에 입력
