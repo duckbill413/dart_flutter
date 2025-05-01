@@ -18,7 +18,7 @@ class LoginViewModel extends AsyncNotifier<void> {
       BuildContext context, String email, String password) async {
     state = AsyncValue.loading();
     state = await AsyncValue.guard(
-      () async => await _repository.signIn(email, password),
+      () async => await _repository.emailSignIn(email, password),
     );
 
     if (state.hasError) {

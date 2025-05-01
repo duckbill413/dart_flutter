@@ -235,12 +235,15 @@ class VideoPostState extends ConsumerState<VideoPost>
           Positioned(
             left: 20,
             top: 40,
-            child: IconButton(
-              onPressed: () =>
-                  ref.read(playbackConfigProvider.notifier).toggleMute(),
-              icon: FaIcon(ref.watch(playbackConfigProvider).muted
-                  ? FontAwesomeIcons.volumeOff
-                  : FontAwesomeIcons.volumeHigh),
+            child: Opacity(
+              opacity: 0,
+              child: IconButton(
+                onPressed: () =>
+                    ref.read(playbackConfigProvider.notifier).toggleMute(),
+                icon: FaIcon(ref.watch(playbackConfigProvider).muted
+                    ? FontAwesomeIcons.volumeOff
+                    : FontAwesomeIcons.volumeHigh),
+              ),
             ),
           ),
           Positioned(
