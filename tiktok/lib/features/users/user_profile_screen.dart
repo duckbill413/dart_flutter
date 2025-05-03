@@ -13,9 +13,10 @@ import 'package:tiktok/features/users/widgets/persistent_tab_bar.dart';
 import 'package:tiktok/features/users/widgets/user_post_video.dart';
 import 'package:tiktok/features/users/widgets/user_stats_card_widget.dart';
 
+import 'edit_profile_screen.dart';
+
 class UserProfileScreen extends ConsumerStatefulWidget {
   final String username;
-
   final String tab;
 
   const UserProfileScreen({
@@ -35,6 +36,15 @@ class UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     ));
   }
 
+  void editProfile() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfileScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ref.watch(usersProvider).when(
@@ -52,6 +62,10 @@ class UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                           data.username,
                         ),
                         actions: [
+                          IconButton(
+                            onPressed: editProfile,
+                            icon: FaIcon(FontAwesomeIcons.addressCard),
+                          ),
                           IconButton(
                             onPressed: () => _onGearPressed(context),
                             icon: FaIcon(
@@ -205,32 +219,34 @@ class UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                               ),
                             ),
                             Gaps.v14,
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: Sizes.size32,
-                              ),
-                              child: Text(
-                                "All highlights and where to watch live matched on duckbill... All highlights and where to watch live matched on duckbill...",
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            Gaps.v14,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.link,
-                                  size: Sizes.size12,
+                            if (data.bio != null)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: Sizes.size32,
                                 ),
-                                Gaps.h4,
-                                Text(
-                                  "https://github.com/duckbill413",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
+                                child: Text(
+                                  data.bio!,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            Gaps.v14,
+                            if (data.link != null)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  FaIcon(
+                                    FontAwesomeIcons.link,
+                                    size: Sizes.size12,
                                   ),
-                                )
-                              ],
-                            ),
+                                  Gaps.h4,
+                                  Text(
+                                    data.link!,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  )
+                                ],
+                              ),
                             Gaps.v20,
                           ],
                         ),

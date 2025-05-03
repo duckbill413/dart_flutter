@@ -4,8 +4,8 @@ class UserProfileModel {
   final String name;
   final String username;
   final String birthday;
-  final String bio;
-  final String link;
+  final String? bio;
+  final String? link;
   final String? avatarLink;
 
   UserProfileModel({
@@ -13,8 +13,8 @@ class UserProfileModel {
     required this.email,
     required this.name,
     required this.username,
-    required this.bio,
-    required this.link,
+    this.bio,
+    this.link,
     required this.birthday,
     this.avatarLink,
   });
@@ -29,28 +29,31 @@ class UserProfileModel {
         link = '',
         avatarLink = null;
 
-  Map<String, String> toJson() {
+  Map<String, dynamic> toMap() {
     return {
-      'uid': uid,
-      'email': email,
-      'name': name,
-      'nickname': username,
-      'birthday': birthday,
-      'bio': bio,
-      'link': link,
-      'avatarLink': avatarLink ?? '',
+      'uid': this.uid,
+      'email': this.email,
+      'name': this.name,
+      'username': this.username,
+      'birthday': this.birthday,
+      'bio': this.bio,
+      'link': this.link,
+      'avatarLink': this.avatarLink,
     };
   }
 
-  UserProfileModel.fromMap(Map<String, dynamic> json)
-      : uid = json['uid'],
-        email = json['email'],
-        name = json['name'],
-        username = json['nickname'],
-        birthday = json['birthday'],
-        bio = json['bio'],
-        link = json['link'],
-        avatarLink = json['avatarLink'];
+  factory UserProfileModel.fromMap(Map<String, dynamic> map) {
+    return UserProfileModel(
+      uid: map['uid'] as String,
+      email: map['email'] as String,
+      name: map['name'] as String,
+      username: map['username'] as String,
+      birthday: map['birthday'] as String,
+      bio: map['bio'] as String?,
+      link: map['link'] as String?,
+      avatarLink: map['avatarLink'] as String?,
+    );
+  }
 
   UserProfileModel copyWith({
     String? uid,
@@ -61,15 +64,16 @@ class UserProfileModel {
     String? bio,
     String? link,
     String? avatarLink,
-  }) =>
-      UserProfileModel(
-        uid: uid ?? this.uid,
-        email: email ?? this.email,
-        name: name ?? this.name,
-        username: username ?? this.username,
-        birthday: birthday ?? this.birthday,
-        bio: bio ?? this.bio,
-        link: link ?? this.link,
-        avatarLink: avatarLink ?? this.avatarLink,
-      );
+  }) {
+    return UserProfileModel(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      username: username ?? this.username,
+      birthday: birthday ?? this.birthday,
+      bio: bio ?? this.bio,
+      link: link ?? this.link,
+      avatarLink: avatarLink ?? this.avatarLink,
+    );
+  }
 }

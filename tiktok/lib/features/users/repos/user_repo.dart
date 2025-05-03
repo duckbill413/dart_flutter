@@ -11,7 +11,7 @@ class UserRepository {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Future<void> createProfile(UserProfileModel profile) async {
-    await _db.collection("users").doc(profile.uid).set(profile.toJson());
+    await _db.collection("users").doc(profile.uid).set(profile.toMap());
   }
 
   Future<Map<String, dynamic>?> findProfile(String uid) async {

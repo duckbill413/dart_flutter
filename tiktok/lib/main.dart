@@ -112,6 +112,11 @@ class TiktokApp extends ConsumerWidget {
         listTileTheme: ListTileThemeData(
           iconColor: Colors.black,
         ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+          ),
+        ),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
@@ -144,6 +149,11 @@ class TiktokApp extends ConsumerWidget {
           labelColor: Colors.white,
           indicatorColor: Colors.white,
           unselectedLabelColor: Colors.grey.shade700,
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+          ),
         ),
         // textTheme: TextTheme(
         //   displayLarge: GoogleFonts.openSans(
