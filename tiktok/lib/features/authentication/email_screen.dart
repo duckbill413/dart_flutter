@@ -15,11 +15,8 @@ class EmailScreenArgs {
 }
 
 class EmailScreen extends ConsumerStatefulWidget {
-  final String username;
-
   const EmailScreen({
     super.key,
-    required this.username,
   });
 
   @override
@@ -65,9 +62,7 @@ class EmailScreenState extends ConsumerState<EmailScreen> {
 
   void _onSubmit() {
     if (_email.isEmpty || _isEmailValid() != null) return;
-    ref.read(signUpForm.notifier).state = {
-      "email": _email,
-    };
+    ref.read(signUpForm.notifier).state['email'] = _email;
 
     Navigator.push(
       context,
@@ -94,7 +89,7 @@ class EmailScreenState extends ConsumerState<EmailScreen> {
             children: [
               Gaps.v40,
               Text(
-                "What is your email? ${widget.username}",
+                "What is your email?",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Sizes.size24,

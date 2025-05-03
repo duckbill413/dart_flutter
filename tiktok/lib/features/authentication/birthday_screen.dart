@@ -18,11 +18,15 @@ class BirthdayScreenState extends ConsumerState<BirthdayScreen> {
 
   DateTime initDate = DateTime.now();
   DateTime maxDate = DateTime.now().add(const Duration(days: -(365 * 12)));
+  final regExp = RegExp(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$');
 
   @override
   void initState() {
     super.initState();
     _setTextFieldDate(initDate);
+    _birthdayController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -31,7 +35,13 @@ class BirthdayScreenState extends ConsumerState<BirthdayScreen> {
     super.dispose();
   }
 
+  bool isValidDate(String date) {
+    return regExp.hasMatch(date);
+  }
+
   void _onNextTap() {
+    ref.read(signUpForm.notifier).state["birthday"] =
+        _birthdayController.value.text;
     ref.read(signUpProvider.notifier).signUp(context);
   }
 
@@ -90,7 +100,9 @@ class BirthdayScreenState extends ConsumerState<BirthdayScreen> {
             Gaps.v28,
             FormButton(
               onTap: _onNextTap,
-              disabled: ref.watch(signUpProvider).isLoading,
+              disabled: _birthdayController.value.text.isEmpty ||
+                  !isValidDate(_birthdayController.value.text) ||
+                  ref.watch(signUpProvider).isLoading,
               text: "Next",
             ),
           ],

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tiktok/common/theme_config/theme_config.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tiktok/common/theme_config/view_models/theme_config_vm.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/onboarding/tutorial_screen.dart';
@@ -48,17 +48,17 @@ const interests = [
   "Home & Garden",
 ];
 
-class InterestsScreen extends StatefulWidget {
+class InterestsScreen extends ConsumerStatefulWidget {
   static const String routeName = "interest";
   static const String routeURL = "/tutorial";
 
   const InterestsScreen({super.key});
 
   @override
-  State<InterestsScreen> createState() => _InterestsScreenState();
+  InterestsScreenState createState() => InterestsScreenState();
 }
 
-class _InterestsScreenState extends State<InterestsScreen> {
+class InterestsScreenState extends ConsumerState<InterestsScreen> {
   // MEMO: ScrollController 와 Scrollbar 을 이용하여 화면에 스크롤바 생성
   final ScrollController _scrollController = ScrollController();
   bool _showTitle = false;
@@ -153,9 +153,8 @@ class _InterestsScreenState extends State<InterestsScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        color: context.watch<ThemeConfig>().isDarkMode
-            ? Colors.black
-            : Colors.white,
+        color:
+            ref.watch(themeConfigProvider).isDark ? Colors.black : Colors.white,
         child: Padding(
           padding: EdgeInsets.only(
             bottom: Sizes.size40,
