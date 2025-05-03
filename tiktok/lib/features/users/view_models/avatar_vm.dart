@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok/features/authentication/repos/authentication_repo.dart';
 import 'package:tiktok/features/users/repos/user_repo.dart';
+import 'package:tiktok/features/users/view_models/users_vm.dart';
 
 class AvatarViewModel extends AsyncNotifier<void> {
-  final FirebaseStorage _storage = FirebaseStorage.instance;
   late final UserRepository _userRepository;
 
   @override
@@ -15,11 +14,20 @@ class AvatarViewModel extends AsyncNotifier<void> {
     _userRepository = ref.read(userRepository);
   }
 
-  Future<void> uploadAvatar(File file) async {
+  Future<void> uploadAvatar(Uint8List fileData) async {
     state = AsyncValue.loading();
-    final fileName = ref.read(authRepo).user!.uid;
+    final uid = ref.read(authRepo).user!.uid;
     state = await AsyncValue.guard(
-      () async => await _userRepository.uploadAvatar(file, fileName),
+      () async {
+        final avatarURL = await _userRepository.uploadAvatar(uid, fileData);
+        if (avatarURL != null) {
+          ref.read(usersProvider.notifier).onAvatarUpload(avatarURL);
+        }
+      },
     );
   }
 }
+
+final avatarProvider = AsyncNotifierProvider<AvatarViewModel, void>(
+  () => AvatarViewModel(),
+);

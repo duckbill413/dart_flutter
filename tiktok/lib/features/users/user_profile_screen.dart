@@ -67,7 +67,7 @@ class UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             Gaps.v16,
                             Avatar(
                               username: data.username,
-                              displayImage: '',
+                              avatar: data.avatarLink,
                             ),
                             Gaps.v20,
                             Row(

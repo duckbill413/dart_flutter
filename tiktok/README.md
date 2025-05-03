@@ -61,7 +61,7 @@ https://pub.dev/packages/go_router/install
 ## 19 VIDEO RECORDING
 
 > ## Iphone Build App Error
-> ![아이폰 에러](./iphone_error1.png)
+> ![아이폰 에러](docs/iphone_error1.png)
 > `cd ./ios`
 > `rm -rf Pods`  
 > `rm -rf Podfile.lock`  
@@ -128,6 +128,10 @@ https://firebase.google.com/docs/flutter/setup
    flutter-proj$ flutterfire configure
    ```
     - firebase 플러그인을 추가/제거할 때마다 위의 명령을 실행해 주어야 함.
+
+![img.png](docs/firebase_plugin_setup.png)
+
+- https://firebase.google.com/docs/flutter/setup
 
 ## 24 FIREBASE AUTHENTICATION
 

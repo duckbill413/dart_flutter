@@ -6,6 +6,7 @@ class UserProfileModel {
   final String birthday;
   final String bio;
   final String link;
+  final String? avatarLink;
 
   UserProfileModel({
     required this.uid,
@@ -15,6 +16,7 @@ class UserProfileModel {
     required this.bio,
     required this.link,
     required this.birthday,
+    this.avatarLink,
   });
 
   UserProfileModel.empty()
@@ -24,7 +26,8 @@ class UserProfileModel {
         username = '',
         birthday = '',
         bio = '',
-        link = '';
+        link = '',
+        avatarLink = null;
 
   Map<String, String> toJson() {
     return {
@@ -35,6 +38,7 @@ class UserProfileModel {
       'birthday': birthday,
       'bio': bio,
       'link': link,
+      'avatarLink': avatarLink ?? '',
     };
   }
 
@@ -45,5 +49,27 @@ class UserProfileModel {
         username = json['nickname'],
         birthday = json['birthday'],
         bio = json['bio'],
-        link = json['link'];
+        link = json['link'],
+        avatarLink = json['avatarLink'];
+
+  UserProfileModel copyWith({
+    String? uid,
+    String? email,
+    String? name,
+    String? username,
+    String? birthday,
+    String? bio,
+    String? link,
+    String? avatarLink,
+  }) =>
+      UserProfileModel(
+        uid: uid ?? this.uid,
+        email: email ?? this.email,
+        name: name ?? this.name,
+        username: username ?? this.username,
+        birthday: birthday ?? this.birthday,
+        bio: bio ?? this.bio,
+        link: link ?? this.link,
+        avatarLink: avatarLink ?? this.avatarLink,
+      );
 }
