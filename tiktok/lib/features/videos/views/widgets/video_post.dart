@@ -253,7 +253,7 @@ class VideoPostState extends ConsumerState<VideoPost>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "@duckbill",
+                  "@",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: Sizes.size20,

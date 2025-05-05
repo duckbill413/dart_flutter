@@ -8,6 +8,7 @@ import 'package:tiktok/features/authentication/repos/authentication_repo.dart';
 import 'package:tiktok/features/users/view_models/users_vm.dart';
 import 'package:tiktok/features/videos/models/video_model.dart';
 import 'package:tiktok/features/videos/repos/videos_repo.dart';
+import 'package:tiktok/features/videos/views/upload_video_detail_screen.dart';
 
 class UploadVideoViewModel extends AsyncNotifier<void> {
   late final VideosRepository _videosRepository;
@@ -28,27 +29,32 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
           video: video,
         );
         if (taskSnapshot.metadata != null) {
-          await _videosRepository.saveVideo(
-            VideoModel(
-              id: taskSnapshot.metadata!.name,
-              title: taskSnapshot.metadata!.name,
-              description: taskSnapshot.metadata!.name,
-              contentPath: await taskSnapshot.ref.getDownloadURL(),
-              thumbnailPath: '',
-              likes: 0,
-              comments: 0,
-              creatorUid: user.uid,
-              creator: userProfile!.username,
-              createdAt: DateTime.now().microsecondsSinceEpoch,
+          if (!context.mounted) return;
+
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UploadVideoDetailScreen(
+                creatorUid: user.uid,
+                creator: userProfile!.username,
+                snapshot: taskSnapshot,
+              ),
             ),
           );
-          if (!context.mounted) return;
-          context.pushReplacement("/home");
         }
       } catch (e) {
         print(e);
       }
     });
+  }
+
+  Future<void> saveVideoDescription({
+    required BuildContext context,
+    required VideoModel videoModel,
+  }) async {
+    await _videosRepository.saveVideo(videoModel);
+    if (!context.mounted) return;
+    context.pushReplacement("/home");
   }
 }
 

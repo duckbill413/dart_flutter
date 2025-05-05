@@ -6,9 +6,9 @@ class VideoModel {
   final String thumbnailPath;
   final int likes;
   final int comments;
+  final List<String> tags;
   final String creatorUid;
-  final int createdAt;
-
+  final DateTime createdAt;
   final String creator;
 
   const VideoModel({
@@ -19,6 +19,7 @@ class VideoModel {
     required this.thumbnailPath,
     required this.likes,
     required this.comments,
+    required this.tags,
     required this.creatorUid,
     required this.createdAt,
     required this.creator,
@@ -33,6 +34,7 @@ class VideoModel {
       'thumbnailPath': this.thumbnailPath,
       'likes': this.likes,
       'comments': this.comments,
+      'tags': this.tags,
       'creatorUid': this.creatorUid,
       'createdAt': this.createdAt,
       'creator': this.creator,
@@ -48,8 +50,9 @@ class VideoModel {
       thumbnailPath: map['thumbnailPath'] as String,
       likes: map['likes'] as int,
       comments: map['comments'] as int,
+      tags: map['tags'] ?? [] as List<String>,
       creatorUid: map['creatorUid'] as String,
-      createdAt: map['createdAt'] as int,
+      createdAt: map['createdAt'] as DateTime,
       creator: map['creator'] as String,
     );
   }
