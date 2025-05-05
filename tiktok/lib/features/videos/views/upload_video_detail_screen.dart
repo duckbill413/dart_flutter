@@ -33,6 +33,7 @@ class UploadVideoDetailScreenState
   String title = '';
   String description = '';
   List<String> tags = [];
+  bool _isUploading = false;
 
   @override
   void initState() {
@@ -50,23 +51,32 @@ class UploadVideoDetailScreenState
   }
 
   Future<void> uploadVideoDone() async {
-    final videoModel = VideoModel(
-      id: Uuid().v4(),
-      title: _titleController.text,
-      description: _descriptionController.text,
-      contentPath: await widget.snapshot.ref.getDownloadURL(),
-      thumbnailPath: await widget.snapshot.ref.getDownloadURL(),
-      likes: 0,
-      comments: 0,
-      tags: tags,
-      creatorUid: widget.creatorUid,
-      createdAt: widget.snapshot.metadata!.timeCreated ?? DateTime.now(),
-      creator: widget.creator,
-    );
-    ref.read(uploadVideoProvider.notifier).saveVideoDescription(
-          context: context,
-          videoModel: videoModel,
-        );
+    setState(() => _isUploading = true);
+    try {
+      final videoModel = VideoModel(
+        id: Uuid().v4(),
+        title: _titleController.text,
+        description: _descriptionController.text,
+        contentPath: await widget.snapshot.ref.getDownloadURL(),
+        thumbnailPath: await widget.snapshot.ref.getDownloadURL(),
+        likes: 0,
+        comments: 0,
+        tags: tags,
+        creatorUid: widget.creatorUid,
+        createdAt: widget.snapshot.metadata!.timeCreated ?? DateTime.now(),
+        creator: widget.creator,
+      );
+      await ref.read(uploadVideoProvider.notifier).saveVideoDescription(
+            context: context,
+            videoModel: videoModel,
+          );
+    } catch (e) {
+      print(e);
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
+    }
   }
 
   @override
@@ -84,65 +94,77 @@ class UploadVideoDetailScreenState
           padding: EdgeInsets.symmetric(
             horizontal: Sizes.size24,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              Gaps.v20,
-              Text(
-                "영상 제목",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Sizes.size16,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gaps.v20,
+                  Text(
+                    "영상 제목",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: Sizes.size16,
+                    ),
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: 60),
+                    child: TextField(
+                      controller: _titleController,
+                      decoration: InputDecoration(
+                        hintText: "제목",
+                        contentPadding: EdgeInsets.symmetric(vertical: 16),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  Gaps.v8,
+                  Text(
+                    "영상 설명",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: Sizes.size16,
+                    ),
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: 120),
+                    child: TextField(
+                      controller: _descriptionController,
+                      decoration: InputDecoration(
+                        hintText: "설명",
+                        contentPadding: EdgeInsets.symmetric(vertical: 16),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  Gaps.v8,
+                  Text(
+                    "태그",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: Sizes.size16,
+                    ),
+                  ),
+                  TagsInput(
+                    initialTags: [],
+                    onTagsChanged: (tags) => this.tags = tags,
+                  ),
+                  Gaps.v28,
+                  FormButton(
+                    onTap: () => uploadVideoDone(),
+                    disabled: _titleController.text.isEmpty,
+                    text: "영상 업로드",
+                  ),
+                ],
               ),
-              ConstrainedBox(
-                constraints: BoxConstraints(minHeight: 60),
-                child: TextField(
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    hintText: "제목",
-                    contentPadding: EdgeInsets.symmetric(vertical: 16),
-                    border: InputBorder.none,
+              if (_isUploading)
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.black54, // 어두운 반투명 배경
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator.adaptive(),
                   ),
                 ),
-              ),
-              Gaps.v8,
-              Text(
-                "영상 설명",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Sizes.size16,
-                ),
-              ),
-              ConstrainedBox(
-                constraints: BoxConstraints(minHeight: 120),
-                child: TextField(
-                  controller: _descriptionController,
-                  decoration: InputDecoration(
-                    hintText: "설명",
-                    contentPadding: EdgeInsets.symmetric(vertical: 16),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              Gaps.v8,
-              Text(
-                "태그",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: Sizes.size16,
-                ),
-              ),
-              TagsInput(
-                initialTags: [],
-                onTagsChanged: (tags) => this.tags = tags,
-              ),
-              Gaps.v28,
-              FormButton(
-                onTap: () => uploadVideoDone(),
-                disabled: _titleController.text.isEmpty,
-                text: "영상 업로드",
-              ),
             ],
           ),
         ),

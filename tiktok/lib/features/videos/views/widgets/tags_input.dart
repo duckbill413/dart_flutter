@@ -16,6 +16,7 @@ class TagsInput extends StatefulWidget {
 
 class _TagsInputState extends State<TagsInput> {
   final TextEditingController _tagsTextController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
   final List<String> _tags = [];
 
   @override
@@ -39,6 +40,7 @@ class _TagsInputState extends State<TagsInput> {
       });
     }
     _tagsTextController.clear();
+    _focusNode.requestFocus();
   }
 
   void _removeTag(String tag) {
@@ -64,20 +66,14 @@ class _TagsInputState extends State<TagsInput> {
         ),
         TextField(
           controller: _tagsTextController,
+          focusNode: _focusNode,
           decoration: InputDecoration(
             hintText: "태그 입력 후 Enter 또는 쉼표",
           ),
-          onSubmitted: (value) {
-            if (value.endsWith(',')) {
-              _addTag(value.substring(0, value.length - 1));
-            } else {
-              _addTag(value);
-            }
-          },
+          onSubmitted: (value) => _addTag(value),
           onChanged: (value) {
-            if (value.endsWith(',')) {
-              _addTag(value.substring(0, value.length - 1));
-            }
+            if (!value.endsWith(',')) return;
+            _addTag(value.substring(0, value.length - 1));
           },
         )
       ],

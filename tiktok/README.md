@@ -127,7 +127,8 @@ https://firebase.google.com/docs/flutter/setup
    ```shell
    flutter-proj$ flutterfire configure
    ```
-    - firebase 플러그인을 추가/제거할 때마다 위의 명령을 실행해 주어야 함.
+
+- firebase 플러그인을 추가/제거할 때마다 위의 명령을 실행해 주어야 함.
 
 ![img.png](docs/firebase_plugin_setup.png)
 
@@ -140,3 +141,58 @@ https://firebase.google.com/docs/flutter/setup
 - Android 의 경우 세팅
 
 1. `./gradlew signinReport` 콘솔에 입력
+
+- IOS setting
+
+https://firebase.google.com/docs/auth/ios/github-auth?hl=ko
+
+- XCode 수정
+  ![img.png](docs/ios-setting.png)
+- URL Scheme 정보 위치
+  ![ios-setting2.png](docs/ios-setting2.png)
+
+## 26 VIDEO UPLOAD
+
+### 26.3 Cloud Functions
+
+- Firebase cloud Function setup
+
+```shell
+firebase init functions
+```
+
+1. Use an existing Project
+2. Select a default Firebase project (tiktok)
+3. What language would you like to use to write cloud functions (TypeScript)
+4. Do you want to use ESLint to catch probable bugs and enforce style? (no)
+   Do you want to install dependencies with npm now? (yes)
+
+- Firebase Function Script
+
+```ts
+import * as functions from "firebase-functions"
+import * as admin from "firebase-admin"
+
+admin.initializeApp();
+
+export const onVideoCreated = functions.firestore.onDocumentCreated(
+    {
+        document: "videos/{videoId}",
+        region: "asia-northeast3",
+    },
+    async (event) => {
+        const snapshot = event.data;
+        if (!snapshot) return;
+        await snapshot.ref.update({"hello": "from functions"});
+    });
+```
+
+위와 같이 스크립트 작성후 Functions 에 배포
+
+```shell
+firebase deploy --only functions
+```
+
+> 잘 안되는 경우 `functions` 폴더에서 `npm run build` 를 먼저 실행
+> firebase.json 파일 참조
+
