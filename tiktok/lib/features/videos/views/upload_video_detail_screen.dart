@@ -89,14 +89,14 @@ class UploadVideoDetailScreenState
         ),
         title: Text("업로드 비디오 설명"),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: Sizes.size24,
-          ),
-          child: Stack(
-            children: [
-              Column(
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Sizes.size24,
+              ),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Gaps.v20,
@@ -157,17 +157,17 @@ class UploadVideoDetailScreenState
                   ),
                 ],
               ),
-              if (_isUploading)
-                Positioned.fill(
-                  child: Container(
-                    color: Colors.black54, // 어두운 반투명 배경
-                    alignment: Alignment.center,
-                    child: const CircularProgressIndicator.adaptive(),
-                  ),
-                ),
-            ],
+            ),
           ),
-        ),
+          if (_isUploading)
+            Positioned.fill(
+              child: Container(
+                color: Colors.black54, // 어두운 반투명 배경
+                alignment: Alignment.center,
+                child: const CircularProgressIndicator.adaptive(),
+              ),
+            ),
+        ],
       ),
     );
   }

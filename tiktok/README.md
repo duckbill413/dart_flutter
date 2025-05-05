@@ -196,3 +196,10 @@ firebase deploy --only functions
 > 잘 안되는 경우 `functions` 폴더에서 `npm run build` 를 먼저 실행
 > firebase.json 파일 참조
 
+### 26.4 ffmpeg
+
+- child-process-promise 설치
+
+1. `cd functions`
+2. `npm i child-process-promise`
+
