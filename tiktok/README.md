@@ -125,7 +125,7 @@ https://firebase.google.com/docs/flutter/setup
    > `source ~/.zshrc`
 
    ```shell
-   flutter-proj$ flutterfire configure
+   flutterfire configure
    ```
 
 - firebase 플러그인을 추가/제거할 때마다 위의 명령을 실행해 주어야 함.
