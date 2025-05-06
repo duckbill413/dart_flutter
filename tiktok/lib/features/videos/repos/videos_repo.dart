@@ -24,13 +24,19 @@ class VideosRepository {
     await _db.collection("videos").add(videoModel.toMap());
   }
 
-  Future<List<VideoModel>> fetchVideos() async {
-    var querySnapShot = await _db
+  Future<List<VideoModel>> fetchVideos({DateTime? lastItemCreatedAt}) async {
+    var query = _db
         .collection("videos")
         .orderBy("createdAt", descending: true)
-        .get();
+        .limit(2);
 
-    return querySnapShot.docs
+    if (lastItemCreatedAt != null) {
+      print(lastItemCreatedAt);
+      query = query.startAfter([Timestamp.fromDate(lastItemCreatedAt)]);
+    }
+
+    return (await query.get())
+        .docs
         .map((json) => VideoModel.fromMap(
               json.data(),
             ))

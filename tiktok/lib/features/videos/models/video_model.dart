@@ -61,6 +61,6 @@ class VideoModel {
 
   @override
   String toString() {
-    return 'VideoModel{id: $id, title: $title, description: $description, contentPath: $contentPath, thumbnailPath: $thumbnailPath, likes: $likes, comments: $comments, tags: $tags, creatorUid: $creatorUid, createdAt: $createdAt, creator: $creator}';
+    return 'VideoModel{id: $id, title: $title, description: $description, contentPath: $contentPath, thumbnailPath: $thumbnailPath, likes: $likes, comments: $comments, tags: $tags, creatorUid: $creatorUid, createdAt: $createdAt, creator: $creator}\n';
   }
 }
