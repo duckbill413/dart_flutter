@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -19,12 +19,13 @@ class UserRepository {
     return doc.data();
   }
 
-  Future<String?> uploadAvatar(String uid, Uint8List fileData) async {
+  Future<String?> uploadAvatar(String uid, File file) async {
     // UUID로 유니크한 파일 경로 생성
-    Reference reference = _storage.ref("avatars/$uid/${Uuid().v4()}");
+    final reference = _storage.ref("avatars").child(uid).child(Uuid().v4());
+    final bytes = await file.readAsBytes();
     final metadata = SettableMetadata(contentType: 'image/png');
     // 파일 업로드
-    var taskSnapshot = await reference.putData(fileData, metadata);
+    var taskSnapshot = await reference.putData(bytes, metadata);
     // 업로드 완료 후 다운로드 URL 가져오기
     return await taskSnapshot.ref.getDownloadURL();
   }

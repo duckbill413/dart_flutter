@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,8 +26,8 @@ class Avatar extends ConsumerWidget {
     );
 
     if (xfile == null) return;
-    final data = await xfile.readAsBytes();
-    await ref.read(avatarProvider.notifier).uploadAvatar(data);
+    final file = File(xfile.path);
+    await ref.read(avatarProvider.notifier).uploadAvatar(file);
   }
 
   @override
