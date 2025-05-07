@@ -42,6 +42,13 @@ class VideosRepository {
             ))
         .toList();
   }
+
+  Future<void> likeVideo(String videoId, String uid) async {
+    await _db.collection("likes").add({
+      "videoId": videoId,
+      "userId": uid,
+    });
+  }
 }
 
 final videoRepository = Provider(
