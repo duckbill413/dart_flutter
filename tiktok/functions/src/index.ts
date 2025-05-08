@@ -4,6 +4,7 @@ import {onDocumentCreated} from "firebase-functions/v2/firestore";
 
 admin.initializeApp();
 
+// Video 생성시 썸네일 생성
 export const onVideoCreated = onDocumentCreated(
     {
         document: "videos/{videoId}",
@@ -47,4 +48,57 @@ export const onVideoCreated = onDocumentCreated(
                 videoId: snapshot.id,
                 thumbnailPath: file.publicUrl()
             });
+    });
+
+export const onLikedCreated = onDocumentCreated(
+    {
+        document: "likes/{likeId}",
+        region: "asia-northeast3"
+    },
+    async (event) => {
+        const snapshot = event.data;
+        if (!snapshot) return;
+
+        const db = admin.firestore();
+
+        const [videoId, userId] = snapshot.id.split("_");
+        const thumbnailPath = (await db.collection("videos").doc(videoId).get()).data()!.thumbnailPath;
+
+        await db
+            .collection("videos")
+            .doc(videoId)
+            .update({likes: admin.firestore.FieldValue.increment(1)});
+        await db
+            .collection("users")
+            .doc(userId)
+            .collection("likes")
+            .doc(videoId)
+            .set({
+                thumbnailPath: thumbnailPath as String,
+                videoId: videoId,
+                createdAt: admin.firestore.FieldValue.serverTimestamp()
+            });
+    });
+
+export const onLikedRemoved = onDocumentCreated(
+    {
+        document: "likes/{likeId}",
+        region: "asia-northeast3"
+    },
+    async (event) => {
+        const snapshot = event.data;
+        if (!snapshot) return;
+
+        const db = admin.firestore();
+        const [videoId, userId] = snapshot.id.split("_");
+        await db
+            .collection("videos")
+            .doc(videoId)
+            .update({likes: admin.firestore.FieldValue.increment(-1)});
+        await db
+            .collection("users")
+            .doc(userId)
+            .collection("likes")
+            .doc(videoId)
+            .delete();
     });

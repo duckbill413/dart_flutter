@@ -48,8 +48,10 @@ class Avatar extends ConsumerWidget {
           : CircleAvatar(
               radius: 30,
               foregroundColor: Colors.blue,
-              foregroundImage:
-                  (avatar?.isEmpty ?? false) ? null : NetworkImage(avatar!),
+              foregroundImage: avatar == null
+                  ? NetworkImage(
+                      'https://cdn2.hubspot.net/hubfs/53/image8-2.jpg')
+                  : NetworkImage(avatar!),
               child: Text(
                 username,
                 style: TextStyle(

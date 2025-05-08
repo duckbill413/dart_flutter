@@ -21,7 +21,7 @@ class VideosRepository {
   }
 
   Future<void> saveVideo(VideoModel videoModel) async {
-    await _db.collection("videos").add(videoModel.toMap());
+    await _db.collection("videos").doc(videoModel.id).set(videoModel.toMap());
   }
 
   Future<List<VideoModel>> fetchVideos({DateTime? lastItemCreatedAt}) async {
@@ -43,12 +43,16 @@ class VideosRepository {
         .toList();
   }
 
-  Future<void> likeVideo(String videoId, String uid) async {
-    final like = await _db.collection("likes").doc('${videoId}000$uid').get();
-    if (like.exists) return;
-    await _db.collection("likes").doc('${videoId}000$uid').set({
-      "createdAt": DateTime.now(),
-    });
+  Future<void> likeVideo(String uid, String videoId) async {
+    final query = _db.collection("likes").doc('${videoId}_$uid');
+    final like = await query.get();
+    if (like.exists) {
+      await query.delete();
+    } else {
+      await query.set({
+        "createdAt": DateTime.now(),
+      });
+    }
   }
 }
 
