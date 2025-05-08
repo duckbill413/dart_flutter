@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class VideoModel {
   final String id;
   final String title;
@@ -50,10 +52,15 @@ class VideoModel {
       thumbnailPath: map['thumbnailPath'] as String,
       likes: map['likes'] as int,
       comments: map['comments'] as int,
-      tags: map['tags'] ?? [] as List<String>,
+      tags: List<String>.from(map['tags'] ?? []),
       creatorUid: map['creatorUid'] as String,
-      createdAt: map['createdAt'] as DateTime,
+      createdAt: (map['createdAt'] as Timestamp).toDate(),
       creator: map['creator'] as String,
     );
+  }
+
+  @override
+  String toString() {
+    return 'VideoModel{id: $id, title: $title, description: $description, contentPath: $contentPath, thumbnailPath: $thumbnailPath, likes: $likes, comments: $comments, tags: $tags, creatorUid: $creatorUid, createdAt: $createdAt, creator: $creator}\n';
   }
 }

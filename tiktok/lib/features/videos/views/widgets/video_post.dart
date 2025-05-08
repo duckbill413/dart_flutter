@@ -4,8 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/users/models/user_profile_model.dart';
+import 'package:tiktok/features/users/view_models/users_vm.dart';
 import 'package:tiktok/features/videos/models/video_model.dart';
 import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
+import 'package:tiktok/features/videos/view_models/video_post_vm.dart';
 import 'package:tiktok/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok/features/videos/views/widgets/video_comments.dart';
 import 'package:tiktok/generated/l10n.dart';
@@ -47,6 +50,7 @@ class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
   late final VideoPlayerController _videoPlayerController;
   late final AnimationController _animationController;
+  late final Future<UserProfileModel> _videoOwner;
 
   bool _isPaused = false;
   final Duration _animationDuration = Duration(milliseconds: 200);
@@ -65,8 +69,10 @@ class VideoPostState extends ConsumerState<VideoPost>
   /// 대부분의 웹 환경에서 음성이 있는 영상을 바로 재생시키려한다면 에러를 발생시킨다.
   /// 이유는, 음성이 갑작스럽게 나오는 것을 많은 광고 회사들이 남용했기 때문이다.
   void _initVideoPlayer() async {
+    // _videoPlayerController =
+    //     VideoPlayerController.asset("assets/videos/video1.MP4");
     _videoPlayerController =
-        VideoPlayerController.asset(widget.video.contentPath);
+        VideoPlayerController.network(widget.video.contentPath);
     await _videoPlayerController.initialize();
 
     setState(() {});
@@ -81,6 +87,8 @@ class VideoPostState extends ConsumerState<VideoPost>
   @override
   void initState() {
     super.initState();
+    _videoOwner = loadVideoOwner();
+
     _initVideoPlayer();
     _animationController = AnimationController(
       vsync: this,
@@ -104,6 +112,12 @@ class VideoPostState extends ConsumerState<VideoPost>
     _videoPlayerController.dispose();
     _animationController.dispose();
     super.dispose();
+  }
+
+  Future<UserProfileModel> loadVideoOwner() async {
+    return await ref
+        .read(usersProvider.notifier)
+        .fetchProfile(widget.video.creatorUid);
   }
 
   void _onPlaybackConfigChanged() {
@@ -170,6 +184,10 @@ class VideoPostState extends ConsumerState<VideoPost>
     });
   }
 
+  Future<void> _onLikeTap() async {
+    ref.read(videoPostProvider(widget.video.id).notifier).likeVideo();
+  }
+
   void _onCommentTap(BuildContext context) async {
     if (_videoPlayerController.value.isPlaying) {
       _onTogglePause();
@@ -196,8 +214,9 @@ class VideoPostState extends ConsumerState<VideoPost>
           Positioned.fill(
             child: _videoPlayerController.value.isInitialized
                 ? VideoPlayer(_videoPlayerController)
-                : Container(
-                    color: Colors.teal,
+                : Image.network(
+                    widget.video.thumbnailPath,
+                    fit: BoxFit.cover,
                   ),
           ),
           Positioned.fill(
@@ -240,9 +259,11 @@ class VideoPostState extends ConsumerState<VideoPost>
               child: IconButton(
                 onPressed: () =>
                     ref.read(playbackConfigProvider.notifier).toggleMute(),
-                icon: FaIcon(ref.watch(playbackConfigProvider).muted
-                    ? FontAwesomeIcons.volumeOff
-                    : FontAwesomeIcons.volumeHigh),
+                icon: FaIcon(
+                  ref.watch(playbackConfigProvider).muted
+                      ? FontAwesomeIcons.volumeOff
+                      : FontAwesomeIcons.volumeHigh,
+                ),
               ),
             ),
           ),
@@ -253,7 +274,7 @@ class VideoPostState extends ConsumerState<VideoPost>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "@",
+                  widget.video.title,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: Sizes.size20,
@@ -262,7 +283,7 @@ class VideoPostState extends ConsumerState<VideoPost>
                 ),
                 Gaps.v10,
                 Text(
-                  widget.video.title,
+                  widget.video.description,
                   style: TextStyle(
                     fontSize: Sizes.size16,
                     color: Colors.white,
@@ -279,7 +300,10 @@ class VideoPostState extends ConsumerState<VideoPost>
                           overflow: _isTagExpanded
                               ? TextOverflow.visible
                               : TextOverflow.ellipsis,
-                          "#apple #banana #candy #books #dance #beauty #apple #banana #candy #books #dance #beauty #apple #banana #candy #books #dance #beauty #apple #banana #candy #books #dance #beauty",
+                          widget.video.tags
+                              .map((e) => '#$e')
+                              .toList()
+                              .join(' '),
                           style: const TextStyle(
                             fontSize: Sizes.size14,
                             color: Colors.white,
@@ -309,30 +333,46 @@ class VideoPostState extends ConsumerState<VideoPost>
             right: 10,
             child: Column(
               children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  foregroundImage: NetworkImage(
-                      "https://avatars.githubusercontent.com/u/86183856?v=4"),
-                  child: Text(
-                    "duckbill",
-                    style: TextStyle(
-                      fontSize: Sizes.size10,
-                    ),
-                  ),
+                FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                        child: CircularProgressIndicator.adaptive(),
+                      );
+                    }
+                    return CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      foregroundImage: NetworkImage(snapshot.data!.avatarLink ??
+                          'https://w7.pngwing.com/pngs/551/755/png-transparent-sample-stamp.png'),
+                      child: Text(
+                        snapshot.data!.username,
+                        style: TextStyle(
+                          fontSize: Sizes.size10,
+                        ),
+                      ),
+                    );
+                  },
+                  future: _videoOwner,
                 ),
                 Gaps.v28,
-                VideoButton(
-                  icon: FontAwesomeIcons.solidHeart,
-                  text: S.of(context).likeCount(89283989),
+                GestureDetector(
+                  onTap: _onLikeTap,
+                  child: VideoButton(
+                    icon: FontAwesomeIcons.solidHeart,
+                    text: S.of(context).likeCount(widget.video.likes),
+                  ),
                 ),
                 Gaps.v28,
                 GestureDetector(
                   onTap: () => _onCommentTap(context),
                   child: VideoButton(
                     icon: FontAwesomeIcons.solidComment,
-                    text: S.of(context).commentCount(33023038194),
+                    text: S.of(context).commentCount(widget.video.comments),
                   ),
                 ),
                 Gaps.v28,

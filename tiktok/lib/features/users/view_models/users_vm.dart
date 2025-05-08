@@ -16,11 +16,8 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     _authenticationRepository = ref.read(authRepo);
 
     if (_authenticationRepository.isLoggedIn) {
-      final profile = await _userRepository
+      return await _userRepository
           .findProfile(_authenticationRepository.user!.uid);
-      if (profile != null) {
-        return UserProfileModel.fromMap(profile);
-      }
     }
     return UserProfileModel.empty();
   }
@@ -69,6 +66,10 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
         "link": link ?? state.value!.link,
       },
     );
+  }
+
+  Future<UserProfileModel> fetchProfile(String uid) async {
+    return await _userRepository.findProfile(uid);
   }
 }
 

@@ -14,9 +14,9 @@ class UserRepository {
     await _db.collection("users").doc(profile.uid).set(profile.toMap());
   }
 
-  Future<Map<String, dynamic>?> findProfile(String uid) async {
+  Future<UserProfileModel> findProfile(String uid) async {
     final doc = await _db.collection("users").doc(uid).get();
-    return doc.data();
+    return UserProfileModel.fromMap(doc.data()!);
   }
 
   Future<String?> uploadAvatar(String uid, File file) async {
