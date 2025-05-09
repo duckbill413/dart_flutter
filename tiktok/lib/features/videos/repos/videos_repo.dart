@@ -54,6 +54,12 @@ class VideosRepository {
       });
     }
   }
+
+  Future<bool> isLikedVideo(String uid, String videoId) async {
+    final query = _db.collection("likes").doc('${videoId}_$uid');
+    final like = await query.get();
+    return like.exists;
+  }
 }
 
 final videoRepository = Provider(
