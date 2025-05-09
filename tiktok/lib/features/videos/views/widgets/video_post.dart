@@ -51,6 +51,8 @@ class VideoPostState extends ConsumerState<VideoPost>
   late final VideoPlayerController _videoPlayerController;
   late final AnimationController _animationController;
   late final Future<UserProfileModel> _videoOwner;
+  late Future<bool> _isLiked;
+  late int _likeCount = 0;
 
   bool _isPaused = false;
   final Duration _animationDuration = Duration(milliseconds: 200);
@@ -88,7 +90,9 @@ class VideoPostState extends ConsumerState<VideoPost>
   void initState() {
     super.initState();
     _videoOwner = loadVideoOwner();
-
+    _isLiked =
+        ref.read(videoPostProvider(widget.video.id).notifier).isLikedVideo();
+    _likeCount = widget.video.likes;
     _initVideoPlayer();
     _animationController = AnimationController(
       vsync: this,
@@ -98,12 +102,11 @@ class VideoPostState extends ConsumerState<VideoPost>
       duration: _animationDuration,
     );
 
-    setState(() {
-      _isMute = ref.read(playbackConfigProvider).muted;
-      _isPaused = !ref.read(playbackConfigProvider).autoplay;
-    });
+    _isMute = ref.read(playbackConfigProvider).muted;
+    _isPaused = !ref.read(playbackConfigProvider).autoplay;
     if (_isMute) {
       _videoPlayerController.setVolume(0);
+      setState(() {});
     }
   }
 
@@ -115,7 +118,7 @@ class VideoPostState extends ConsumerState<VideoPost>
   }
 
   Future<UserProfileModel> loadVideoOwner() async {
-    return await ref
+    return ref
         .read(usersProvider.notifier)
         .fetchProfile(widget.video.creatorUid);
   }
@@ -123,7 +126,6 @@ class VideoPostState extends ConsumerState<VideoPost>
   void _onPlaybackConfigChanged() {
     if (!mounted) return;
     final muted = ref.read(playbackConfigProvider).muted;
-    print(muted);
     setState(() {
       _isMute = muted;
     });
@@ -185,7 +187,13 @@ class VideoPostState extends ConsumerState<VideoPost>
   }
 
   Future<void> _onLikeTap() async {
+    final wasLiked = await _isLiked;
     ref.read(videoPostProvider(widget.video.id).notifier).likeVideo();
+
+    setState(() {
+      _isLiked = Future.value(!wasLiked);
+      _likeCount += wasLiked ? -1 : 1;
+    });
   }
 
   void _onCommentTap(BuildContext context) async {
@@ -360,24 +368,54 @@ class VideoPostState extends ConsumerState<VideoPost>
                   future: _videoOwner,
                 ),
                 Gaps.v28,
-                GestureDetector(
-                  onTap: _onLikeTap,
-                  child: VideoButton(
-                    icon: FontAwesomeIcons.solidHeart,
-                    text: S.of(context).likeCount(widget.video.likes),
-                  ),
+                FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return GestureDetector(
+                        onTap: _onLikeTap,
+                        child: VideoButton(
+                          icon: Icon(
+                            FontAwesomeIcons.solidHeart,
+                            color: Colors.white,
+                            size: Sizes.size40,
+                          ),
+                          text: S.of(context).likeCount(_likeCount),
+                        ),
+                      );
+                    }
+                    return GestureDetector(
+                      onTap: _onLikeTap,
+                      child: VideoButton(
+                        icon: Icon(
+                          FontAwesomeIcons.solidHeart,
+                          color: snapshot.data! ? Colors.red : Colors.white,
+                          size: Sizes.size40,
+                        ),
+                        text: S.of(context).likeCount(_likeCount),
+                      ),
+                    );
+                  },
+                  future: _isLiked,
                 ),
                 Gaps.v28,
                 GestureDetector(
                   onTap: () => _onCommentTap(context),
                   child: VideoButton(
-                    icon: FontAwesomeIcons.solidComment,
+                    icon: Icon(
+                      FontAwesomeIcons.solidComment,
+                      color: Colors.white,
+                      size: Sizes.size40,
+                    ),
                     text: S.of(context).commentCount(widget.video.comments),
                   ),
                 ),
                 Gaps.v28,
                 VideoButton(
-                  icon: FontAwesomeIcons.share,
+                  icon: Icon(
+                    FontAwesomeIcons.share,
+                    color: Colors.white,
+                    size: Sizes.size40,
+                  ),
                   text: "Share",
                 ),
               ],

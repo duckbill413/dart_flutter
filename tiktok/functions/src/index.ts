@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import {onDocumentCreated} from "firebase-functions/v2/firestore";
+import {onDocumentCreated, onDocumentDeleted} from "firebase-functions/v2/firestore";
 
 
 admin.initializeApp();
@@ -60,27 +60,23 @@ export const onLikedCreated = onDocumentCreated(
         if (!snapshot) return;
 
         const db = admin.firestore();
-
         const [videoId, userId] = snapshot.id.split("_");
-        const thumbnailPath = (await db.collection("videos").doc(videoId).get()).data()!.thumbnailPath;
+        const videoSnap = await db.collection("videos").doc(videoId).get();
+        const thumbnailPath = videoSnap.data()?.thumbnailPath;
 
-        await db
-            .collection("videos")
-            .doc(videoId)
+        await db.collection("videos").doc(videoId)
             .update({likes: admin.firestore.FieldValue.increment(1)});
-        await db
-            .collection("users")
-            .doc(userId)
-            .collection("likes")
-            .doc(videoId)
+
+        await db.collection("users").doc(userId)
+            .collection("likes").doc(videoId)
             .set({
-                thumbnailPath: thumbnailPath as String,
-                videoId: videoId,
-                createdAt: admin.firestore.FieldValue.serverTimestamp()
+                thumbnailPath,
+                videoId,
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
             });
     });
 
-export const onLikedRemoved = onDocumentCreated(
+export const onLikedRemoved = onDocumentDeleted(
     {
         document: "likes/{likeId}",
         region: "asia-northeast3"
@@ -91,14 +87,11 @@ export const onLikedRemoved = onDocumentCreated(
 
         const db = admin.firestore();
         const [videoId, userId] = snapshot.id.split("_");
-        await db
-            .collection("videos")
-            .doc(videoId)
+
+        await db.collection("videos").doc(videoId)
             .update({likes: admin.firestore.FieldValue.increment(-1)});
-        await db
-            .collection("users")
-            .doc(userId)
-            .collection("likes")
-            .doc(videoId)
+
+        await db.collection("users").doc(userId)
+            .collection("likes").doc(videoId)
             .delete();
     });
