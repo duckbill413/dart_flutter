@@ -14,6 +14,13 @@ class UserRepository {
     await _db.collection("users").doc(profile.uid).set(profile.toMap());
   }
 
+  Future<List<UserProfileModel>> findAllProfile() async {
+    final snapshot = await _db.collection("users").get();
+    return snapshot.docs
+        .map((doc) => UserProfileModel.fromMap(doc.data()))
+        .toList();
+  }
+
   Future<UserProfileModel> findProfile(String uid) async {
     final doc = await _db.collection("users").doc(uid).get();
     return UserProfileModel.fromMap(doc.data()!);
@@ -38,3 +45,4 @@ class UserRepository {
 final userRepository = Provider(
   (ref) => UserRepository(),
 );
+
