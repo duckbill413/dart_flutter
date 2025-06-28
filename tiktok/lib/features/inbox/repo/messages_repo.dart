@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tiktok/features/inbox/models/MessageModel.dart';
+import 'package:tiktok/features/inbox/models/message_model.dart';
 
 class MessagesRepo {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
