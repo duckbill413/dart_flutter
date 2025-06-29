@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok/features/authentication/repos/authentication_repo.dart';
-import 'package:tiktok/features/inbox/models/MessageModel.dart';
+import 'package:tiktok/features/inbox/models/message_model.dart';
 import 'package:tiktok/features/inbox/repo/messages_repo.dart';
 
 class MessagesViewModel extends AsyncNotifier<void> {
