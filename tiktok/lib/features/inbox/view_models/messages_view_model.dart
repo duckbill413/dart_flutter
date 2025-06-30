@@ -32,11 +32,12 @@ final messagesProvider = AsyncNotifierProvider<MessagesViewModel, void>(
   () => MessagesViewModel(),
 );
 
-final chatProvider = StreamProvider<List<MessageModel>>((ref) {
+final chatProvider =
+    StreamProvider.family<List<MessageModel>, String>((ref, chatRoomId) {
   final db = FirebaseFirestore.instance;
   return db
       .collection("chat_rooms")
-      .doc("v3b2tpthgmnTlUtLkYLB")
+      .doc(chatRoomId)
       .collection("texts")
       .orderBy("createdAt")
       .snapshots()
