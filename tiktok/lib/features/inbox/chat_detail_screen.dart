@@ -71,7 +71,7 @@ class ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     final text = _textEditingController.text;
     if (text == "") return;
 
-    ref.read(messagesProvider.notifier).sendMessage(text, "");
+    ref.read(messagesProvider.notifier).sendMessage(text, widget.chatId);
     _textEditingController.text = "";
   }
 
