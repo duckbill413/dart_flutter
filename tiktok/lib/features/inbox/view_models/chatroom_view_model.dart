@@ -37,3 +37,9 @@ class ChatRoomViewModel extends AsyncNotifier<void> {
 
 final chatRoomProvider =
     AsyncNotifierProvider<ChatRoomViewModel, void>(() => ChatRoomViewModel());
+
+final chatRoomDetailProvider =
+    FutureProvider.family<ChatRoomModel, String>((ref, chatRoomId) async {
+  final repo = ref.read(chatRoomRepo);
+  return await repo.findChatRoom(chatRoomId);
+});
