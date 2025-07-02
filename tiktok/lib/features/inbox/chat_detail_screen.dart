@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/common/theme_config/view_models/theme_config_vm.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/inbox/view_models/messages_view_model.dart';
 
 class ChatDetailScreen extends ConsumerStatefulWidget {
   static const String routeName = "chatDetail";
@@ -66,6 +67,14 @@ class ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     }
   }
 
+  void _onSendPressed() {
+    final text = _textEditingController.text;
+    if (text == "") return;
+
+    ref.read(messagesProvider.notifier).sendMessage(text, "");
+    _textEditingController.text = "";
+  }
+
   void _onTextFieldTap() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
@@ -81,6 +90,7 @@ class ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(messagesProvider).isLoading;
     final isDark = ref.watch(themeConfigProvider).isDark;
     return Scaffold(
       appBar: AppBar(
@@ -248,12 +258,17 @@ class ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                           ? Colors.white
                           : Colors.grey.shade300,
                     ),
-                    child: FaIcon(
-                      FontAwesomeIcons.solidPaperPlane,
-                      color: _message.isNotEmpty
-                          ? Theme.of(context).primaryColor
-                          : Colors.white,
-                      size: Sizes.size20,
+                    child: GestureDetector(
+                      onTap: () => {
+                        if (_message.isNotEmpty && !isLoading) _onSendPressed()
+                      },
+                      child: FaIcon(
+                        FontAwesomeIcons.solidPaperPlane,
+                        color: _message.isNotEmpty && !isLoading
+                            ? Theme.of(context).primaryColor
+                            : Colors.white,
+                        size: Sizes.size20,
+                      ),
                     ),
                   ),
                 ],
