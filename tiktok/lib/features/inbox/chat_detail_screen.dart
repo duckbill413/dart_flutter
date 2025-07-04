@@ -4,7 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/common/theme_config/view_models/theme_config_vm.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/inbox/view_models/chatroom_view_model.dart';
 import 'package:tiktok/features/inbox/view_models/messages_view_model.dart';
+import 'package:tiktok/features/users/view_models/users_vm.dart';
 
 class ChatDetailScreen extends ConsumerStatefulWidget {
   static const String routeName = "chatDetail";
@@ -92,190 +94,217 @@ class ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
   Widget build(BuildContext context) {
     final isLoading = ref.watch(messagesProvider).isLoading;
     final isDark = ref.watch(themeConfigProvider).isDark;
-    return Scaffold(
-      appBar: AppBar(
-        title: ListTile(
-          contentPadding: EdgeInsets.zero,
-          horizontalTitleGap: Sizes.size10,
-          leading: Stack(
+    final chatRoomAsync = ref.watch(chatRoomDetailProvider(widget.chatId));
+    final chatAsync = ref.watch(chatProvider(widget.chatId));
+
+    return chatRoomAsync.when(
+      data: (chatRoom) {
+        final personB =
+            ref.watch(usersProvider.notifier).fetchProfile(chatRoom.personB);
+        return Scaffold(
+          appBar: AppBar(
+            title: FutureBuilder(
+                future: personB,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return CircularProgressIndicator.adaptive();
+                  }
+                  return ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    horizontalTitleGap: Sizes.size10,
+                    leading: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: Sizes.size24,
+                          foregroundImage: NetworkImage(
+                            snapshot.data!.avatarLink ??
+                                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fsample-image&psig=AOvVaw1d7otriKVJA860atwMzyXA&ust=1751998393618000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKC19uCsq44DFQAAAAAdAAAAABAE",
+                          ),
+                        ),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            width: Sizes.size20,
+                            height: Sizes.size20,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.lightGreen,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: Sizes.size4,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    title: Text(
+                      snapshot.data!.username,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    subtitle: Text("Active now"),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.flag,
+                          size: Sizes.size20,
+                          color: isDark ? null : Colors.black,
+                        ),
+                        Gaps.h32,
+                        FaIcon(
+                          FontAwesomeIcons.ellipsis,
+                          size: Sizes.size20,
+                          color: isDark ? null : Colors.black,
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+          ),
+          body: Stack(
             children: [
-              CircleAvatar(
-                radius: Sizes.size24,
-                foregroundImage: NetworkImage(
-                  "https://avatars.githubusercontent.com/u/86183856?v=4",
+              GestureDetector(
+                onTap: _onStopMessaging,
+                child: ListView.separated(
+                  controller: _scrollController,
+                  padding: EdgeInsets.only(
+                    top: Sizes.size20,
+                    left: Sizes.size14,
+                    right: Sizes.size14,
+                    bottom: 120,
+                  ),
+                  itemBuilder: (context, index) {
+                    final isMine = index % 2 == 0;
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: isMine
+                          ? MainAxisAlignment.end
+                          : MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(Sizes.size14),
+                          decoration: BoxDecoration(
+                            color: isMine
+                                ? Colors.blue
+                                : Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(Sizes.size20),
+                              topRight: Radius.circular(Sizes.size20),
+                              bottomLeft: Radius.circular(
+                                  isMine ? Sizes.size20 : Sizes.size5),
+                              bottomRight: Radius.circular(
+                                  isMine ? Sizes.size5 : Sizes.size20),
+                            ),
+                          ),
+                          child: Text(
+                            "this is a message!",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: Sizes.size14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  separatorBuilder: (context, index) => Gaps.v10,
+                  itemCount: 15,
                 ),
               ),
               Positioned(
-                right: 0,
                 bottom: 0,
-                child: Container(
-                  width: Sizes.size20,
-                  height: Sizes.size20,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.lightGreen,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: Sizes.size4,
-                    ),
+                width: MediaQuery.of(context).size.width,
+                child: BottomAppBar(
+                  padding: EdgeInsets.only(
+                    top: Sizes.size10,
+                    bottom: Sizes.size14,
+                    left: Sizes.size10,
+                    right: Sizes.size10,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _textEditingController,
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Theme.of(context).primaryColor,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: Sizes.size16,
+                            ),
+                            filled: true,
+                            fillColor:
+                                isDark ? Colors.grey.shade500 : Colors.white,
+                            hintText: "Send a message...",
+                            hintStyle: TextStyle(
+                              color: Colors.grey.shade500,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                Sizes.size16,
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                            suffixIcon: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: _toggleEmojiWriting,
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.faceLaugh,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          onTap: _onTextFieldTap,
+                        ),
+                      ),
+                      Gaps.h16,
+                      Container(
+                        padding: EdgeInsets.all(
+                          Sizes.size10,
+                        ),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _message.isNotEmpty
+                              ? Colors.white
+                              : Colors.grey.shade300,
+                        ),
+                        child: GestureDetector(
+                          onTap: () => {
+                            if (_message.isNotEmpty && !isLoading)
+                              _onSendPressed()
+                          },
+                          child: FaIcon(
+                            FontAwesomeIcons.solidPaperPlane,
+                            color: _message.isNotEmpty && !isLoading
+                                ? Theme.of(context).primaryColor
+                                : Colors.white,
+                            size: Sizes.size20,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+              )
             ],
           ),
-          title: Text(
-            "duckbill(${widget.chatId})",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          subtitle: Text("Active now"),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FaIcon(
-                FontAwesomeIcons.flag,
-                size: Sizes.size20,
-                color: isDark ? null : Colors.black,
-              ),
-              Gaps.h32,
-              FaIcon(
-                FontAwesomeIcons.ellipsis,
-                size: Sizes.size20,
-                color: isDark ? null : Colors.black,
-              ),
-            ],
-          ),
+        );
+      },
+      error: (error, stackTrace) =>
+          Scaffold(body: Center(child: Text("오류: $error"))),
+      loading: () => Scaffold(
+        body: Center(
+          child: CircularProgressIndicator.adaptive(),
         ),
-      ),
-      body: Stack(
-        children: [
-          GestureDetector(
-            onTap: _onStopMessaging,
-            child: ListView.separated(
-              controller: _scrollController,
-              padding: EdgeInsets.only(
-                top: Sizes.size20,
-                left: Sizes.size14,
-                right: Sizes.size14,
-                bottom: 120,
-              ),
-              itemBuilder: (context, index) {
-                final isMine = index % 2 == 0;
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment:
-                      isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(Sizes.size14),
-                      decoration: BoxDecoration(
-                        color: isMine
-                            ? Colors.blue
-                            : Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(Sizes.size20),
-                          topRight: Radius.circular(Sizes.size20),
-                          bottomLeft: Radius.circular(
-                              isMine ? Sizes.size20 : Sizes.size5),
-                          bottomRight: Radius.circular(
-                              isMine ? Sizes.size5 : Sizes.size20),
-                        ),
-                      ),
-                      child: Text(
-                        "this is a message!",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: Sizes.size14,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-              separatorBuilder: (context, index) => Gaps.v10,
-              itemCount: 15,
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            width: MediaQuery.of(context).size.width,
-            child: BottomAppBar(
-              padding: EdgeInsets.only(
-                top: Sizes.size10,
-                bottom: Sizes.size14,
-                left: Sizes.size10,
-                right: Sizes.size10,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _textEditingController,
-                      keyboardType: TextInputType.multiline,
-                      cursorColor: Theme.of(context).primaryColor,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: Sizes.size16,
-                        ),
-                        filled: true,
-                        fillColor: isDark ? Colors.grey.shade500 : Colors.white,
-                        hintText: "Send a message...",
-                        hintStyle: TextStyle(
-                          color: Colors.grey.shade500,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            Sizes.size16,
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        suffixIcon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: _toggleEmojiWriting,
-                              icon: FaIcon(
-                                FontAwesomeIcons.faceLaugh,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onTap: _onTextFieldTap,
-                    ),
-                  ),
-                  Gaps.h16,
-                  Container(
-                    padding: EdgeInsets.all(
-                      Sizes.size10,
-                    ),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _message.isNotEmpty
-                          ? Colors.white
-                          : Colors.grey.shade300,
-                    ),
-                    child: GestureDetector(
-                      onTap: () => {
-                        if (_message.isNotEmpty && !isLoading) _onSendPressed()
-                      },
-                      child: FaIcon(
-                        FontAwesomeIcons.solidPaperPlane,
-                        color: _message.isNotEmpty && !isLoading
-                            ? Theme.of(context).primaryColor
-                            : Colors.white,
-                        size: Sizes.size20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
       ),
     );
   }
