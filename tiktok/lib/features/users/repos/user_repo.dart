@@ -45,4 +45,3 @@ class UserRepository {
 final userRepository = Provider(
   (ref) => UserRepository(),
 );
-

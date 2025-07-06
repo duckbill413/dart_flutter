@@ -8,6 +8,7 @@ import 'package:tiktok/features/authentication/sign_up_screen.dart';
 import 'package:tiktok/features/inbox/activity_screen.dart';
 import 'package:tiktok/features/inbox/chat_detail_screen.dart';
 import 'package:tiktok/features/inbox/chats_screen.dart';
+import 'package:tiktok/features/inbox/invite_chat_screen.dart';
 import 'package:tiktok/features/onboarding/interests_screen.dart';
 import 'package:tiktok/features/videos/views/video_recording_screen.dart';
 
@@ -59,6 +60,11 @@ final routerProvider = Provider((ref) {
         path: ChatsScreen.routeURL,
         builder: (context, state) => ChatsScreen(),
         routes: [
+          GoRoute(
+            name: InviteChatScreen.routeName,
+            path: InviteChatScreen.routeURL,
+            builder: (context, state) => InviteChatScreen(),
+          ),
           GoRoute(
             name: ChatDetailScreen.routeName,
             path: ChatDetailScreen.routeURL,

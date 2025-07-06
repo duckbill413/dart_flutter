@@ -61,10 +61,10 @@ https://pub.dev/packages/go_router/install
 ## 19 VIDEO RECORDING
 
 > ## Iphone Build App Error
-> ![아이폰 에러](docs/iphone_error1.png)
-> `cd ./ios`
-> `rm -rf Pods`  
-> `rm -rf Podfile.lock`  
+> ![아이폰 에러](docs/iphone_error1.png)  
+> `cd ./ios`  
+> `rm -rf Pods`    
+> `rm -rf Podfile.lock`   
 > `pod install`  
 > `xcode` => `shift + command + K`
 

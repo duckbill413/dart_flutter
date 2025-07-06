@@ -1,36 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/inbox/chat_detail_screen.dart';
+import 'package:tiktok/features/inbox/invite_chat_screen.dart';
+import 'package:tiktok/features/inbox/models/chat_room_model.dart';
+import 'package:tiktok/features/inbox/view_models/chatroom_view_model.dart';
 
-class ChatsScreen extends StatefulWidget {
+class ChatsScreen extends ConsumerStatefulWidget {
   static const String routeName = 'chats';
   static const String routeURL = '/chats';
 
   const ChatsScreen({super.key});
 
   @override
-  State<ChatsScreen> createState() => _ChatsScreenState();
+  ConsumerState createState() => _ChatsScreenState();
 }
 
-class _ChatsScreenState extends State<ChatsScreen> {
+class _ChatsScreenState extends ConsumerState<ChatsScreen> {
   final GlobalKey<AnimatedListState> _key = GlobalKey<AnimatedListState>();
-  final List<int> _items = [];
-  final Duration _duration = Duration(milliseconds: 500);
+  final List<ChatRoomModel> _chatRooms = [];
+  final Duration _duration = const Duration(milliseconds: 500);
 
-  void _addItem() {
-    if (_key.currentState != null) {
-      _key.currentState!.insertItem(
-        _items.length,
-        // duration is not default
-        duration: _duration,
-      );
-      _items.add(_items.length);
-    }
+  @override
+  void initState() {
+    super.initState();
+    Future(() async {
+      final rooms = await ref.read(chatRoomProvider.notifier).findMyChatRoom();
+      if (mounted) {
+        setState(() {
+          _chatRooms.addAll(rooms);
+        });
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          for (int i = 0; i < rooms.length; i++) {
+            _key.currentState?.insertItem(i, duration: _duration);
+          }
+        });
+      }
+    });
   }
 
-  void _deleteItem(int index) {
+  void _addItem() async {
+    context.pushNamed(InviteChatScreen.routeName);
+  }
+
+  void _deleteItem(ChatRoomModel removed, int index) {
     if (_key.currentState != null) {
       _key.currentState!.removeItem(
         index,
@@ -38,27 +53,30 @@ class _ChatsScreenState extends State<ChatsScreen> {
           sizeFactor: animation,
           child: Container(
             color: Colors.red,
-            child: _makeTile(index),
+            child: _makeTile(removed, index),
           ),
         ),
         duration: _duration,
       );
-      _items.removeAt(index);
+
+      setState(() {
+        _chatRooms.removeAt(index);
+      });
     }
   }
 
-  Widget _makeTile(int index) {
+  Widget _makeTile(ChatRoomModel chatRoom, int index) {
     return ListTile(
-      onTap: () => _onChatTap(index),
-      onLongPress: () => _deleteItem(index),
-      key: UniqueKey(),
+      key: ValueKey(chatRoom.id),
+      onTap: () => _onChatTap(chatRoom.id),
+      onLongPress: () => _deleteItem(chatRoom, index),
       leading: CircleAvatar(
         radius: 30,
         foregroundImage: NetworkImage(
           "https://avatars.githubusercontent.com/u/86183856?v=4",
         ),
         child: Text(
-          "duckbill",
+          chatRoom.id.length >= 2 ? chatRoom.id.substring(0, 2) : chatRoom.id,
         ),
       ),
       title: Row(
@@ -66,13 +84,11 @@ class _ChatsScreenState extends State<ChatsScreen> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            "Lynn ($index)",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
+            "Chat Room ($index)",
+            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           Text(
-            "2:16 PM",
+            chatRoom.regDt.toString().split(".")[0],
             style: TextStyle(
               fontSize: Sizes.size12,
               color: Colors.grey.shade500,
@@ -80,14 +96,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
           ),
         ],
       ),
-      subtitle: Text("Don't forget to make video!"),
+      subtitle: const Text("Don't forget to make video!"),
     );
   }
 
-  void _onChatTap(int index) {
-    context.pushNamed(ChatDetailScreen.routeName, params: {
-      "chatId": "$index",
-    });
+  void _onChatTap(String chatRoomId) {
+    context.pushNamed(
+      ChatDetailScreen.routeName,
+      params: {"chatId": chatRoomId},
+    );
   }
 
   @override
@@ -95,28 +112,21 @@ class _ChatsScreenState extends State<ChatsScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: Text(
-          "Direct messages",
-        ),
+        title: const Text("Direct messages"),
         actions: [
           IconButton(
             onPressed: _addItem,
-            icon: FaIcon(
-              FontAwesomeIcons.plus,
-            ),
+            icon: const FaIcon(FontAwesomeIcons.plus),
           ),
         ],
       ),
       body: AnimatedList(
         key: _key,
-        initialItemCount: 0, // 최초에 몇개의 아이템을 가질지 결정
-        padding: EdgeInsets.symmetric(
-          vertical: Sizes.size10,
-        ),
-        // 유사 위젯 FadeTransition, ScaleTransition
+        initialItemCount: _chatRooms.length,
+        padding: const EdgeInsets.symmetric(vertical: Sizes.size10),
         itemBuilder: (context, index, animation) => SizeTransition(
           sizeFactor: animation,
-          child: _makeTile(index),
+          child: _makeTile(_chatRooms[index], index),
         ),
       ),
     );
