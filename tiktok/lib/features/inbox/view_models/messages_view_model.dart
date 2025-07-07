@@ -32,8 +32,10 @@ final messagesProvider = AsyncNotifierProvider<MessagesViewModel, void>(
   () => MessagesViewModel(),
 );
 
-final chatProvider =
-    StreamProvider.family<List<MessageModel>, String>((ref, chatRoomId) {
+// autoDispose 를 설정해서 Dispose 를 시켜주어야 함
+// 그렇지 않으면 계속 listen 하고 있게 됨
+final chatProvider = StreamProvider.autoDispose
+    .family<List<MessageModel>, String>((ref, chatRoomId) {
   final db = FirebaseFirestore.instance;
   return db
       .collection("chat_rooms")
