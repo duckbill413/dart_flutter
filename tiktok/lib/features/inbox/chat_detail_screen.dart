@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/common/theme_config/view_models/theme_config_vm.dart';
 import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/constants/sizes.dart';
+import 'package:tiktok/features/authentication/repos/authentication_repo.dart';
 import 'package:tiktok/features/inbox/view_models/chatroom_view_model.dart';
 import 'package:tiktok/features/inbox/view_models/messages_view_model.dart';
 import 'package:tiktok/features/users/view_models/users_vm.dart';
@@ -169,50 +170,61 @@ class ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
             children: [
               GestureDetector(
                 onTap: _onStopMessaging,
-                child: ListView.separated(
-                  controller: _scrollController,
-                  padding: EdgeInsets.only(
-                    top: Sizes.size20,
-                    left: Sizes.size14,
-                    right: Sizes.size14,
-                    bottom: 120,
+                child: chatAsync.when(
+                  data: (data) => ListView.separated(
+                    controller: _scrollController,
+                    padding: EdgeInsets.only(
+                      top: Sizes.size20,
+                      left: Sizes.size14,
+                      right: Sizes.size14,
+                      bottom: 120,
+                    ),
+                    itemBuilder: (context, index) {
+                      final myUid = ref.watch(authRepo).user!.uid;
+                      final isMine = data[index].userId == myUid;
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: isMine
+                            ? MainAxisAlignment.end
+                            : MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(Sizes.size14),
+                            decoration: BoxDecoration(
+                              color: isMine
+                                  ? Colors.blue
+                                  : Theme.of(context).primaryColor,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(Sizes.size20),
+                                topRight: Radius.circular(Sizes.size20),
+                                bottomLeft: Radius.circular(
+                                    isMine ? Sizes.size20 : Sizes.size5),
+                                bottomRight: Radius.circular(
+                                    isMine ? Sizes.size5 : Sizes.size20),
+                              ),
+                            ),
+                            child: Text(
+                              data[index].text,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: Sizes.size14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                    separatorBuilder: (context, index) => Gaps.v10,
+                    itemCount: data.length,
                   ),
-                  itemBuilder: (context, index) {
-                    final isMine = index % 2 == 0;
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: isMine
-                          ? MainAxisAlignment.end
-                          : MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(Sizes.size14),
-                          decoration: BoxDecoration(
-                            color: isMine
-                                ? Colors.blue
-                                : Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(Sizes.size20),
-                              topRight: Radius.circular(Sizes.size20),
-                              bottomLeft: Radius.circular(
-                                  isMine ? Sizes.size20 : Sizes.size5),
-                              bottomRight: Radius.circular(
-                                  isMine ? Sizes.size5 : Sizes.size20),
-                            ),
-                          ),
-                          child: Text(
-                            "this is a message!",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: Sizes.size14,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                  separatorBuilder: (context, index) => Gaps.v10,
-                  itemCount: 15,
+                  error: (error, stackTrace) => Center(
+                    child: Text(
+                      error.toString(),
+                    ),
+                  ),
+                  loading: () => Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  ),
                 ),
               ),
               Positioned(
