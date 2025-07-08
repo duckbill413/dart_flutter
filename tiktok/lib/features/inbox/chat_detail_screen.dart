@@ -172,12 +172,14 @@ class ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
                 onTap: _onStopMessaging,
                 child: chatAsync.when(
                   data: (data) => ListView.separated(
+                    reverse: true,
                     controller: _scrollController,
                     padding: EdgeInsets.only(
                       top: Sizes.size20,
                       left: Sizes.size14,
                       right: Sizes.size14,
-                      bottom: 120,
+                      bottom:
+                          MediaQuery.of(context).padding.bottom + Sizes.size96,
                     ),
                     itemBuilder: (context, index) {
                       final myUid = ref.watch(authRepo).user!.uid;

@@ -44,7 +44,10 @@ final chatProvider = StreamProvider.autoDispose
       .orderBy("createdAt")
       .snapshots()
       .map(
-        (event) =>
-            event.docs.map((doc) => MessageModel.fromMap(doc.data())).toList(),
+        (event) => event.docs
+            .map((doc) => MessageModel.fromMap(doc.data()))
+            .toList()
+            .reversed
+            .toList(),
       );
 });
