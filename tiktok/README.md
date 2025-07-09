@@ -67,6 +67,8 @@ https://pub.dev/packages/go_router/install
 > `rm -rf Podfile.lock`   
 > `pod install`  
 > `xcode` => `shift + command + K`
+>
+> `pod repo update`
 
 ### 앱 빌드를 위한 아이폰 세팅
 
@@ -203,3 +205,19 @@ firebase deploy --only functions
 1. `cd functions`
 2. `npm i child-process-promise`
 
+## 29 PUSH NOTIFICATIONS
+
+1. Install FCM plugin
+
+```bash
+flutter pub add firebase_messaging
+```
+
+2. Initialize Flutter Configure
+
+```bash
+flutterfire configure
+```
+
+IOS 알림 테스트  
+https://velog.io/@tygerhwang/Flutter-Firebase-FCMFirebase-Cloud-Message-사용해-보기

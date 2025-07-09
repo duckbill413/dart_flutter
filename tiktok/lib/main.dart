@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,6 +13,7 @@ import 'package:tiktok/router.dart';
 
 import 'common/theme_config/repos/theme_config_repo.dart';
 import 'common/theme_config/view_models/theme_config_vm.dart';
+import 'features/notification/notifications_provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -36,6 +38,13 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    if (message.notification != null) {
+      print('Notification Title: ${message.notification!.title}');
+      print('Notification Body: ${message.notification!.body}');
+    }
+  });
   runApp(
     ProviderScope(
       overrides: [
@@ -57,7 +66,7 @@ class TiktokApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // S.load(Locale("ko")); // 휴대폰 재설정 없이 Locale 변경
-
+    ref.watch(notificationsProvider);
     return MaterialApp.router(
       routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,
