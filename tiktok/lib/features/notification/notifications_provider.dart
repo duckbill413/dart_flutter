@@ -15,12 +15,28 @@ class NotificationsProvider extends AsyncNotifier {
     _db.collection("users").doc(user!.uid).update({"token": token});
   }
 
+  Future<void> initListeners() async {
+    final permissions = await _messaging.requestPermission();
+    if (permissions.authorizationStatus == AuthorizationStatus.denied) {
+      return;
+    }
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message in the foreground!');
+      if (message.notification != null) {
+        print('Notification Title: ${message.notification!.title}');
+        print('Notification Body: ${message.notification!.body}');
+      }
+    });
+  }
+
   @override
   FutureOr build() async {
     // receiving Firebase messaing token
     final token = await _messaging.getToken();
     if (token == null) return;
     await updateToken(token);
+    await initListeners();
 
     _messaging.onTokenRefresh.listen(
       (newToken) async => await updateToken(newToken),
