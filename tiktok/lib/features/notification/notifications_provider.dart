@@ -21,6 +21,7 @@ class NotificationsProvider extends AsyncNotifier {
       return;
     }
 
+    // Foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message in the foreground!');
       if (message.notification != null) {
@@ -28,6 +29,25 @@ class NotificationsProvider extends AsyncNotifier {
         print('Notification Body: ${message.notification!.body}');
       }
     });
+    // Background
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (notification) {
+        print('============================================');
+        print('============================================');
+        print(notification.data['screen']);
+        print('============================================');
+        print('============================================');
+      },
+    );
+    // Terminated
+    final notification = await _messaging.getInitialMessage();
+    if (notification != null) {
+      print('============================================');
+      print('============================================');
+      print(notification.data['screen']);
+      print('============================================');
+      print('============================================');
+    }
   }
 
   @override

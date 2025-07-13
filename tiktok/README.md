@@ -221,3 +221,13 @@ flutterfire configure
 
 IOS 알림 테스트  
 https://velog.io/@tygerhwang/Flutter-Firebase-FCMFirebase-Cloud-Message-사용해-보기
+
+## 29 PUSH NOTIFICATION
+
+1. Foreground Messaging
+   ![img.png](assets/images/message-foreground1.png)
+   ![img.png](assets/images/message-foreground2.png)
+2. Background Messaging
+   ![img.png](assets/images/message-background1.png)
+   ![img_1.png](assets/images/message-background2.png)
+   ![img_2.png](assets/images/message-background3.png)
