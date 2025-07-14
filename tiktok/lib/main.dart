@@ -12,7 +12,6 @@ import 'package:tiktok/router.dart';
 
 import 'common/theme_config/repos/theme_config_repo.dart';
 import 'common/theme_config/view_models/theme_config_vm.dart';
-import 'features/notification/notifications_provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -59,7 +58,6 @@ class TiktokApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // S.load(Locale("ko")); // 휴대폰 재설정 없이 Locale 변경
-    ref.watch(notificationsProvider);
     return MaterialApp.router(
       routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,
