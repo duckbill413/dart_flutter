@@ -233,3 +233,47 @@ https://velog.io/@tygerhwang/Flutter-Firebase-FCMFirebase-Cloud-Message-사용�
    ![img_2.png](assets/images/message-background3.png)
 
 ## 30 SECURITY AND TESTING
+
+### 30.1 Security Rules
+
+- Cloud Firestore 의 규칙에서 Firestore 의 Security 규칙을 생성할 수 있음
+
+```shell
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2026, 5, 31);
+    }
+  }
+}
+```
+
+- `write` 는 `update`, `create`, `delete` 를 허용하는 규칙
+
+규칙 변경
+
+1. 본인의 데이터를 본인만 수정할 수 있도록 규칙 변경
+2. 로그인 사용자만 비디오 read, create 가능
+3. 본인의 업로드 비디오만 수정 가능
+
+```shell
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2026, 5, 31);
+    }
+    match /users/{document=**} {
+    	allow read, update, create : if request.auth != null && resource.id == request.auth.uid;
+    }
+    match /videos/{document=**} {
+    	allow read, create : if request.auth != null;
+      allow update: if request.auth != null && request.auth.uid == resource.data.creatorUid;
+    }
+  }
+}
+```
+
