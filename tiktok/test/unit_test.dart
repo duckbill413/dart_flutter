@@ -5,6 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tiktok/features/videos/models/video_model.dart';
 
@@ -25,5 +26,24 @@ void main() {
     );
 
     expect(video.id, "id");
+  });
+
+  test("Test Video Model .fromJson Constructor", () {
+    final video = VideoModel.fromMap({
+      "id": "id",
+      "title": "title",
+      "description": "description",
+      "contentPath": "contentPath",
+      "thumbnailPath": "thumbnailPath",
+      "likes": 1,
+      "comments": 1,
+      "tags": ["apple", "banana"],
+      "creatorUid": "creatorUid",
+      "createdAt": Timestamp.now(),
+      "creator": "creator",
+    });
+
+    expect(video.title, "title");
+    expect(video.comments, isInstanceOf<int>());
   });
 }
