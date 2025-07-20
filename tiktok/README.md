@@ -277,3 +277,32 @@ service cloud.firestore {
 }
 ```
 
+### 30.2 Security Querying
+
+1. `${userId}` PathVariable 의 활용
+2. `get` 을 사용해서 **규칙** 안 function 에서 데이터를 fetch
+
+```shell
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2026, 5, 31);
+    }
+    match /users/{userId} {
+    	allow read, update, create : if request.auth != null && userId == request.auth.uid;
+    }
+    match /users/{userId}/videos {
+    	allow read : if request.auth != null;
+    }
+    match /videos/{document=**} {
+    	allow read, create : if request.auth != null;
+      allow update: if request.auth != null && request.auth.uid == resource.data.creatorUid;
+    }
+    match /likes/{document=**} {
+    	allow read, write: if request.auth != null && get(/database/$(database)/documents/users/$(request.auth.uid)).data.token != "";
+    }
+  }
+}
+```
