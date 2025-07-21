@@ -28,7 +28,7 @@ void main() {
     expect(video.id, "id");
   });
 
-  test("Test Video Model .fromJson Constructor", () {
+  test("Test Video Model .fromMap Constructor", () {
     final video = VideoModel.fromMap({
       "id": "id",
       "title": "title",
@@ -45,5 +45,23 @@ void main() {
 
     expect(video.title, "title");
     expect(video.comments, isInstanceOf<int>());
+  });
+
+  test("Test VideoModel toMap Method", () {
+    final video = VideoModel.fromMap({
+      "id": "id",
+      "title": "title",
+      "description": "description",
+      "contentPath": "contentPath",
+      "thumbnailPath": "thumbnailPath",
+      "likes": 1,
+      "comments": 1,
+      "tags": ["apple", "banana"],
+      "creatorUid": "creatorUid",
+      "createdAt": Timestamp.now(),
+      "creator": "creator",
+    });
+    final json = video.toMap();
+    expect(json["id"], "id");
   });
 }
