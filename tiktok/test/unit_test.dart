@@ -10,58 +10,60 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tiktok/features/videos/models/video_model.dart';
 
 void main() {
-  test("Test Video Model Constructor", () {
-    final video = VideoModel(
-      id: "id",
-      title: "title",
-      description: "description",
-      contentPath: "contentPath",
-      thumbnailPath: "thumbnailPath",
-      likes: 1,
-      comments: 1,
-      tags: ["apple", "banana"],
-      creatorUid: "creatorUid",
-      createdAt: DateTime.now(),
-      creator: "creator",
-    );
+  group("VideoModel", () {
+    test("Test Video Model Constructor", () {
+      final video = VideoModel(
+        id: "id",
+        title: "title",
+        description: "description",
+        contentPath: "contentPath",
+        thumbnailPath: "thumbnailPath",
+        likes: 1,
+        comments: 1,
+        tags: ["apple", "banana"],
+        creatorUid: "creatorUid",
+        createdAt: DateTime.now(),
+        creator: "creator",
+      );
 
-    expect(video.id, "id");
-  });
-
-  test("Test Video Model .fromMap Constructor", () {
-    final video = VideoModel.fromMap({
-      "id": "id",
-      "title": "title",
-      "description": "description",
-      "contentPath": "contentPath",
-      "thumbnailPath": "thumbnailPath",
-      "likes": 1,
-      "comments": 1,
-      "tags": ["apple", "banana"],
-      "creatorUid": "creatorUid",
-      "createdAt": Timestamp.now(),
-      "creator": "creator",
+      expect(video.id, "id");
     });
 
-    expect(video.title, "title");
-    expect(video.comments, isInstanceOf<int>());
-  });
+    test("Test Video Model .fromMap Constructor", () {
+      final video = VideoModel.fromMap({
+        "id": "id",
+        "title": "title",
+        "description": "description",
+        "contentPath": "contentPath",
+        "thumbnailPath": "thumbnailPath",
+        "likes": 1,
+        "comments": 1,
+        "tags": ["apple", "banana"],
+        "creatorUid": "creatorUid",
+        "createdAt": Timestamp.now(),
+        "creator": "creator",
+      });
 
-  test("Test VideoModel toMap Method", () {
-    final video = VideoModel.fromMap({
-      "id": "id",
-      "title": "title",
-      "description": "description",
-      "contentPath": "contentPath",
-      "thumbnailPath": "thumbnailPath",
-      "likes": 1,
-      "comments": 1,
-      "tags": ["apple", "banana"],
-      "creatorUid": "creatorUid",
-      "createdAt": Timestamp.now(),
-      "creator": "creator",
+      expect(video.title, "title");
+      expect(video.comments, isInstanceOf<int>());
     });
-    final json = video.toMap();
-    expect(json["id"], "id");
+
+    test("Test VideoModel toMap Method", () {
+      final video = VideoModel.fromMap({
+        "id": "id",
+        "title": "title",
+        "description": "description",
+        "contentPath": "contentPath",
+        "thumbnailPath": "thumbnailPath",
+        "likes": 1,
+        "comments": 1,
+        "tags": ["apple", "banana"],
+        "creatorUid": "creatorUid",
+        "createdAt": Timestamp.now(),
+        "creator": "creator",
+      });
+      final json = video.toMap();
+      expect(json["id"], "id");
+    });
   });
 }
