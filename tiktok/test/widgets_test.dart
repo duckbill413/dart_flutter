@@ -18,7 +18,7 @@ void main() {
         ),
       );
 
-      expect(find.text("Next"), matcher)
+      expect(find.text("폼 버튼"), findsOneWidget);
     });
   });
 }
