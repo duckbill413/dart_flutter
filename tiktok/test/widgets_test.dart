@@ -19,6 +19,14 @@ void main() {
       );
 
       expect(find.text("폼 버튼"), findsOneWidget);
+      expect(
+        tester
+            .firstWidget<AnimatedDefaultTextStyle>(
+                find.byType(AnimatedDefaultTextStyle))
+            .style
+            .color,
+        Colors.white,
+      );
     });
   });
 }
