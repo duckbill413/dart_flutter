@@ -8,12 +8,17 @@ void main() {
     // top of your application widget tree
     testWidgets("Enabled State", (WidgetTester tester) async {
       await tester.pumpWidget(
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: FormButton(
-            disabled: false,
-            onTap: () {},
-            text: "폼 버튼",
+        Theme(
+          data: ThemeData(
+            primaryColor: Colors.red,
+          ),
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: FormButton(
+              disabled: false,
+              onTap: () {},
+              text: "폼 버튼",
+            ),
           ),
         ),
       );
@@ -27,6 +32,13 @@ void main() {
             .color,
         Colors.white,
       );
+      expect(
+          (tester
+                  .firstWidget<AnimatedContainer>(
+                      find.byType(AnimatedContainer))
+                  .decoration as BoxDecoration)
+              .color,
+          Colors.red);
     });
 
     testWidgets("Disabled State", (WidgetTester tester) async {
