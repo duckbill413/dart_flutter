@@ -75,7 +75,8 @@ class SignUpScreen extends ConsumerWidget {
               children: [
                 Gaps.v80,
                 Text(
-                  S.of(context).signUpTitle("Tiktok", DateTime.now()),
+                  // S.of(context).signUpTitle("Tiktok", DateTime.now()),
+                  "틱톡 회원가입",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Gaps.v20,
@@ -161,7 +162,8 @@ class SignUpScreen extends ConsumerWidget {
                 GestureDetector(
                   onTap: () => _onLoginTap(context),
                   child: Text(
-                    S.of(context).logIn("male"), // selection
+                    // S.of(context).logIn("male"), // selection
+                    "Log in",
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w600,
