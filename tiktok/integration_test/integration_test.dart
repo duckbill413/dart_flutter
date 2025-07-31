@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tiktok/common/theme_config/repos/theme_config_repo.dart';
+import 'package:tiktok/common/theme_config/view_models/theme_config_vm.dart';
+import 'package:tiktok/features/videos/repos/playback_config_repo.dart';
+import 'package:tiktok/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok/firebase_options.dart';
 import 'package:tiktok/main.dart';
 
@@ -21,9 +26,22 @@ void main() {
   });
 
   testWidgets("Create Account Flow", (WidgetTester tester) async {
+    // Initialize SharedPreferences for testing
+    final preferences = await SharedPreferences.getInstance();
+    final playbackConfigRepository = PlaybackConfigRepository(preferences);
+    final themeConfigRepository = ThemeConfigRepository(preferences);
+
     await tester.pumpWidget(
       // Riverpod 과 같은 provider 설정
       ProviderScope(
+        overrides: [
+          playbackConfigProvider.overrideWith(
+            () => PlaybackConfigViewModel(playbackConfigRepository),
+          ),
+          themeConfigProvider.overrideWith(
+            () => ThemeConfigViewModel(themeConfigRepository),
+          ),
+        ],
         child: TiktokApp(),
       ),
     );
