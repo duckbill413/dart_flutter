@@ -56,24 +56,29 @@ void main() {
     expect(signUp, findsOneWidget);
     await tester.tap(signUp);
     await tester.pumpAndSettle(const Duration(seconds: 5));
+    print("회원가입 테스트");
     final emailBtn = find.text('Use email & password');
     expect(emailBtn, findsOneWidget);
     await tester.tap(emailBtn);
     await tester.pumpAndSettle(const Duration(seconds: 5));
-    // username 설정
+    // username 설정;
+    print("username 설정");
     final usernameInput = find.byType(TextField).first;
     await tester.enterText(usernameInput, "test");
     await tester.pumpAndSettle(const Duration(seconds: 5));
     await tester.tap(find.text("Next"));
+    await tester.pumpAndSettle(const Duration(seconds: 5));
     // 이메일 설정 화면
+    print("이메일 설정 화면");
     final emailInput = find.byType(TextField).first;
     await tester.enterText(emailInput, "test@testing.com");
     await tester.pumpAndSettle(const Duration(seconds: 5));
     await tester.tap(find.text("Next"));
     await tester.pumpAndSettle(const Duration(seconds: 5));
     // 비밀번호 설정 화면
+    print('비밀번호 설정 화면');
     final passwordInput = find.byType(TextField).first;
-    await tester.enterText(passwordInput, "test");
+    await tester.enterText(passwordInput, "testPwd111@#");
     await tester.pumpAndSettle(const Duration(seconds: 5));
     await tester.tap(find.text("Next"));
     await tester.pumpAndSettle(const Duration(seconds: 5));
